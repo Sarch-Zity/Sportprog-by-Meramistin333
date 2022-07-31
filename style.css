@@ -18,13 +18,13 @@ header{
     right: 20px;
     position: absolute;
 }
-.Name_project{
+.project_name{
     font-size: 34px;
     color: #fff;
     margin-right: 20px;
     cursor: pointer;
 }
-.Nav_text{
+.nav_text{
     color: #fff;
     padding-left: 20px;
     cursor: pointer;
