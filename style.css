@@ -1,0 +1,20 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+header{
+    width: 100%;
+    padding: 20px;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+}
+.icon_profile{
+    width: 30px;
+    height: 30px;
+    background-color: aliceblue;
+    border-radius: 50%;
+    right: 10px;
+    position: absolute;
+}
