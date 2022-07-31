@@ -2,6 +2,10 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Bahnschrift', sans-serif;
+}
+body{
+    height: 100%;
 }
 header{
     width: 100%;
@@ -21,11 +25,12 @@ header{
 .project_name{
     font-size: 34px;
     color: #fff;
-    margin-right: 20px;
+    margin-right: 14px;
     cursor: pointer;
 }
 .nav_text{
     color: #fff;
     padding-left: 20px;
     cursor: pointer;
+    font-size: 20px;
 }
