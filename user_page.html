@@ -4,14 +4,66 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="user_page.css">
 </head>
 <body>
     <header>
         <span class=""><a class="project_name" href="">ONUPRA</a></span>
         <span class=""><a class="nav_text" href="">Соревнования</a></span>
         <span class=""><a class="nav_text" href="">Рейтинг</a></span>
-        <div class="icon_profile"></div>
+        
+        <div class="dropdown">
+            <div class="icon_profile"></div>
+            <div class="block_info_user_block">
+              <div class="block_info_user">
+                <a class="a_reg" href="#">Зарегистрироваться</a>
+                <a class="a_reg" href="#">Войти</a>
+              </div>
+            </div>
+        </div>
     </header>
-    
+    <div class="container_body">
+        <div class="container">
+            <div class="nav_menu_user">
+                <ul class="spisok_nav_menu_user">
+                   <li class="chapter_nav_menu_user">USER_NAME</li>
+                   <li class="chapter_nav_menu_user">НАСТРОЙКИ</li>
+                   <li class="chapter_nav_menu_user">СОРЕВНОВАНИЯ</li>
+                   <li class="chapter_nav_menu_user">ПОПЫТКИ</li>
+                </ul>
+            </div>
+            <div class="user_info_chapter">
+                <div class="block_info_user_chapter">
+                    <div class="block_text_info">
+                        <span class="status">STATUS</span>
+                        
+                        <div class="pisda_naebal">
+                            <span class="USER_NAME">USER_NAME</span>
+                        </div>
+                        <div class="pisda">
+                            <i></i>
+                            <span>Рейтинг: <span>000</span> <span>(макс. <span>000</span>,<span>STATUS</span>)</span></span>
+                        </div>
+                        <div class="pisda">
+                            <i></i>
+                            <span><a href="">Мои друзья</a></span>
+                        </div>
+                        <div class="pisda">
+                            <i></i>
+                            <span><a href="">Изменить настройки</a></span>
+                        </div>
+                        <div class="pisda">
+                            <i></i>
+                            <span>Email</span>
+                        </div>
+                    </div>
+                    <div class="block_img_info">
+                        <img class="img_block_img_info" src="198411517.jpg" alt="">
+                        <span>загрузить</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
