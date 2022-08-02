@@ -8,24 +8,29 @@
     <link rel="stylesheet" href="{% static 'main/css/reg_form.css' %}">
 </head>
 <body>
-    <div class="container_reg_form">
+    <form method="post" class="container_reg_form" novalidate >
+        {% csrf_token %}
         <div class="input_reg_form">
             <span class="text">Ваше никнейм</span>
-            <input type="text">
+            {{form.nick}}
+            <!-- <input type="text"> -->
         </div>
         <div class="input_reg_form">
             <span class="text">Ваша Email</span>
-            <input type="text">
+            {{form.email}}
+            <!-- <input type="text"> -->
         </div>
         <div class="input_reg_form">
             <span class="text">Пароль</span>
-            <input type="password">
+            {{form.password}}
+            <!-- <input type="password"> -->
         </div>
         <div class="input_reg_form">
             <span class="text">Повтори пароль</span>
             <input type="password">
         </div>
-        <button>Отправить</button>
-    </div>
+        <button type="sumbit">Отправить</button>
+        <span>{{ error }}</span>
+    </form>
 </body>
 </html>
