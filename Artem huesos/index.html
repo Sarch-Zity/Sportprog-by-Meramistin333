@@ -1,0 +1,34 @@
+<!-- {% load static %} надо прописывать в каждом файле html,
+можешь запихнуть его в файл из которого будет сбираться страницы.
+Для перехода по страницам надо писать {% url 'название' %}.
+Название берешь из файл main/urls.py. там где написано name='название'.
+Например href="{% url 'home' %}" эта ссылка будет отсылать на главну.
+Это нам понадобиться при создание "подвижных url`ов"
+"Файл базу" тоже в теплейтах надо сохранять, ну ты из видоса поймешь-->
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ONUPRA</title>
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+    <header>
+        <span class=""><a class="project_name" href="">ONUPRA</a></span>
+        <span class=""><a class="nav_text" href="">Соревнования</a></span>
+        <span class=""><a class="nav_text" href="">Рейтинг</a></span>
+        
+        <div class="dropdown">
+            <div class="icon_profile"></div>
+            <div class="block_info_user_block">
+              <div class="block_info_user">
+                <a class="a_reg" href="#">Зарегистрироваться</a>
+                <a class="a_reg" href="#">Войти</a>
+              </div>
+            </div>
+        </div>
+    </header>
+    
+</body>
+</html>
