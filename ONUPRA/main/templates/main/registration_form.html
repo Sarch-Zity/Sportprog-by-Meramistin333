@@ -1,13 +1,8 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Document reg</title>
-    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/reg_form.css' %}">
-</head>
-<body>
+{% extends 'main/baza.html' %}
+
+{% block title %}Document reg{% endblock %}
+
+{% block content %}
     <form method="post" class="container_reg_form" novalidate >
         {% csrf_token %}
         <div class="input_reg_form">
@@ -32,5 +27,4 @@
         <button type="sumbit">Отправить</button>
         <span>{{ error }}</span>
     </form>
-</body>
-</html>
+{% endblock %}

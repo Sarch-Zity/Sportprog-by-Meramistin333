@@ -4,7 +4,7 @@ from .models import users
 from .forms import users_form
 
 def index (request):
-    return render(request, 'main/index.html')
+    return render(request, 'main/home.html')
 
 def account (request):
     return render(request, 'main/user_page.html')

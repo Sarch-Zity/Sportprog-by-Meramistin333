@@ -1,9 +1,3 @@
-body{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
 .container_reg_form{
     width: 300px;
     background-color: rgb(250, 250, 250);
