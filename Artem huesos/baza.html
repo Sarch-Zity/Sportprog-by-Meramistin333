@@ -5,21 +5,20 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/reg_form.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/user_page.css' %}">
 </head>
 <body>
     <header>
         <span class=""><a class="project_name" href="{% url 'home' %}">ONUPRA</a></span>
-        <span class=""><a class="nav_text" href="{% url '' %}">Соревнования</a></span>
-        <span class=""><a class="nav_text" href="{% url '' %}">Рейтинг</a></span>
+        <span class=""><a class="nav_text" href="">Соревнования</a></span>
+        <span class=""><a class="nav_text" href="">Рейтинг</a></span>
         
         <div class="dropdown">
             <div class="icon_profile"></div>
             <div class="block_info_user_block">
               <div class="block_info_user">
                 <a class="a_reg" href="{% url 'reg_page' %}">Зарегистрироваться</a>
-                <a class="a_reg" href="{% url '' %}">Войти</a>
+                <a class="a_reg" href="">Войти</a>
               </div>
             </div>
         </div>
