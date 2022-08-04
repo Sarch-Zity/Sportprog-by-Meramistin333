@@ -13,7 +13,6 @@ def reg_page (request):
     error = ''
     if request.method == 'POST':
         form = CustomUserCreationFrom(request.POST)
-        print(form)
         if form.is_valid():
             form.save()
             return redirect('login')
