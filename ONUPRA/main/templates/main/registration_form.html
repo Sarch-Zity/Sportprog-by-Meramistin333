@@ -11,13 +11,17 @@
     <div class="container__regestration">
     <form method="post" class="container_reg_form" novalidate >
         {% csrf_token %}
+        {{form.non_field_errors}}
         {% for f in form %}
-        <div>{{f.label}}:</div>
-        <div>{{f}}</div>
-        <div>{{f.error}}</div>
+        <div>{{ f.label }}:</div>
+        <div>{{ f }}</div>
+        <div>{{ f.errors }}</div>
         {% endfor %}
         <button type="sumbit">Отправить</button>
-        <span>{{ error }}</span>
+        <span>{% for f in error %}
+            {{f}}
+            {%endfor%}
+        </span>
     </form>
     </div>
 </body>
