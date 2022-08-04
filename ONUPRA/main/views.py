@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import users, CustomUser
-from .forms import users_form, CustomUserCreationFrom
+from .models import CustomUser
+from .forms import CustomUserCreationFrom
+from django.contrib.auth import login
 
 def index (request):
     return render(request, 'main/home.html')
@@ -25,8 +26,9 @@ def reg_page (request):
         if CustomUser.objects.filter(email=email).exists():
             error_email = "Данный адрес электронной почты уже занято"
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            formsv = form.save()
+            login(request, formsv)
+            return redirect('account')
         elif error_email == "" and error_username == "":
             error = "Неизвестная нам ошибка"
 
