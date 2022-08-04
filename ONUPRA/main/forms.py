@@ -24,23 +24,8 @@ class CustomUserCreationFrom(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'password1', 'password2')
-        widgets = {
-        "username":TextInput(attrs={
-
-        }),
-        "email":TextInput(attrs={
-            
-        }),
-        "password1":PasswordInput(attrs={
-            'class': 'Kto'
-        }),}
 
 class CustomUserChangeFrom(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ["username", "email",]
-        widgets = {
-        "username":TextInput(attrs={
-        }),
-        "email":TextInput(attrs={
-        }),}
