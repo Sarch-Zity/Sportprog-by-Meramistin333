@@ -7,7 +7,7 @@ def index (request):
     return render(request, 'main/home.html')
 
 def account (request):
-    print(CustomUser.username)
+    print(request.user.email)
     return render(request, 'main/user_page.html')
 
 def reg_page (request):
