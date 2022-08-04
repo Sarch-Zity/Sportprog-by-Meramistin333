@@ -18,10 +18,9 @@
         <div>{{ f.errors }}</div>
         {% endfor %}
         <button type="sumbit">Отправить</button>
-        <span>{% for f in error %}
-            {{f}}
-            {%endfor%}
-        </span>
+        <div>{{error}}</div>
+        <div>{{error_username}}</div>
+        <div>{{error_email}}</div>
     </form>
     </div>
 </body>

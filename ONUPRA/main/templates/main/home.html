@@ -1,27 +1,3 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>ONUPRA</title>
-    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
-</head>
-<body>
-    <header>
-        <span class=""><a class="project_name" href="">ONUPRA</a></span>
-        <span class=""><a class="nav_text" href="">Соревнования</a></span>
-        <span class=""><a class="nav_text" href="">Рейтинг</a></span>
-        
-        <div class="dropdown">
-            <div class="icon_profile"></div>
-            <div class="block_info_user_block">
-              <div class="block_info_user">
-                <a class="a_reg" href="#">Зарегистрироваться</a>
-                <a class="a_reg" href="#">Войти</a>
-              </div>
-            </div>
-        </div>
-    </header>
-    
-</body>
-</html>
+{% extends 'main/baza.html' %}
+
+{% block title %}Home{% endblock %}
