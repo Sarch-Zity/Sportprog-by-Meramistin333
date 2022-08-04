@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import users
-from .forms import users_form
+from .models import users, CustomUser
+from .forms import users_form, CustomUserCreationFrom
 
 def index (request):
     return render(request, 'main/home.html')
@@ -12,16 +12,20 @@ def account (request):
 def reg_page (request):
     error = ''
     if request.method == 'POST':
-        form = users_form(request.POST)
+        form = CustomUserCreationFrom(request.POST)
+        print(form)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('login')
         else:
             error = 'Error'
 
-    form = users_form()
+    form = CustomUserCreationFrom()
     content = {
         'form': form,
         'error': error
     }
     return render(request, 'main/registration_form.html', content)
+
+def login (request):
+    return render(request, 'main/login_form.html')
