@@ -1,38 +1,45 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Document reg</title>
-    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/reg_form.css' %}">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="reg_form.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>
 <body>
     <div class="container__regestration">
-    <form method="post" class="container_reg_form" novalidate >
-        {% csrf_token %}
-        <div class="input_reg_form">
-            <span class="text">Ваше никнейм</span>
-            {{form.nick}}
-            <!-- <input type="text"> -->
+    <form method="post" class="container_reg_form">
+        <div class="fer"><span class="reg_h1">Регестрация</span></div>
+        
+        <div class="div_block_form">
+            <label>Никнейм</label> 
+            <div id="check"></div>
+            <input type="text" id="nicknameBox1" class="password" required>
+            </div>
+        <div class="div_block_form">
+            <label>Почта</label> 
+            <div id="check"></div>
+            <input type="email" id="emaildBox1" class="password" required>
         </div>
-        <div class="input_reg_form">
-            <span class="text">Ваша Email</span>
-            {{form.email}}
-            <!-- <input type="text"> -->
+        <div>
+        <label>Пароль</label> 
+        <div id="check"></div>
+        <input type="password" id="passwordBox" class="password1" required>
+        <i class="uil uil-eye-slash showHidePw ewe"></i>
         </div>
-        <div class="input_reg_form">
-            <span class="text">Пароль</span>
-            {{form.password}}
-            <!-- <input type="password"> -->
+        <div>
+            <label>Повторите пароль</label> 
+            <div id="check"></div>
+            <input type="password" id="passwordBox1" class="password2" required>
+            <div class="pad"><p id="alert" class="alert"></p></div>
+            
+
+            <i class="uil uil-eye-slash showHidePw ewe2"></i>
         </div>
-        <div class="input_reg_form">
-            <span class="text">Повтори пароль</span>
-            <input type="password">
-        </div>
-        <button type="sumbit">Отправить</button>
-        <span>{{ error }}</span>
+        <button class="button_form" type="sumbit" onclick="return checkPassword()">Отправить</button>
     </form>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
