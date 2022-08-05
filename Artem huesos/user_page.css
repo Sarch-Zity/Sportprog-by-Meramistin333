@@ -3,11 +3,12 @@
     justify-content: center;
 }
 .container{
-    display: flex;
+    display: block;
     width: 100%;
     height: 100vh;
     background-color: rgb(248, 248, 248);
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 45px;
 }
 .spisok_nav_menu_user{
     display: flex;
@@ -15,8 +16,7 @@
 }
 .nav_menu_user{
     position: relative;
-    left: 5%;
-    top: 6%;
+    margin-bottom: 15px;
 }
 .chapter_nav_menu_user{
     padding: 10px;
@@ -29,9 +29,11 @@
     position: relative;
     box-shadow: 3px 8px 8px 0px rgba(0,0,0,0.1);
     border-radius: 8px;
-    top: 11%;
-    left: -53%;
     display: flex;
+}
+.style_none{
+    text-decoration: none;
+    color: black;
 }
 .pisda{
     margin-top: 17px;
@@ -56,4 +58,43 @@
     position: relative;
     height: 160px;
     width: 260px;
+}
+.block_settings_user_chapter{
+    width: 700px;
+    height: 200px;
+    background-color: antiquewhite;
+    border-radius: 12px;
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.2);
+}
+.tabs {
+    position: relative; 
+   }
+   .tab, .tab-title {
+    cursor: pointer;
+    display: inline-block; 
+   }
+   .tab input[type="radio"] { display: none; }
+   .tab-title {
+    padding: 5px 10px;
+    border-bottom: none;
+   }
+   .tab-content {
+    position: absolute; 
+    padding: 10px; 
+    left: 0; 
+    width: calc(100% - 20px); 
+    display: none; 
+   }
+   .tab :checked + .tab-title {
+    position: relative; 
+    background: #ccc; 
+    border-radius: 7px;
+    top: 1px; 
+    z-index: 1; 
+   }
+   .tab :checked ~ .tab-content {
+    display: block; 
+   }
+.ret{
+    margin-top: 120px;
 }

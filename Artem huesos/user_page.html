@@ -3,47 +3,51 @@
 {% block title %}User page{% endblock %}
 
 {% block content %}
-    <div class="container_body">
-        <div class="container">
-            <div class="nav_menu_user">
-                <ul class="spisok_nav_menu_user">
-                   <li class="chapter_nav_menu_user">USER_NAME</li>
-                   <li class="chapter_nav_menu_user">НАСТРОЙКИ</li>
-                   <li class="chapter_nav_menu_user">СОРЕВНОВАНИЯ</li>
-                   <li class="chapter_nav_menu_user">ПОПЫТКИ</li>
-                </ul>
-            </div>
-            <div class="user_info_chapter">
-                <div class="block_info_user_chapter">
-                    <div class="block_text_info">
-                        <span class="status">STATUS</span>
-                        
-                        <div class="pisda_naebal">
-                            <span class="USER_NAME">USER_NAME</span>
-                        </div>
-                        <div class="pisda">
-                            <i></i>
-                            <span>Рейтинг: <span>000</span> <span>(макс. <span>000</span>,<span>STATUS</span>)</span></span>
-                        </div>
-                        <div class="pisda">
-                            <i></i>
-                            <span><a href="">Мои друзья</a></span>
-                        </div>
-                        <div class="pisda">
-                            <i></i>
-                            <span><a href="">Изменить настройки</a></span>
-                        </div>
-                        <div class="pisda">
-                            <i></i>
-                            <span>Email</span>
-                        </div>
+<div class="container_body">
+    <div class="container">
+        <div class="tabs">
+            <div class="tab">
+             <input type="radio" id="tab1" name="tab-group" checked>
+             <label for="tab1" class="tab-title">USER_NAME</label> 
+             <section class="tab-content"><div id="content-1" class="block_info_user_chapter none">
+                <div class="block_text_info">
+                    <span class="status">STATUS</span>
+                    
+                    <div class="pisda_naebal">
+                        <span class="USER_NAME">USER_NAME</span>
                     </div>
-                    <div class="block_img_info">
-                        <img class="img_block_img_info" src="198411517.jpg" alt="">
-                        <span>загрузить</span>
+                    <div class="pisda">
+                        <i></i>
+                        <span>Рейтинг: <span>000</span> <span>(макс. <span>000</span>,<span>STATUS</span>)</span></span>
+                    </div> 
+                    <div class="pisda ret">
+                        <i></i>
+                        <span><a href="">Изменить настройки</a></span>
                     </div>
                 </div>
-            </div>
+                <div class="block_img_info">
+                    <img class="img_block_img_info" src="198411517.jpg" alt="">
+                    <span>загрузить</span>
+                </div>
+            </div></section>
+            </div> 
+            <div class="tab">
+             <input type="radio" id="tab3" name="tab-group">
+             <label for="tab3" class="tab-title">Соревнования</label> 
+             <section class="tab-content"><div id="content-3" class="block_info_user_chapter none">
+                <div class="block_text_info">
+
+            </div></section> 
+            </div> 
+            <div class="tab">
+                <input type="radio" id="tab4" name="tab-group">
+                <label for="tab4" class="tab-title">Попытки</label> 
+                <section class="tab-content"><div id="content-4" class="block_info_user_chapter none">
+                    <div class="block_text_info">
+                        
+                </div></section> 
+               </div> </div>    
+           </div>
         </div>
-    </div>
+</div>
 {% endblock %}
