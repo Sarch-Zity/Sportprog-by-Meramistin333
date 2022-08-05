@@ -2,16 +2,25 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import CustomUser
 from .forms import CustomUserCreationFrom
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
+from django.views.generic import DetailView
 
 def index (request):
     return render(request, 'main/home.html')
 
+class AccountDetailView(DetailView):
+    print(CustomUser.username, "hi")
+    model = CustomUser
+    template_name = 'main/user_page.html'
+    context_object_name = 'form'
+
 def account (request):
-    print(request.user.email)
+    print(request.user.username)
     return render(request, 'main/user_page.html')
 
 def reg_page (request):
+    if request.user.is_authenticated:
+        return redirect('account')
     error = ""
     error_username = ""
     error_email = ""
@@ -40,6 +49,10 @@ def reg_page (request):
         'error_email': error_email
     }
     return render(request, 'main/registration_form.html', content)
+
+def logout_user(request):
+    logout(request)
+    return redirect('home')
 
 # def login (request):
 #     error = ''
