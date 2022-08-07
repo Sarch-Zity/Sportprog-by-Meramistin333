@@ -1,26 +1,55 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import CustomUser
-from .forms import CustomUserCreationFrom
+from .forms import CustomUserCreationFrom, CustomUserChangeFrom
 from django.contrib.auth import login, logout
-from django.views.generic import DetailView
+from django.views.generic import DetailView, UpdateView 
 
 def index (request):
+    print(request.user.username)
     return render(request, 'main/home.html')
 
+def getname (request):
+    return request.user.username
+
 class AccountDetailView(DetailView):
-    print(CustomUser.username, "hi")
     model = CustomUser
     template_name = 'main/user_page.html'
     context_object_name = 'form'
 
-def account (request):
+def AccountUpdate (request):
+    print(request.user)
     print(request.user.username)
-    return render(request, 'main/user_page.html')
+    error = ''
+    if request.method == "POST":
+        form = CustomUserChangeFrom(request.POST)
+        if form.is_valid():
+            request.user.username = request.POST.get('username')
+            request.user.slug = request.user.username
+            request.user.save()
+            print(request.user.slug)
+            return redirect('account', str(request.user))
+        else:
+            error = "Неизвестная нам ошибка"
+
+    form = CustomUserChangeFrom()
+    content = {
+        'form': form,
+        'error': error
+    }
+    return render(request, 'main/custom_profile_form.html', content)
+
+class AccountUpdateView(UpdateView):
+    model = CustomUser
+    template_name = 'main/custom_profile_form.html'
+    form_class = CustomUserCreationFrom
+
+def accountREDIR (request):
+    return redirect('account', str(request.user))
 
 def reg_page (request):
     if request.user.is_authenticated:
-        return redirect('account')
+        return redirect('account', str(request.user))
     error = ""
     error_username = ""
     error_email = ""
@@ -37,7 +66,11 @@ def reg_page (request):
         if form.is_valid():
             formsv = form.save()
             login(request, formsv)
-            return redirect('account')
+            CUser = CustomUser.objects.get(slug='')
+            CUser.slug = str(CUser)
+            CUser.save()
+            print(CUser.slug)
+            return redirect('accountREDIR')
         elif error_email == "" and error_username == "":
             error = "Неизвестная нам ошибка"
 

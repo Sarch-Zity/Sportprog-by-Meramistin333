@@ -1,0 +1,17 @@
+{% extends 'main/baza.html' %}
+
+{% block title %}Custom user page{% endblock %}
+
+{% block content %}    
+<div class="container__regestration">
+    <form method="post" class="container_reg_form" novalidate >
+        {% csrf_token %}
+        <div>{{ form.username }}</div>
+        <div>{{ form.email }}</div>
+        <!-- <div>{{ form.image }}</div> -->
+        <!-- <div>{{ form.password }}</div> -->
+        <button type="sumbit">Отправить</button>
+        <div>{{error}}</div>
+    </form>
+    </div>
+{% endblock %}

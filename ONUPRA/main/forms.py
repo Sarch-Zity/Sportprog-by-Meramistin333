@@ -1,5 +1,5 @@
 from .models import CustomUser
-from django.forms import ModelForm, TextInput, EmailInput, PasswordInput, CharField, EmailField
+from django.forms import ModelForm, TextInput, EmailInput, PasswordInput, CharField, EmailField, ImageField, ClearableFileInput
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 
 class CustomUserCreationFrom(UserCreationForm):
@@ -16,6 +16,10 @@ class CustomUserCreationFrom(UserCreationForm):
 #     password = CharField(label = 'Пароль', widget = PasswordInput(attrs={'class':'pas1'}))
 
 class CustomUserChangeFrom(UserChangeForm):
+    username = CharField(label = 'Никнейм', widget = TextInput(attrs={'class':'pas1', 'value':'username'}))
+    email = EmailField(label = 'Почта', widget = EmailInput(attrs={'class':'pas1'}))
+    # image = ImageField(label = 'Изображение', widget = ClearableFileInput(attrs={'class':'pas1'}))
+    # password = CharField(label = 'Пароль', widget = PasswordInput(attrs={'class':'pas1'}))
     class Meta:
         model = CustomUser
-        fields = ["username", "email",]
+        fields = ['username', 'email']
