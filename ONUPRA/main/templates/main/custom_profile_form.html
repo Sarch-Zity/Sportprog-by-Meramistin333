@@ -6,8 +6,8 @@
 <div class="container__regestration">
     <form method="post" class="container_reg_form" novalidate >
         {% csrf_token %}
-        <div>{{ form.username }}</div>
-        <div>{{ form.email }}</div>
+        <input type="text" name="username" value={{request.user.username}}>
+        <input type="email" name="email" value={{request.user.email}}>
         <!-- <div>{{ form.image }}</div> -->
         <!-- <div>{{ form.password }}</div> -->
         <button type="sumbit">Отправить</button>

@@ -7,7 +7,7 @@
         <div class="container">
             <div class="nav_menu_user">
                 <ul class="spisok_nav_menu_user">
-                   <li class="chapter_nav_menu_user">{{request.user}}</li>
+                   <li class="chapter_nav_menu_user">{{form.username}}</li>
                    <li class="chapter_nav_menu_user">НАСТРОЙКИ</li>
                    <li class="chapter_nav_menu_user">СОРЕВНОВАНИЯ</li>
                    <li class="chapter_nav_menu_user">ПОПЫТКИ</li>
@@ -23,20 +23,23 @@
                         </div>
                         <div class="pisda">
                             <i></i>
-                            <span>Рейтинг: <span>{{request.user.rating}}</span> <span>(макс. <span>000</span>,<span>STATUS</span>)</span></span>
+                            <span>Рейтинг: <span>{{form.rating}}</span> <span>(макс. <span>000</span>,<span>STATUS</span>)</span></span>
                         </div>
                         <div class="pisda">
                             <i></i>
                             <span><a href="">Мои друзья</a></span>
                         </div>
+                        {% if request.user.username == form.username%}
                         <div class="pisda">
                             <i></i>
-                            <span><a href="">Изменить настройки</a></span>
+                            <span><a href="{% url 'edit' %}">Изменить настройки</a></span>
                         </div>
                         <div class="pisda">
                             <i></i>
-                            <span>{{request.user.email}}</span>
-                        </div>
+                            <span>{{form.email}}</span>
+                        </div>                        
+                        {% else %}
+                        {% endif %}
                     </div>
                     <div class="block_img_info">
                         <img class="img_block_img_info" src="/main/media/{{form.image}}" alt="">

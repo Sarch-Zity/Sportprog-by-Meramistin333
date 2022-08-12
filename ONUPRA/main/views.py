@@ -6,11 +6,7 @@ from django.contrib.auth import login, logout
 from django.views.generic import DetailView, UpdateView 
 
 def index (request):
-    print(request.user.username)
     return render(request, 'main/home.html')
-
-def getname (request):
-    return request.user.username
 
 class AccountDetailView(DetailView):
     model = CustomUser
@@ -18,17 +14,14 @@ class AccountDetailView(DetailView):
     context_object_name = 'form'
 
 def AccountUpdate (request):
-    print(request.user)
-    print(request.user.username)
     error = ''
     if request.method == "POST":
         form = CustomUserChangeFrom(request.POST)
         if form.is_valid():
-            request.user.username = request.POST.get('username')
             request.user.slug = request.user.username
             request.user.save()
             print(request.user.slug)
-            return redirect('account', str(request.user))
+            return redirect('account', request.user.slug)
         else:
             error = "Неизвестная нам ошибка"
 
@@ -39,17 +32,12 @@ def AccountUpdate (request):
     }
     return render(request, 'main/custom_profile_form.html', content)
 
-class AccountUpdateView(UpdateView):
-    model = CustomUser
-    template_name = 'main/custom_profile_form.html'
-    form_class = CustomUserCreationFrom
-
 def accountREDIR (request):
-    return redirect('account', str(request.user))
+    return redirect('account', request.user.slug)
 
 def reg_page (request):
     if request.user.is_authenticated:
-        return redirect('account', str(request.user))
+        return redirect('account', request.user.slug)
     error = ""
     error_username = ""
     error_email = ""
@@ -66,10 +54,8 @@ def reg_page (request):
         if form.is_valid():
             formsv = form.save()
             login(request, formsv)
-            CUser = CustomUser.objects.get(slug='')
-            CUser.slug = str(CUser)
-            CUser.save()
-            print(CUser.slug)
+            request.user.slug = request.user.username
+            request.user.save()
             return redirect('accountREDIR')
         elif error_email == "" and error_username == "":
             error = "Неизвестная нам ошибка"
@@ -82,24 +68,3 @@ def reg_page (request):
         'error_email': error_email
     }
     return render(request, 'main/registration_form.html', content)
-
-def logout_user(request):
-    logout(request)
-    return redirect('home')
-
-# def login (request):
-#     error = ''
-#     if request.method == 'POST':
-#         form = UserAuthenticationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('login')
-#         else:
-#             error = 'Error'
-
-#     form = UserAuthenticationForm()
-#     content = {
-#         'form': form,
-#         'error': error
-#     }
-#     return render(request, 'main/login_form.html', content)

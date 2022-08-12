@@ -15,8 +15,11 @@
         {% for f in form %}
         <div>{{ f.label }}:</div>
         <div>{{ f }}</div>
-        <div>{{ f.errors }}</div>
         {% endfor %}
+        <!-- <input type="text" name="username">
+        <input type="email" name="email">
+        <input type="password" name="password1">
+        <input type="password" name="password2"> -->
         <button type="sumbit">Отправить</button>
         <div>{{error}}</div>
         <div>{{error_username}}</div>
