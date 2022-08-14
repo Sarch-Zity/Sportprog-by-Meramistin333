@@ -11,15 +11,15 @@
     <div class="container__regestration">
     <form method="post" class="container_reg_form" novalidate >
         {% csrf_token %}
-        {{form.non_field_errors}}
+        <!-- {{form.non_field_errors}}
         {% for f in form %}
         <div>{{ f.label }}:</div>
         <div>{{ f }}</div>
-        {% endfor %}
-        <!-- <input type="text" name="username">
+        {% endfor %} -->
+        <input type="text" name="username">
         <input type="email" name="email">
         <input type="password" name="password1">
-        <input type="password" name="password2"> -->
+        <input type="password" name="password2">
         <button type="sumbit">Отправить</button>
         <div>{{error}}</div>
         <div>{{error_username}}</div>

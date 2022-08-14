@@ -4,14 +4,24 @@
 
 {% block content %}    
 <div class="container__regestration">
-    <form method="post" class="container_reg_form" novalidate >
+    <form method="post" class="container_reg_form" novalidate enctype="multipart/form-data">
         {% csrf_token %}
         <input type="text" name="username" value={{request.user.username}}>
         <input type="email" name="email" value={{request.user.email}}>
+        <input type="file" name="image">
         <!-- <div>{{ form.image }}</div> -->
         <!-- <div>{{ form.password }}</div> -->
-        <button type="sumbit">Отправить</button>
+        <button type="sumbit" name="editbtn">Отправить</button>
         <div>{{error}}</div>
+    </form>
+    <form method="post" class="container_reg_form" novalidate>
+        {% csrf_token %}
+        <button type="sumbit" name="deletbtn">Удал</button>
+    </form>
+    <form method="post" class="container_reg_form" novalidate>
+        {% csrf_token %}
+        {{formpswdedit.as_p}}
+        <button type="sumbit" name="changepswd">ок</button>
     </form>
     </div>
 {% endblock %}

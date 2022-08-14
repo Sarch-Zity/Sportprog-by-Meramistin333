@@ -8,16 +8,22 @@
     <link rel="stylesheet" href="{% static 'main/css/reg_form.css' %}">
 </head>
 <body>
+    {% if request.user.is_authenticated %}
+    <meta http-equiv="REFRESH" content="0;url=/you/">
+    {% else %}
     <div class="container__regestration">
         <form method="post" class="container_reg_form" novalidate >
             {% csrf_token %}
-            <input type="text" name="username">
+            <input class= {% if form.non_field_errors %} 'neok' {% else %} 'ok' {% endif %} type="text" name="username">
             <input type="password" name="password">
             <button type="sumbit">Отправить</button>
             {% if form.non_field_errors %}
-                <p>Вы ввели неверные данные</p>
+                <p class="neok"></p>
+            {% else %}
+                <p class="ok"></p>
             {% endif %}
         </form>
     </div>
+    {% endif %}
 </body>
 </html>
