@@ -1,3 +1,4 @@
+import re 
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
@@ -37,6 +38,11 @@ def accountREDIR (request):
         return redirect('login')
     return redirect('account', request.user.slug)
 
+def rating (request):
+    user = CustomUser.objects.order_by('rating')
+    user = user.reverse()[:len(user)-1]
+    return render(request, 'main/top.html', {'user': user})
+
 class AccountDetailView(DetailView):
     model = CustomUser
     template_name = 'main/user_page.html'
@@ -60,6 +66,9 @@ def reg_page (request):
         # Потом это надо будет удалить УДАЛИТЬ
         if (request.POST.get('username').strip() == "") or (request.POST.get('email').strip()  == ""):
             error = "Заполните все поля"
+        # УДАЛИТЬ
+        if re.search('[а-яА-Я]', nickname):
+            error_username = "Кирилицу нельзя"
         # Если форма коректна, то она сохраняется
         elif form.is_valid():
             formsv = form.save()
@@ -95,7 +104,10 @@ def AccountUpdate (request):
                 formaccedit = CustomUserChangeFrom(request.POST, request.FILES)
                 # Проверяем пустые ли поля или заняты они или имеют пробелы
                 # Потом это надо будет удалить УДАЛИТЬ
-                if (request.POST.get('username').strip() == "") and (request.POST.get('email').strip()  == ""):
+                # УДАЛИТЬ
+                if re.search('[а-яА-Я]', request.POST.get('username')):
+                    error_username = "Кирилицу нельзя"
+                elif (request.POST.get('username').strip() == "") and (request.POST.get('email').strip()  == ""):
                     error = "Поля пустые"
                 # Переделать что бы ошибки были отдельно ПЕРЕДЕЛАТЬ
                 elif (CustomUser.objects.filter(username=request.POST.get('username')).exists() and request.POST.get('username') != request.user.username) or (CustomUser.objects.filter(email=request.POST.get('email')).exists() and request.POST.get('email') != request.user.email):
@@ -140,7 +152,9 @@ def AccountUpdate (request):
                 formaccedit = CustomUserChangeFrom(request.POST)
                 # Проверяем пустые ли поля или заняты они или имеют пробелы 
                 # УДАЛИТЬ
-                if (request.POST.get('username').strip() == "") and (request.POST.get('email').strip()  == ""):
+                if re.search('[а-яА-Я]', request.POST.get('username')):
+                    error = "Кирилицу нельзя"
+                elif (request.POST.get('username').strip() == "") and (request.POST.get('email').strip()  == ""):
                     error = "Поля пустые"
                 # Переделать что бы ошибки были отдельно ПЕРЕДЕЛАТЬ
                 elif (CustomUser.objects.filter(username=request.POST.get('username')).exists() and request.POST.get('username') != request.user.username) or (CustomUser.objects.filter(email=request.POST.get('email')).exists() and request.POST.get('email') != request.user.email):

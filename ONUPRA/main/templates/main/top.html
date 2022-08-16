@@ -1,0 +1,14 @@
+{% extends 'main/baza.html' %}
+
+{% block title %}Who?{% endblock %}
+
+{% block content %} 
+
+{% for i in user %}
+<br>
+{{i.username}}
+{{i.rating}}
+<br>
+{% endfor %}
+
+{% endblock %}

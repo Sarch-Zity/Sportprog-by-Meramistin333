@@ -19,7 +19,7 @@
               <div class="block_info_user">
                 {% if request.user.is_authenticated %}
                 <a class="a_reg" href="{% url 'accountREDIR' %}">{{request.user}}</a>
-                <a class="a_reg" href="">Настройки</a>
+                <a class="a_reg" href="{% url 'edit' %}">Настройки</a>
                 <a class="a_reg" href="{% url 'logout' %}">Выйти</a>
                 {% else %}
                 <a class="a_reg" href="{% url 'signup' %}">Зарегистрироваться</a>

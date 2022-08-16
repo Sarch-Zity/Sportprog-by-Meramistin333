@@ -10,5 +10,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='main/login_form.html'), name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('edit/', views.AccountUpdate, name='edit'),
+    path('top/', views.rating, name='top'),
     path('<slug:slug>/', views.AccountDetailView.as_view(), name='account'),
 ]
