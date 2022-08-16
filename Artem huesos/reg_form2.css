@@ -1,3 +1,32 @@
+/* IRRELEVANT */
+
+/* background #E0F4F5
+inactive btn #A7D1D2
+active btn #63898C
+idk #015366
+idk2 #033540 */
+
+/* background #8689AC
+inactive btn #587099 or #6980a8
+active btn #3F5576 or #587099
+idk #2F3148
+idk2 #101116 */
+
+/* #31293F
+#554D74
+#796EA8
+#A6A9C8
+#D3D9E9 */
+
+/* ACTUAL */
+
+/* background #91BFBC
+inactive btn #6B8C83
+active btn #41635E
+idk #D2DCD3
+idk2 #738A90 
+white #f4fbfb */
+
 *{
     margin: 0;
     padding: 0;
@@ -8,7 +37,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #4070f4;
+    background: #91BFBC;
 }
 .container{
     position: relative;
@@ -16,7 +45,7 @@ body{
     width: 100%;
     padding: 25px;
     border-radius: 8px;
-    background-color: #fff;
+    background-color: #f4fbfb;
 }
 .container header{
     font-size: 22px;
@@ -54,6 +83,7 @@ form .input-field{
     border: none;
     border-radius: 8px;
     padding: 0 10px;
+    background: #f4fbfb;
     border: 2px solid #d1d1d1;
 }
 .field .error {
@@ -88,7 +118,7 @@ form .input-field{
 }
 .button input {
     color: #fff;
-    background-color: #4070f4;
+    background-color: #6B8C83;
     border: 0px;
     cursor: pointer;
     font-size: 14px;
@@ -96,7 +126,7 @@ form .input-field{
     transition: all 0.3s ease;
 }
 .button input:hover{
-    background-color: #0e4bf1;
+    background-color: #41635E;
 }
 
 
@@ -108,7 +138,7 @@ form .input-field{
 a
 {
     text-decoration: none;
-    color: #0e4bf1;
+    color: #41635E;
     margin-left: 2px;
 }
 a:hover
