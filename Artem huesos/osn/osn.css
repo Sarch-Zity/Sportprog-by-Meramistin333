@@ -1,0 +1,151 @@
+*
+{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body
+{
+    background-color: #93BFEA;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tabs {
+    display: flex;
+    flex-direction: column;
+  }
+.containerw
+{
+    width: 800px;
+    height: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+    font-size: 17px;
+}
+  .tabs__links {
+    display: flex;
+    width: 813px;
+  }
+  a{
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    margin-right: 14px;
+    margin-bottom: 10px;
+  }
+  .tabs__links>a {
+    display: inline-block;
+    text-decoration: none;
+    padding: 6px;
+    text-align: center;
+    color: #000;
+    width: 100%;
+  }
+  .tabs>.containerw:not(.tabs__links) {
+    display: none;
+    order: 1;
+  }
+  .tabs>.containerw:target{
+    display: flex;
+  }
+  .tabs>.containerw:target ~ .tabs__links>a{
+    background-color: #000;
+  }
+.submit
+{
+    width: 130px;
+    padding: 10px;
+    color: #fff;
+    background-color: #ff5151;
+    border: 1px solid #ff5151;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-weight: 600;
+}
+.container_reg_form
+{
+  width: 300px;
+}
+.container_form
+{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px 0 10px;
+}
+.text_alert
+{
+    color: #fd3e3e;text-align: center;
+}
+.text_info
+{
+  font-size: 15px;
+  font-weight: 600;
+  color: rgb(53, 53, 53);
+}
+.input-field input{
+  height: 100%;
+  font-size: 14px;
+  font-weight: 600;
+  color: #454545;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  padding: 0 10px;
+  box-shadow: 0 0 20px #00000025;
+  border: 2px solid #595959;
+}
+form .field{
+  margin-bottom: 20px;
+}
+form .input-field{
+  position: relative;
+  
+  height: 50px;
+  width: 300px;
+}
+.container_form
+{
+  width: 100%;
+}
+::placeholder 
+{
+  color: #5c5a5a;
+  font-weight: 600;
+}
+.img_{
+  height: 200px;
+}
+.submit_settings
+{
+  padding: 10px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 5px;
+  background-color: #93BFEA;
+  border: 1px solid #93BFEA;
+  box-shadow: 0 0 20px #0000003b;
+}
+.block_img
+{
+  background-image: url("photo_2022-07-22_16-06-44.jpg");
+  background-size:cover;
+  height: 250px;
+  width: 250px;
+  border-radius: 10px;
+  margin-top: 4px;
+  margin-right: 5px;
+  cursor: pointer;
+  position: absolute;
+  transform: translate(500px, -220px);
+  box-shadow: 0 4px 20px #00000022;
+}

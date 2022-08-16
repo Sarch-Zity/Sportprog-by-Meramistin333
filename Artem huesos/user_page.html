@@ -1,53 +1,82 @@
-{% extends 'main/baza.html' %}
-
-{% block title %}User page{% endblock %}
-
-{% block content %}
-<div class="container_body">
-    <div class="container">
-        <div class="tabs">
-            <div class="tab">
-             <input type="radio" id="tab1" name="tab-group" checked>
-             <label for="tab1" class="tab-title">USER_NAME</label> 
-             <section class="tab-content"><div id="content-1" class="block_info_user_chapter none">
-                <div class="block_text_info">
-                    <span class="status">STATUS</span>
-                    
-                    <div class="pisda_naebal">
-                        <span class="USER_NAME">USER_NAME</span>
-                    </div>
-                    <div class="pisda">
-                        <i></i>
-                        <span>Рейтинг: <span>000</span> <span>(макс. <span>000</span>,<span>STATUS</span>)</span></span>
-                    </div> 
-                    <div class="pisda ret">
-                        <i></i>
-                        <span><a href="">Изменить настройки</a></span>
-                    </div>
-                </div>
-                <div class="block_img_info">
-                    <img class="img_block_img_info" src="198411517.jpg" alt="">
-                    <span>загрузить</span>
-                </div>
-            </div></section>
-            </div> 
-            <div class="tab">
-             <input type="radio" id="tab3" name="tab-group">
-             <label for="tab3" class="tab-title">Соревнования</label> 
-             <section class="tab-content"><div id="content-3" class="block_info_user_chapter none">
-                <div class="block_text_info">
-
-            </div></section> 
-            </div> 
-            <div class="tab">
-                <input type="radio" id="tab4" name="tab-group">
-                <label for="tab4" class="tab-title">Попытки</label> 
-                <section class="tab-content"><div id="content-4" class="block_info_user_chapter none">
-                    <div class="block_text_info">
-                        
-                </div></section> 
-               </div> </div>    
-           </div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="user_page.css">
+</head>
+<body>
+    <header>
+        <span class=""><a class="project_name" href="{% url 'home' %}">ONUPRA</a></span>
+        <span class=""><a class="nav_text" href="">Соревнования</a></span>
+        <span class=""><a class="nav_text" href="">Рейтинг</a></span>
+        
+        <div class="dropdown">
+            <div class="icon_profile"></div>
+            <div class="block_info_user_block">
+              <div class="block_info_user">
+                <a class="a_reg" href="{% url 'reg_page' %}">Зарегистрироваться</a>
+                <a class="a_reg" href="">Войти</a>
+              </div>
+            </div>
         </div>
-</div>
-{% endblock %}
+    </header>
+    <div class="container_body">
+        <div class="container">
+            <div class="tabs">
+                <div class="tab">
+                 <input type="radio" id="tab1" name="tab-group" checked>
+                 <label for="tab1" class="tab-title">USER_NAME</label> 
+                 <section class="tab-content"><div id="content-1" class="block_info_user_chapter none">
+                    <div class="block_text_info">
+                        <span class="status">STATUS</span>
+                        
+                        <div class="pisda_naebal">
+                            <span class="USER_NAME">USER_NAME</span>
+                        </div>
+                        <div class="pisda">
+                            <i></i>
+                            <span>Рейтинг: <span>000</span> <span>(макс. <span>000</span>,<span>STATUS</span>)</span></span>
+                        </div> 
+                        <div class="pisda ret">
+                            <i></i>
+                            <span><a href="">Изменить настройки</a></span>
+                        </div>
+                    </div>
+                    <div class="block_img_info">
+                        <img class="img_block_img_info" src="198411517.jpg" alt="">
+                        <span>загрузить</span>
+                    </div>
+                </div></section>
+                </div> 
+                <div class="tab">
+                 <input type="radio" id="tab3" name="tab-group">
+                 <label for="tab3" class="tab-title">Соревнования</label> 
+                 <section class="tab-content"><div id="content-3" class="block_info_user_chapter none">
+                    <div class="block_text_info">
+
+                </div></section> 
+                </div> 
+                <div class="tab">
+                    <input type="radio" id="tab4" name="tab-group">
+                    <label for="tab4" class="tab-title">Попытки</label> 
+                    <section class="tab-content"><div id="content-4" class="block_info_user_chapter none">
+                        <div class="block_text_info">
+                            
+                    </div></section> 
+                   </div> </div>    
+               </div>
+            </div>
+    </div>
+    <footer>
+        <hr class="dividing_line">
+        <ul class="footer_link">
+            <li class="footer_link_chapter">Связь с Исуссом</li>
+            <li class="footer_link_chapter">Вкашка</li>
+            <li class="footer_link_chapter">Наша почта</li>
+            <li class="footer_link_chapter">Это я просто долбаёб</li>
+        </ul>
+    </footer>
+</body>
+</html>

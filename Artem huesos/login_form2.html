@@ -3,31 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Document reg</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="reg_form.css">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css">
+    <link rel="stylesheet" href="reg_form2.css">
 </head>
 <body>
-    <div class="container__regestration">
-        <form method="post" class="container_reg_form" >
-            <div class="fer"><span class="reg_h1">Вход</span></div>
-            <a href="" class="font"><i class="uil uil-angle-left-b back"></i></a>
+    <div class="container">
+        <header>SingUp</header>
+    <form method="post" class="container_reg_form">
         
-        <div class="div_block_form">
-            <label>Никнейм/Почта</label> 
-            <div id="check"></div>
-            <input type="text" id="nicknameBox1" class="password" required>
+        <div class="field users-field">
+            <div class="input-field">
+                <input type="text" class="users" placeholder="Введите ваш никенейм">
             </div>
-        <div>
-            <label>Ваш пароль</label> 
-            <div id="check"></div>
-            <input type="password" id="passwordBox1" class="password2" required>
-            <div class="pad"><p id="alert" class="alert"></p></div>
-            <i class="uil uil-eye-slash showHidePw ewe2"></i>
+            <span class="error email-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Такого ника нет</p>
+            </span>
         </div>
-        <button class="button_form" type="sumbit">Войти</button>
-        </form>
-        <script src="script.js"></script>
+        <div class="field create-password">
+            <div class="input-field">
+                <input type="password" class="password" placeholder="Повтори свой придуманный пассворд">
+                <i class="bx bx-hide show-hide"></i>
+            </div>
+            <span class="error password-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Не тот пароль, плохо сделал</p>
+            </span>
+        </div>
+        <span><a href="">Забыли пароль?</a></span>
+        <label class="checkbox">
+            <input type="checkbox" class="checkboxe" name="languages" value="CSS">
+            Запомнить меня
+          </label>
+        <div class="input-field button">
+            <input type="submit" value="Войти">
+        </div>
+        
+    </form>
     </div>
+    <script src="js2.js"></script>
 </body>
 </html>

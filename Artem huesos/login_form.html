@@ -12,13 +12,8 @@
     <form method="post" class="container_reg_form" novalidate >
         {% csrf_token %}
         <div class="input_reg_form">
-            <span class="text">Ваше никнейм</span>
+            <span class="text">Ваше никнейм/Email</span>
             {{form.nick}}
-            <!-- <input type="text"> -->
-        </div>
-        <div class="input_reg_form">
-            <span class="text">Ваша Email</span>
-            {{form.email}}
             <!-- <input type="text"> -->
         </div>
         <div class="input_reg_form">
@@ -26,11 +21,7 @@
             {{form.password}}
             <!-- <input type="password"> -->
         </div>
-        <div class="input_reg_form">
-            <span class="text">Повтори пароль</span>
-            <input type="password">
-        </div>
-        <button type="sumbit">Отправить</button>
+        <button type="sumbit">Войти</button>
         <span>{{ error }}</span>
     </form>
     </div>

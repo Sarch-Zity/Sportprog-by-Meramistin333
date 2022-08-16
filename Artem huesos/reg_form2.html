@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Document reg</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css">
+    <link rel="stylesheet" href="reg_form2.css">
+</head>
+<body>
+    <div class="container">
+        <header>SingUp</header>
+    <form method="post" class="container_reg_form">
+        
+        <div class="field users-field">
+            <div class="input-field">
+                <input type="text" class="users" placeholder="Введите ваш никенейм">
+            </div>
+            <span class="error email-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Ник занят</p>
+            </span>
+        </div>
+        <div class="field email-field">
+            <div class="input-field">
+                <input type="email" class="email" placeholder="Введите емаил">
+            </div>
+            <span class="error email-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Емеил хуйня, переделывай</p>
+            </span>
+        </div>
+        <div class="field create-password">
+            <div class="input-field ">
+                <input type="password"  class="password" placeholder="Придумайте свой пассворд">
+                <i class="bx bx-hide show-hide"></i>
+            </div>
+            <span class="error password-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Кароч, надо 8 символов, а именно цифры, символы какие-то</p>
+            </span>
+        </div>
+        <div class="field confirm-password">
+            <div class="input-field">
+                <input type="password" class="cPassword" placeholder="Повтори свой придуманный пассворд">
+                <i class="bx bx-hide show-hide"></i>
+            </div>
+            <span class="error cPassword-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Пароли не совпадают, лох</p>
+            </span>
+        </div>
+        <div class="input-field button">
+            <input type="submit" value="Отправить анкету">
+        </div>
+    </form>
+    </div>
+    <script src="js.js"></script>
+</body>
+</html>
