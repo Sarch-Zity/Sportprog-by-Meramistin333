@@ -22,7 +22,7 @@ idk2 #101116 */
 
 /* background #91BFBC
 inactive btn #6B8C83
-active btn #41635E
+active btn #41635E 
 idk #D2DCD3
 idk2 #738A90 
 white #f4fbfb */
@@ -92,17 +92,44 @@ form .input-field{
     margin-top: 6px;
     color: #d93025;
     font-size: 16px;
+}
+
+.field .err{
     display: none;
 }
-.invalid .error{
+.field .err2{
+    display: none;
+}
+.field .err3{
+    display: none;
+}
+
+.invalid .err{
+    display: flex;
+}
+
+.invalid3 .err3{
+    display: flex;
+}
+
+.invalid2 .err2{
     display: flex;
 }
 .invalid input{
     border-color: #d93025;
 }
+.invalid2 input{
+    border-color: #d93025;
+}
+.invalid3 input{
+    border-color: #d93025;
+}
+
 .successfully input{
     border-color: #2bd925;
 }
+
+
 .error .error-icon{
     margin-right: 6px;
     font-size: 18px;

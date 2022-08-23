@@ -11,42 +11,68 @@
         <header>SingUp</header>
     <form method="post" class="container_reg_form">
         
-        <div class="field users-field">
+        <div class="field users-field ">
             <div class="input-field">
                 <input type="text" class="users" placeholder="Введите ваш никенейм">
             </div>
-            <span class="error email-error">
+            <span class="error err email-error">
                 <i class="bx bx-error-circle error-icon"></i>
                 <p class="error-text">Ник занят</p>
+            </span>
+            <span class="error err2 email-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Ник не соответствует требованиям</p>
+            </span>
+            <span class="error err3 email-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Ник надо</p>
             </span>
         </div>
         <div class="field email-field">
             <div class="input-field">
                 <input type="email" class="email" placeholder="Введите емаил">
             </div>
-            <span class="error email-error">
+            <span class="error err email-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Емеил занят, мы можете войти</p>
+            </span>
+            <span class="error err2 email-error">
                 <i class="bx bx-error-circle error-icon"></i>
                 <p class="error-text">Емеил хуйня, переделывай</p>
             </span>
+            <span class="error err3 email-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Емеил не заполнен</p>
+            </span>
         </div>
+
         <div class="field create-password">
             <div class="input-field ">
                 <input type="password"  class="password" placeholder="Придумайте свой пассворд">
                 <i class="bx bx-hide show-hide"></i>
             </div>
-            <span class="error password-error">
+            <span class="error err2 password-error">
                 <i class="bx bx-error-circle error-icon"></i>
                 <p class="error-text">Кароч, надо 8 символов, а именно цифры, символы какие-то</p>
             </span>
+            <span class="error err3 password-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Кароч, надо пароль заполнить</p>
+            </span>
         </div>
+
         <div class="field confirm-password">
             <div class="input-field">
                 <input type="password" class="cPassword" placeholder="Повтори свой придуманный пассворд">
                 <i class="bx bx-hide show-hide"></i>
             </div>
-            <span class="error cPassword-error">
+            <span class="error err2 cPassword-error">
                 <i class="bx bx-error-circle error-icon"></i>
                 <p class="error-text">Пароли не совпадают, лох</p>
+            </span>
+            <span class="error err3 cPassword-error">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Повторите пароль</p>
             </span>
         </div>
         <div class="input-field button">

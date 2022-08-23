@@ -6,7 +6,7 @@
 }
 body
 {
-    background-color: #93BFEA;
+    background-color: #91BFBC;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -21,7 +21,7 @@ body
     width: 800px;
     height: 300px;
     padding: 20px;
-    background-color: #fff;
+    background-color: #f4fbfb;
     border-radius: 7px;
     display: flex;
     justify-content: center;
@@ -35,7 +35,7 @@ body
     width: 813px;
   }
   a{
-    background-color: rgb(255, 255, 255);
+    background-color: #f4fbfb;
     border-radius: 4px;
     margin-right: 14px;
     margin-bottom: 10px;
@@ -60,29 +60,24 @@ body
   }
 .submit
 {
-    width: 130px;
-    padding: 10px;
+    width: 170px;
+    padding: 11px;
     color: #fff;
     background-color: #ff5151;
     border: 1px solid #ff5151;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 60px;
     font-weight: 600;
-}
-.container_reg_form
-{
-  width: 300px;
 }
 .container_form
 {
   display: flex;
-  justify-content: space-between;
   padding: 0 10px 0 10px;
 }
 .text_alert
 {
-    color: #fd3e3e;text-align: center;
+    color: #fd3e3e;text-align: center;font-size: 17px;font-weight: 600;width: 600px;
 }
 .text_info
 {
@@ -101,10 +96,12 @@ body
   border-radius: 8px;
   padding: 0 10px;
   box-shadow: 0 0 20px #00000025;
-  border: 2px solid #595959;
+  border: 2px solid #646464;
+  background-color: #f4fbfb;
 }
 form .field{
   margin-bottom: 20px;
+  width: 300px;
 }
 form .input-field{
   position: relative;
@@ -126,18 +123,59 @@ form .input-field{
 }
 .submit_settings
 {
-  padding: 10px;
+  padding: 10px 20px 10px 20px;
   border-radius: 4px;
+  font-weight: 600;
   color: #fff;
   cursor: pointer;
   margin-top: 5px;
-  background-color: #93BFEA;
-  border: 1px solid #93BFEA;
+  background-color: #6B8C83;
+  border: 1px solid #6B8C83;
+  transition: 0.3s;
   box-shadow: 0 0 20px #0000003b;
 }
+.korpus > .a, .korpus > input { display: none; }
+            
+            .korpus label 
+            { 
+                line-height: 28px; 
+                color: #000;
+                cursor: pointer; 
+                position: relative;
+                bottom: 10px; 
+                margin-right: 7px;
+                background: #f4fbfb; 
+                border-radius: 5px;
+            }
+            .b1
+            {
+                padding: 7px 67px 7px 66px; 
+            }
+            .b2
+            {
+                padding: 7px 76px 7px 76px; 
+            }
+            .b3
+            {
+                padding: 7px 56px 7px 56px; 
+            }
+            .korpus input[type="radio"]:checked + label { border-bottom: 15px solid #f4fbfb; 
+                border-radius: 6px 6px 0 0;}
+            
+            .korpus > input:nth-of-type(1):checked ~ .a:nth-of-type(1),
+            .korpus > input:nth-of-type(2):checked ~ .a:nth-of-type(2),
+            .korpus > input:nth-of-type(3):checked ~ .a:nth-of-type(3) { 
+                display: block;
+                padding: 5px; 
+                border-radius: 7px;
+                background-color: #f4fbfb; 
+                width: 801px;
+                height: 300px;
+                padding: 20px;
+            }
 .block_img
 {
-  background-image: url("photo_2022-07-22_16-06-44.jpg");
+  background-image: url("placeholder-image-1.jpg");
   background-size:cover;
   height: 250px;
   width: 250px;
@@ -148,4 +186,74 @@ form .input-field{
   position: absolute;
   transform: translate(500px, -220px);
   box-shadow: 0 4px 20px #00000022;
+}
+.submit_settings:hover{
+  background-color: #41635E;
+}
+
+.upload
+{
+   background-color: #5e5e5e71;
+   height: 100%;
+   width: 100%;
+   text-align: center;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 10px;
+   opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+.block_img:hover>.upload
+{
+  opacity:1 ;
+  visibility: visible;
+}
+.form_delete
+{
+  width: 100%;
+  height: 100%;
+  display: flex;align-items: center;justify-content: center;text-align: center;flex-direction: column;
+}
+.uploud_text
+{
+  opacity:0;
+   position: absolute;
+   z-index: 1;
+   height: 160px;
+   cursor: pointer;
+}
+.uploud_text2
+{
+  border: 3px solid #fff;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  background-color: rgba(0, 0, 0, 0);
+  color: #fff;
+}
+.nax
+{
+  position: relative;
+  left: 350px;
+  top: 30px;
+}
+.nax3
+{
+  position: relative;
+  left: 400px;
+  top: -171px;
+}
+.nax4
+{
+  position: relative;
+  left: 350px;
+  top: -216px;
+}
+.nax5
+{
+  position: relative;
+  left: 0px;
+  top: -200px;
 }

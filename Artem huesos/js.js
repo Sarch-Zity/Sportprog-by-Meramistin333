@@ -9,17 +9,48 @@ cPassField = form.querySelector(".confirm-password"),
 cPassInput = cPassField.querySelector(".cPassword");
 
 function checkEmail() {
-    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,323}$/;
-    if (!emailInput.value.match(emailPattern)){
+    if (true) 
+{
+    emailField.classList.remove("invalid");
+    emailField.classList.remove("invalid2");
+    emailField.classList.remove("invalid3");
+    const emailBaza = "Kslsider@gmail.com";
+    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,100}$/;
+    if (emailInput.value === ''){
         emailField.classList.remove("successfully");
-        return emailField.classList.add("invalid");
-    }
-    
-    else if(emailInput.value.match(emailPattern)){
         emailField.classList.remove("invalid");
-        return emailField.classList.add("successfully")
-      }
+        emailField.classList.remove("invalid2");
+        return emailField.classList.add("invalid3"); }
+    if (true) 
+    {
+        if (!emailInput.value.match(emailPattern)){
+        emailField.classList.remove("successfully");
+        emailField.classList.remove("invalid");
+        emailField.classList.remove("invalid3");
+        return emailField.classList.add("invalid2");
+    }
+    if (true) 
+    {
+        if (!emailInput.value.match(emailBaza)){
+        emailField.classList.remove("successfully");
+        emailField.classList.remove("invalid2");
+        emailField.classList.remove("invalid3");
+        return emailField.classList.add("invalid");
+        
+    } if (
+            !emailField.classList.contains("invalid") &&
+            !emailField.classList.contains("invalid2") &&
+            !emailField.classList.contains("invalid3")
+        ) {
+            emailField.classList.remove("invalid");
+        emailField.classList.remove("invalid2");
+        emailField.classList.remove("invalid3");
+        return emailField.classList.add("successfully");
+        }
+    }}}
+    
 }
+
 
 const eyeIcons = document.querySelectorAll(".show-hide");
 
@@ -36,61 +67,148 @@ eyeIcons.forEach((eyeIcon) => {
     });
 });
 
-function createPass(){
-    const passPatterrn = 
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-      if(!passInput.value.match(passPatterrn)){
+function createPass(){
+    if (true) 
+{
+  const passPatterrn = 
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/;
+
+    passField.classList.remove("invalid2");
+    passField.classList.remove("invalid3");
+    if (passInput.value === ''){
         passField.classList.remove("successfully");
-        return passField.classList.add("invalid")
-      }
-      
-      else if(passInput.value.match(passPatterrn)){
-        passField.classList.remove("invalid");
-        return passField.classList.add("successfully")
-      }
+        passField.classList.remove("invalid2");
+        return passField.classList.add("invalid3"); }
+    if (true) 
+    {
+        if (!passInput.value.match(passPatterrn)){
+        passField.classList.remove("successfully");
+        passField.classList.remove("invalid3");
+        return passField.classList.add("invalid2");
+    }
+    
+        if (
+            !passField.classList.contains("invalid2") &&
+            !passField.classList.contains("invalid3")
+        ) {
+        passField.classList.remove("invalid2");
+        passField.classList.remove("invalid3");
+        return passField.classList.add("successfully");
+        }
+    }}
 }
+
 
 function confirmPass(){
-    if (passInput.value !== cPassInput.value || cPassInput.value === ""){
+    if (true) 
+{
+    cPassField.classList.remove("invalid2");
+    cPassField.classList.remove("invalid3");
+    if (cPassInput.value === ''){
         cPassField.classList.remove("successfully");
-        return cPassField.classList.add("invalid");
+        cPassField.classList.remove("invalid2");
+        return cPassField.classList.add("invalid3"); }
+    if (true) 
+    {
+        function initialon(){
+            initial = window.setTimeout(() => {
+        if (passInput.value !== cPassInput.value){
+        cPassField.classList.remove("successfully");
+        cPassField.classList.remove("invalid3");
+        return cPassField.classList.add("invalid2"); 
     }
-    
-    else if(passInput.value === cPassInput.value && cPassInput.value !== ""){
-        cPassField.classList.remove("invalid");
-        return cPassField.classList.add("successfully")
-      }
+        
+        if (
+            !cPassField.classList.contains("invalid2") &&
+            !cPassField.classList.contains("invalid3")
+        ) {
+        cPassField.classList.remove("invalid2");
+        cPassField.classList.remove("invalid3");
+        return cPassField.classList.add("successfully");
+        }
+        }, 1000);
+    }
+    initialon();
+    }}
 }
+
+var initial;
 function checkUsers(){
-    const usersPattern = "users";
-    if (!usersInput.value.match(usersPattern)){
-        usersField.classList.remove("successfully");
-        return usersField.classList.add("invalid");
-    }
-    
-    else if(usersInput.value.match(usersPattern)){
+    if (true) 
+    {
         usersField.classList.remove("invalid");
-        return usersField.classList.add("successfully")
-      }
+        usersField.classList.remove("invalid2");
+        usersField.classList.remove("invalid3");
+        const usersBaza = "users";
+        const usersPattern = /^[a-z]{4,25}$/;
+        if (usersInput.value === ''){
+            usersField.classList.remove("successfully");
+            usersField.classList.remove("invalid");
+            usersField.classList.remove("invalid2");
+            return usersField.classList.add("invalid3"); }
+        if (true) 
+        {
+            if (!usersInput.value.match(usersPattern)){
+            usersField.classList.remove("successfully");
+            usersField.classList.remove("invalid");
+            usersField.classList.remove("invalid3");
+            return usersField.classList.add("invalid2");
+        }
+        if (true) 
+        {
+            function initialon(){
+                initial = window.setTimeout(() => {  
+            console.log("fssds")    
+            if (!usersInput.value.match(usersBaza)){
+            usersField.classList.remove("successfully");
+            usersField.classList.remove("invalid2");
+            usersField.classList.remove("invalid3");
+            return usersField.classList.add("invalid");
+            
+        } if (
+                !usersField.classList.contains("invalid") &&
+                !usersField.classList.contains("invalid2") &&
+                !usersField.classList.contains("invalid3")
+            ) {
+                usersField.classList.remove("invalid");
+            usersField.classList.remove("invalid2");
+            usersField.classList.remove("invalid3");
+            return usersField.classList.add("successfully");
+            } }, 1000);
+            }
+            
+            initialon();
+        }}}
 }
+function initialclearTimeout()
+{
+    clearTimeout(initial);
+}
+cPassInput.addEventListener("keyup", initialclearTimeout);
+usersInput.addEventListener("keyup", initialclearTimeout);
+usersInput.addEventListener("keyup", checkUsers);
+emailInput.addEventListener("keyup", checkEmail);
+passInput.addEventListener("keyup", createPass);
+cPassInput.addEventListener("keyup", confirmPass);
+
+
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    checkUsers();
     checkEmail();
+    checkUsers();
     createPass();
     confirmPass();
-
-    usersInput.addEventListener("keyup", checkUsers);
-    emailInput.addEventListener("keyup", checkEmail);
-    passInput.addEventListener("keyup", createPass);
-    cPassInput.addEventListener("keyup", confirmPass);
-
     if (
         !usersField.classList.contains("invalid") &&
         !emailField.classList.contains("invalid") &&
         !passField.classList.contains("invalid") &&
-        !cPassField.classList.contains("invalid")
+        !cPassField.classList.contains("invalid") &&
+
+        usersField.classList.contains("successfully") &&
+        emailField.classList.contains("successfully") &&
+        passField.classList.contains("successfully") &&
+        cPassField.classList.contains("successfully")
     ) {
         location.href = form.getAttribute("method");
     }
