@@ -1,3 +1,4 @@
+
 const form = document.querySelector("form"),
 usersField = form.querySelector(".users-field"),
 usersInput = usersField.querySelector(".users"),
@@ -159,14 +160,26 @@ function checkUsers(){
         {
             function initialon(){
                 initial = window.setTimeout(() => {  
-            console.log("fssds")    
-            if (!usersInput.value.match(usersBaza)){
-            usersField.classList.remove("successfully");
-            usersField.classList.remove("invalid2");
-            usersField.classList.remove("invalid3");
-            return usersField.classList.add("invalid");
-            
-        } if (
+                    async function request(url, data, csrftoken) {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-CSRFToken': csrftoken,
+                            },
+                            body: JSON.stringify(data),
+                        })
+                        const result = await response.text()
+                        return result
+                    }
+                    async function check_username() {
+                        const url = '{% url "check_uesrname_s" %}'
+                        const data = {'uesrname': document.getElementsByName('uesrname').value, }
+                        const csrftoken = '{{ csrf_token }}'
+                        const result = await request(url, data, csrftoken)
+                        console.log(result)
+                    } check_username()
+            if (
                 !usersField.classList.contains("invalid") &&
                 !usersField.classList.contains("invalid2") &&
                 !usersField.classList.contains("invalid3")
