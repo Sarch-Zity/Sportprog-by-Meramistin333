@@ -1,5 +1,5 @@
-from .models import CustomUser
-from django.forms import ModelForm, TextInput, EmailInput, PasswordInput, CharField, EmailField, ImageField, ClearableFileInput
+from .models import CustomUser, Competition, Task
+from django.forms import ModelForm, TextInput, EmailInput, PasswordInput, CharField, EmailField, ImageField, ClearableFileInput, DateTimeField
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 
 class CustomUserCreationFrom(UserCreationForm):
@@ -26,3 +26,11 @@ class PasswordChangeForm(ModelForm):
     class Meta:
         model = CustomUser
         fields = ['old_password', 'new_password', 'new_password_repeat']
+
+class CreateCompetitionForm(ModelForm):
+    start_time = DateTimeField(label = 'Время старта', widget = TextInput())
+    title = CharField(label = 'Название соревнования', widget = TextInput())
+
+    class Meta:
+        model = Competition
+        fields = ['start_time', 'title']

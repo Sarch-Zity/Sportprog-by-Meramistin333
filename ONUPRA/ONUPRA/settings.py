@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-48cu=1(5ln)ydmpn-%%e)0@*u+wel*tmfhdn59uss&6^_1$gj7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['c6bc-31-211-1-3.in.ngrok.io','127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://c6bc-31-211-1-3.in.ngrok.io','http://127.0.0.1:8000']
+ALLOWED_HOSTS = ['ab6a-31-211-1-3.in.ngrok.io','127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://ab6a-31-211-1-3.in.ngrok.io','http://127.0.0.1:8000']
 
 # Application definition
 
@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
+    'django_celery_results',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -114,15 +116,32 @@ USE_I18N = True
 
 USE_TZ = True
 
+CELERY_RESULT_BACKEND = 'django-db'
+
+# celery setting.
+CELERY_CACHE_BACKEND = 'default'
+
+# django setting.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+    }
+}
+
+CELERY_TIMEZONE = "UTC"
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-MEDIA_URL = 'main/media/'
+MEDIA_URL = 'media/'
 
-MEDIA_ROOT = BASE_DIR / 'main/media'
+MEDIA_ROOT = BASE_DIR / 'main/media/'
 
-STATIC_URL = 'main/static/'
+STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "main/static/",

@@ -1,8 +1,18 @@
+@font-face {
+  font-family: "Cera Pro";
+  src: url("CeraPro/CeraPro-Medium.woff") format("woff"),
+  url("CeraPro/CeraPro-Medium.ttf") format("ttf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  }
+
 *
 {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Cera Pro';
 }
 body
 {

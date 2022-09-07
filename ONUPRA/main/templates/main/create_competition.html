@@ -1,0 +1,14 @@
+{% extends 'main/baza.html' %}
+
+{% block title %}Custom user page{% endblock %}
+
+{% block content %}    
+<div class="container__regestration">
+    <form method="post" class="container_reg_form" novalidate enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="title">
+        <input type="datetime-local" name="start_time">
+        <button type="sumbit" name="test">Отправить</button>
+        <div>{{error}}</div>
+    </div>
+{% endblock %}
