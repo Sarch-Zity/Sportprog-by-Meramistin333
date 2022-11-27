@@ -1,32 +1,42 @@
+{% load static %}
 <!DOCTYPE html>
-  <!-- Coding by CodingLab | www.codinglabweb.com -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!----======== CSS ======== -->
-    <link rel="stylesheet" href="base.css">
-    <!----===== icons ===== -->
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- ======== CSS ======== -->
+    <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
+    {% block style %}{% endblock %}
+    
+    <!-- ===== icons ===== -->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     
-    <!--<title>Dashboard Sidebar Menu</title>--> 
-    <link rel="stylesheet" href="Futura/stylesheet.css">
+    <!-- ===== font ===== -->
+    <link rel="stylesheet" href="{% static 'main/font/Futura/stylesheet.css' %}">
 </head>
 <body>
     <nav class="sidebar">
         <header>
-            <div class="image-text">
-                <span class="image">
-                    <a href=""><img src="speakers3.jpg" alt=""></a>
-                </span>
-
-                <div class="text logo-text">
-                    <span class="name"><a href="">nickname</a></span>
-                    <span class="profession">rating</span>
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'accountREDIR' %}">
+                <div class="image-text">
+                    <span class="image">
+                        <img src="/media/{{user.image}}" alt="">
+                    </span>
+                    
+                    <div class="text logo-text">
+                        <span class="name">{{user.username}}</span>
+                        <span class="profession">{{user.rating}}</span>
+                    </div>
                 </div>
-            </div>
+            </a>
+            {% else %}
+            войти
+            {% endif %}
         </header>
 
         <div class="menu-bar">
@@ -34,7 +44,7 @@
 
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="{% url 'home' %}">
                             <i class='bx bx-home-alt icon' ></i>
                             <span class="text nav-text">Главная</span>
                         </a>
@@ -46,14 +56,19 @@
                             <span class="text nav-text">Топ</span>
                         </a>
                     </li>
-
+                    {% if request.user.is_authenticated %}
                     <li class="nav-link">
                         <a href="#">
                             <i class='bx bx-heart icon' ></i>
                             <span class="text nav-text">Друзья</span>
                         </a>
                     </li>
-
+                    {% else %}
+                    <li class="nav-link">
+                            <i class='bx bx-heart icon' ></i>
+                            <span class="text nav-text">не друзья</span>
+                    </li>
+                    {% endif %}
                     <li class="nav-link">
                         <a href="#">
                             <i class='bx bx-wallet icon' ></i>
@@ -63,16 +78,17 @@
 
                 </ul>
             </div>
-
+            {% if request.user.is_authenticated %}
             <div class="bottom-content var">
                 <li class="">
-                    <a href="#">
+                    <a href="{% url 'logout' %}">
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">Выйти</span>
                     </a>
                 </li>
-                
             </div>
+            {% else %}
+            {% endif %}
         </div>
     </nav>
 </body>
