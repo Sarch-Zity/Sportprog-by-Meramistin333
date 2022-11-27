@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'django_celery_results',
     'django_celery_beat',
+    'mathfilters',
+    'popup_field',
 ]
 
 MIDDLEWARE = [
@@ -107,6 +109,13 @@ AUTH_USER_MODEL = 'main.CustomUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
+
+TIME_INPUT_FORMATS = [
+    '%I:%M %p',
+    '%H:%M:%S',
+    '%H:%M:%S.%f',
+    '%H:%M'
+]
 
 LANGUAGE_CODE = 'ru-ru'
 

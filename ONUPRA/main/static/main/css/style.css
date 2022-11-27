@@ -23,14 +23,6 @@ header{
     align-items: center;
     position: static;
 }
-footer{
-    position: relative;
-    left: 0;
-    width: 100%;
-    bottom: 0%;
-    height: 100px;
-    background-color: rgb(243, 243, 243);
-}
 
 
 .a_nav{
@@ -106,17 +98,4 @@ footer{
 }
 .dropdown:hover .block_info_user_block{
     display: block;
-}
-
-.footer_link{
-    position: absolute;
-    display: flex;
-    list-style-type: none;
-    left: 35%;
-    top: 20%;
-}
-.footer_link_chapter{
-    padding: 20px;
-    color:rgb(139, 139, 139);
-    cursor: pointer;
 }

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    {% block style %}{% endblock %}
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/user_page.css' %}">
 </head>
@@ -31,14 +32,5 @@
     </header>
     {% block content %}
     {% endblock %}
-    <footer>
-        <hr class="dividing_line">
-        <ul class="footer_link">
-            <li class="footer_link_chapter">Связь с Исуссом</li>
-            <li class="footer_link_chapter">Вкашка</li>
-            <li class="footer_link_chapter">Наша почта</li>
-            <li class="footer_link_chapter">Это я просто долбаёб</li>
-        </ul>
-    </footer>
 </body>
 </html>
