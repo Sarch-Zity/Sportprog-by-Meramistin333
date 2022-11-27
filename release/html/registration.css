@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Flow+Circular&family=Ibarra+Real+Nova:wght@500&family=Jost:wght@400;600&family=Montserrat&family=Roboto&family=Rubik+Glitch&family=Ubuntu&display=swap');
+
+*
+{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Jost';
+}
+body{
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+svg
+{
+    position: absolute;
+    filter: blur(0px);
+}
+.registration
+{
+    border-radius: 20px;
+    width: 460px;
+    background-color: #fefefe50;
+    padding: 20px;
+    z-index: 20;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.input_regestration
+{
+    background-color: #fdfdfd8a;
+    border-radius: 10px;
+    width: 420px;
+    padding: 7px;
+    margin-top: 8px;
+    font-size: 14px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: 0;
+}
+.input_regestration:focus{
+    border: none;
+    outline: none;
+}
+.header_span
+{
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+.container_input_form
+{
+    margin-bottom: 15px;
+}
+.submit_input
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.button_submit
+{
+    cursor: pointer;
+    border: 0;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 17px;
+    margin-top: 20px;
+    width: 320px;
+    background-color: #fdfdfd8a;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: 0.2s;
+}
+.button_submit:hover{
+    background-color: #ede9e98a;
+}
+.container_input_form_text_span
+{
+    font-size: 13px;
+    line-height: 1px;
+}
+.field .error {
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    color: #d93025;
+    font-size: 16px;
+}
+
+.field .err{
+    display: none;
+}
+.field .err2{
+    display: none;
+}
+.field .err3{
+    display: none;
+}
+
+.invalid .err{
+    display: flex;
+}
+
+.invalid3 .err3{
+    display: flex;
+}
+
+.invalid2 .err2{
+    display: flex;
+}
+.invalid .input_regestration{
+    border-color: #d93025;
+}
+.invalid2 .input_regestration{
+    border-color: #d93025;
+}
+.invalid3 .input_regestration{
+    border-color: #d93025;
+
+}
+
+.successfully .input_regestration{
+    border-color: #2bd925;
+}
