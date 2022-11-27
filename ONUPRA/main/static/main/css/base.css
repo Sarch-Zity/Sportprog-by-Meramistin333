@@ -47,7 +47,7 @@ body{
     top: 0;
     left: 0;
     height: 100%;
-    width: 270px;
+    width: 250px;
     padding: 20px 20px;
     background: var(--sidebar-color);
     transition: var(--tran-05);
@@ -174,4 +174,15 @@ body.dark .mode .sun-moon i.sun{
 }
 body.dark .mode .sun-moon i.moon{
     opacity: 0;
+}
+.wrapper
+{
+    margin-left: 250px;
+    padding: 8px;
+    transition: all 0.3s;
+    display: flex;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    min-height: 100vh;
+    font-weight: 400;
+    color: #3a3b3c;
 }
