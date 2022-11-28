@@ -120,7 +120,7 @@ function confirmPass(){
         cPassField.classList.remove("invalid3");
         return cPassField.classList.add("successfully");
         }
-        }, 1000);
+        }, 3000);
     }
     initialon();
     }}
@@ -133,7 +133,7 @@ function checkUsers(){
         usersField.classList.remove("invalid");
         usersField.classList.remove("invalid2");
         usersField.classList.remove("invalid3");
-        const usersPattern = /^[a-z]{4,25}$/;
+        const usersPattern = /^[a-zA-Z]+$/;
         if (usersInput.value === ''){
             usersField.classList.remove("successfully");
             usersField.classList.remove("invalid");
