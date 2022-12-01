@@ -35,7 +35,14 @@
                 </div>
             </a>
             {% else %}
-            войти
+            <div class="image-input">
+                <div class="nav-link-profile">
+                    <a href="{% url 'login' %}" class="hover_active">
+                        <i class='bx bx-user icon-prof'></i>
+                        <span class="text-prof">Войти</span>
+                    </a>
+                </div>
+            </div>
             {% endif %}
         </header>
 
@@ -65,8 +72,10 @@
                     </li>
                     {% else %}
                     <li class="nav-link">
-                            <i class='bx bx-heart icon' ></i>
-                            <span class="text nav-text">не друзья</span>
+                        <div class="blocked">
+                            <i class='bx bxs-dizzy icon'></i>
+                            <span class="text">Друзья</span>
+                        </div>
                     </li>
                     {% endif %}
                     <li class="nav-link">

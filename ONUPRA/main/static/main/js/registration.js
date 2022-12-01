@@ -65,7 +65,7 @@ function createPass(){
     if (true) 
 {
   const passPatterrn = 
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,128}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&./()'"])[A-Za-z\d@$!%*?&./()'"]{8,128}$/;
 
     passField.classList.remove("invalid2");
     passField.classList.remove("invalid3");
@@ -161,8 +161,6 @@ function checkUsers(){
             } 
         }}}
 }
-cPassInput.addEventListener("keyup", initialclearTimeout);
-usersInput.addEventListener("keyup", initialclearTimeout);
 usersInput.addEventListener("keyup", checkUsers);
 emailInput.addEventListener("keyup", checkEmail);
 passInput.addEventListener("keyup", createPass);

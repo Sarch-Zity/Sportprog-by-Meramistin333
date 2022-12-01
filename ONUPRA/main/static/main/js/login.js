@@ -70,17 +70,15 @@ function checkUsers(){
 usersInput.addEventListener("keyup", checkUsers);
 passInput.addEventListener("keyup", createPass);
 
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    checkUsers();
-    createPass();
-    if (
-        !usersField.classList.contains("invalid") &&
-        !passField.classList.contains("invalid") &&
+// form.addEventListener("submit", (e) => {
+//     e.preventDefault();
+//     checkUsers();
+//     createPass();
+//     if (
+//         !usersField.classList.contains("invalid") &&
+//         !passField.classList.contains("invalid")
 
-        usersField.classList.contains("successfully") &&
-        passField.classList.contains("successfully")
-    ) {
-        location.href = form.getAttribute("method");
-    }
-});
+//     ) {
+//         // location.href = form.getAttribute("method");
+//     }
+// });

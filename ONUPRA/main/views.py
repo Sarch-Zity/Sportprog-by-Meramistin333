@@ -64,7 +64,10 @@ class AccountDetailView(DetailView):
     context_object_name = 'form'
 
 def AccountPage(request, slug):
-    user = CustomUser.objects.get(slug = slug)
+    try:
+        user = CustomUser.objects.get(slug = slug)
+    except CustomUser.DoesNotExist as e:
+        return redirect('home')
     # если решили обновить аватарку
     if request.method == 'POST' and request.user.is_authenticated:
         if 'reset image' in request.POST:
@@ -211,7 +214,7 @@ def Task_page(request, id, task):
                                     if listoutput[i] == list(map(str, runcode.decode(encoding).strip().split())):
                                         print('fff')
                                     else:
-                                        atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = f'Не верный ответ, запуск {i+1}')
+                                        atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = f'Не верный ответ, запуск {i+1}', hidden = False)
                                         detuser = comp.determined_users.filter(user=request.user)
                                         print(detuser.exists())
                                         print(detuser)
@@ -239,7 +242,7 @@ def Task_page(request, id, task):
                                             comp.determined_users.add(dtmd)
                                         break
                                 else:
-                                    atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не удалось получить ответ от программы')
+                                    atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не удалось получить ответ от программы', hidden = False)
                                     detuser = comp.determined_users.filter(user=request.user)
                                     print(detuser.exists())
                                     print(detuser)
@@ -266,7 +269,7 @@ def Task_page(request, id, task):
                                         dtmd.task.add(atmpttsk)
                                         comp.determined_users.add(dtmd)
                             except subprocess.TimeoutExpired as e:
-                                atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Время испольнения превышело ограничение')
+                                atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Время испольнения превышело ограничение', hidden = False)
                                 detuser = comp.determined_users.filter(user=request.user)
                                 print(detuser.exists())
                                 print(detuser)
@@ -306,7 +309,7 @@ def Task_page(request, id, task):
                                 elif y < k:
                                     y = k
                                 # Добавляем попытку в бд
-                                atmpt = Attempt.objects.create(time = now(), points = task.score*y, successfully = True, error = '-')
+                                atmpt = Attempt.objects.create(time = now(), points = task.score*y, successfully = True, error = '-', hidden = False)
                                 detuser = comp.determined_users.filter(user=request.user)
                                 print(detuser.exists())
                                 print(detuser)
@@ -351,7 +354,7 @@ def Task_page(request, id, task):
                                     elif y < k:
                                         y = k
                                     # Добавляем попытку в бд
-                                    atmpt = Attempt.objects.create(time = now(), points = task.score*y, successfully = True, error = '-')
+                                    atmpt = Attempt.objects.create(time = now(), points = task.score*y, successfully = True, error = '-', hidden = False)
                                     detuser = comp.determined_users.filter(user=request.user)
                                     print(detuser.exists())
                                     print(detuser)
@@ -379,7 +382,7 @@ def Task_page(request, id, task):
                                         comp.determined_users.add(dtmd)
                                     print(True)
                                 else:
-                                    atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не верный ответ, запуск 1')
+                                    atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не верный ответ, запуск 1', hidden = False)
                                     detuser = comp.determined_users.filter(user=request.user)
                                     print(detuser.exists())
                                     print(detuser)
@@ -405,8 +408,18 @@ def Task_page(request, id, task):
                                         dtmd.user.add(request.user)
                                         dtmd.task.add(atmpttsk)
                                         comp.determined_users.add(dtmd)
+                                        for l in comp.objects.all():
+                                            if l == task:
+                                                continue
+                                            else:
+                                                atmpt1 = Attempt.objects.create(time = now(), points = 0, successfully = False, error = '-', hidden = True)
+                                                user = comp.determined_users.get(user = request.user)
+                                                atmpttsk1 = AttemptTask.objects.create()
+                                                atmpttsk1.task.add(l)
+                                                atmpttsk1.attempts.add(atmpt1)
+                                                user.task.add(atmpttsk)
                             else:
-                                atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не удалось получить ответ от программы')
+                                atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не удалось получить ответ от программы', hidden = False)
                                 detuser = comp.determined_users.filter(user=request.user)
                                 print(detuser.exists())
                                 print(detuser)
@@ -433,7 +446,7 @@ def Task_page(request, id, task):
                                     dtmd.task.add(atmpttsk)
                                     comp.determined_users.add(dtmd)
                         except subprocess.TimeoutExpired as e:
-                            atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Время испольнения превышело ограничение')
+                            atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Время испольнения превышело ограничение', hidden = False)
                             detuser = comp.determined_users.filter(user=request.user)
                             print(detuser.exists())
                             print(detuser)
@@ -479,40 +492,30 @@ def Task_page(request, id, task):
 def Reg_page (request):
     if request.user.is_authenticated:
         return redirect('account', request.user.slug)
-    error = ""
-    error_username = ""
-    error_email = ""
+    error_username = False
+    error_email = False
     if request.method == 'POST':
         form = CustomUserCreationFrom(request.POST)
-        # email = request.POST.get('email')
+        email = request.POST.get('email')
         nickname = request.POST.get('username')
-        # # нужно ли мне эти ероры спросить артема
-        # if CustomUser.objects.filter(username=nickname).exists():
-        #     error_username = "Данное имя уже занято"
-        # if CustomUser.objects.filter(email=email).exists():
-        #     error_email = "Данный адрес электронной почты уже занято"
-        # # Потом это надо будет удалить УДАЛИТЬ
-        # if (request.POST.get('username').strip() == "") or (request.POST.get('email').strip()  == ""):
-        #     error = "Заполните все поля"
-        # УДАЛИТЬ
+        if CustomUser.objects.filter(username=nickname).exists():
+            error_username = True
+        if CustomUser.objects.filter(email=email).exists():
+            error_email = True
         if re.search('[а-яА-Я]', nickname):
-            error_username = "Кирилицу нельзя"
+            pass
         # Если форма коректна, то она сохраняется
         elif form.is_valid():
             formsv = form.save()
             login(request, formsv)
             return redirect('accountREDIR')
-        # УДАЛИТЬ
-        elif error_email == "" and error_username == "":
-            error = "Неизвестная нам ошибка"
 
     form = CustomUserCreationFrom()
     content = {
-        'error': error,
-        'error_username': error_username,
-        'error_email': error_email
+        'error_username':error_username,
+        'error_email':error_email
     }
-    return render(request, 'main/registration_form.html', content)
+    return render(request, 'main/registration.html', content)
 
 def AccountUpdate (request):
     if not request.user.is_authenticated:

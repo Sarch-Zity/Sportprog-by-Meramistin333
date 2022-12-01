@@ -14,9 +14,30 @@
     <div class="container__regestration">
         <form method="post" class="container_reg_form" novalidate >
             {% csrf_token %}
-            <input class= {% if form.non_field_errors %} 'neok' {% else %} 'ok' {% endif %} type="text" name="username">
-            <input type="password" name="password">
-            <button type="sumbit">Отправить</button>
+            <div class="container_input_form field users-field">
+                <span class="container_input_form_text">Введите ваш никнейм</span>
+                <input type="text" class="input_regestration users" name="username">
+                <span class="error err3 email-error">
+                    <i class="bx bx-error-circle error-icon"></i>
+                    <p class="error-text">Заполните свой никнейм</p>
+                </span>
+            </div>
+            <div class="container_input_form field create-password">
+                <span class="container_input_form_text">Ваш пароль</span>
+                <i class='bx bx-hide show-hide'></i>
+                <input type="password" class="input_regestration password" maxlength="128" name="password">
+                <span class="error err3 password-error">
+                    <i class="bx bx-error-circle error-icon"></i>
+                    <p class="error-text">Обязательно заполните пароль!</p>
+                </span>
+            </div>
+            <div class="submit_input">
+                <button type="sumbit" class={% if form.non_field_errors %}"button_submit_input error_busy"{% else %}"button_submit_input"{% endif %}>Войти</button>
+                <span class={% if form.non_field_errors %}"error_input error_input_active"{% else %}"error_input"{% endif %}>
+                    <i class="bx bx-error-circle error-icon"></i>
+                    <p class="error-text">Неверный пароль или логин</p>
+                </span>
+            </div>
             {% if form.non_field_errors %}
                 <p class="neok"></p>
             {% else %}

@@ -186,3 +186,79 @@ body.dark .mode .sun-moon i.moon{
     font-weight: 400;
     color: #3a3b3c;
 }
+.image-input
+{
+    width: 100%;
+}
+.nav-link-profile
+{
+    height: 50px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+.nav-link-profile a
+{
+    list-style: none;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    text-decoration: none;
+    background: #91BFBC;
+    color: #fff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: 0.3s;
+}
+.nav-link-profile a:hover{
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+    background: #9cc6c3;
+}
+.bx-user
+{
+    color: #fff;
+}
+.text-prof
+{
+    font-size: 20px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 1;
+    margin: 0 7px;
+}
+.text-prof2
+{
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.icon-prof
+{
+    min-width: 60px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-left: 15px;
+}
+.blocked
+{
+    list-style: none;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    text-decoration: none;
+    background: #d7d8d8;
+    color: #fff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    transition: 0.3s;
+}

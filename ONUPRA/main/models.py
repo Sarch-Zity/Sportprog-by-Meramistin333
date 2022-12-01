@@ -30,6 +30,7 @@ class Attempt(models.Model):
     points = models.PositiveIntegerField('Количество полученых очков')
     successfully = models.BooleanField('Успешное решение', default=False)
     error = models.CharField('Ошибка', max_length=30) #1 - time error, 2 = returncode 0, 3 - incorrect answer (3-1)(1 - run number)
+    hidden = models.BooleanField('Скрытая попытка', default=False)
 
     def __str__(self):
         return str(self.points)

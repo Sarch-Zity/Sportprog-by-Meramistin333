@@ -7,7 +7,7 @@ urlpatterns = [
     path('', views.Index, name='home'),
     path('you/', views.Account_REDIR, name='accountREDIR'),
     path('signup/', views.Reg_page, name='signup'),
-    path('login/', LoginView.as_view(template_name='main/login_form.html'), name='login'),
+    path('login/', LoginView.as_view(template_name='main/login.html'), name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('edit/', views.Account_REDIR, name='edit'),
     path('top/', views.Rating, name='top'),
