@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="competition_now.css">
+   
+    <div class="wrapper">
+        <div class="wrapper_content">
+            <div class="text-header">
+        <span>Задача A - Три бумажных корабля</span></div>
+        <span class="span__block">Сережа пошел с Марго в магазин «Хмурогруз», который можно представить как матрицу из n рядов и m столбцов.</span>
+
+        <span class="span__block"> За 1 единицу энергии Сережа и Марго могут перейти в соседнюю по стороне клетку. Для ускорения процесса Марго захватила с собой порталы, и в каждой клетке, через которую она проходит, она оставляет один портал (если его там еще нет). Если кто-либо (Сережа или Марго) находится в клетке с порталом, то за 1 единицу энергии он может телепортироваться в любую другую клетку с порталом, включая ту, из которой Марго начала.</span>
+            
+            <span class="span__block"> Они решили разделиться: Сереже надо попасть из верхней левой клетки (клетка с координатами (1,1)) в нижнюю правую (клетка с координатами (n,m)), а Марго из нижней левой (клетка с координатами (n,1)) в верхнюю правую (клетка с координатами (1,m)).</span>
+            
+                <span class="span__block"> За какое минимальное суммарное количество энергии у них это получится сделать?</span>
+            
+                    <span class="span__block"> Обратите внимание, что они могут выбирать время для своих движений. Время не влияет на энергию.</span>
+                    <span class="span__block cow-1-1">Входные данные</span>
+                    <span class="span__block cow-1-2"> Во входных данных находятся несколько наборов входных данных. В первой строке находится одно целое число t (1≤t≤1000) — количество наборов входных данных. Далее следуют наборы входных данных.</span>
+                        
+                    <span class="span__block">Единственная строка набора входных данных содержит два целых числа: n и m (1≤n,m≤105).</span>
+                        
+                    <span class="span__block cow-1-1">Выходные данные</span>
+                    <span class="span__block cow-1-2">Для каждого набора входных данных выведите одно целое число — ответ на задачу.</span>
+                    <div class="block_test">
+                        <div class="block_test_1">
+                            <span class="cow-1-1">Тесты</span>
+                            <div class="block_data">
+                                <span class="cow-2-2">входные данные</span>
+                                <span class="cow-2-1"></span>
+
+                                <span class="cow-2-2">выходные данные</span>
+                                <span class="cow-2-1"></span>
+                            </div>
+                        </div>
+                        <div class="block_test_2">
+                            <span class="cow-1-1 margin-1">Пояснение к тестам</span>
+                            <img class="img_b" src="e5872e9b009e502f2afc32237b1a5e59ed8d508a.png" alt="">
+                            <span class="span__block" style="margin: 0px;">В первом наборе входных данных они могут придерживаться следующего плана:</span>
+                    <ol class="span__block" style="padding: 30px;">
+                        <li >Марго (красный кружок) идет в клетку (7,3). Затем она направляется в клетку (1,3), и Сережа (синий кружок) тоже идет туда.</li>
+                        <li > Сережа пользуется порталом в этой клетке (клетки с порталами отмечены серым) и попадает в клетку (7,3). Затем он идет в свой пункт назначения — клетку (7,5).</li>
+                        <li> Марго также направляется к концу своего маршрута и попадает в клетку (1,5).</li>
+                    </ol><span class="span__block">Суммарная затраченная энергия (2+6)+(2+1+2)+(2)=15, что является ответом.</span>
+                        </div>
+                    
+                </div>
+                    <div class="uploud_fail">
+                        <span class="font-header">Отправка решения</span>
+                        <div style="display: flex;">
+                            <div class="select-btn2">
+                                <ul>
+                                    <li class="tab tab1 tab--active" style="margin-right: 30px;">ввести код</li>  
+                                    <li class="tab tab2">отправить файл</li>
+                                </ul>
+                            </div>
+                            <div class="select-menu">
+                                <div class="select-btn">
+                                    <div><span span style="color: #706F6F; font-weight: 700;">Компилятор:</span>
+                                    <span class="sBtn-text" style="font-weight: 700;">Список</span></div>
+                                    <i class="bx bx-chevron-down" style="font-weight: 700;"></i>
+                                </div>
+                        
+                                <ul class="options">
+                                    <li class="option">
+                                        <span class="option-text" data-type=".py">Pypy 3.5</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text" data-type=".py">Pypy 10</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text" data-type=".py">Pypy 3.5v</span>
+                                    </li>
+                                    <li class="option"> 
+                                        <span class="option-text" data-type=".text">GNC 3+</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text" data-type=".js">JavaScript</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text" data-type=".text">Pascal</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text" data-type=".js">Java 5</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <form class="container_content" method="post">
+                            <div class="content content-1 content--active">
+                                <textarea class="textarea_upload"></textarea> 
+                            </div> 
+                            <div class="content content-2">
+                                <div class="textarea_upload upload_input_container_setting">
+                                    <div class="upload_input_container">
+                                        <i class='bx bxl-dropbox' ></i>
+                                        <span class="upload_text_">Загрузите файл</span> 
+                                        <input accept=".py" title="" class="upload_text" type="file" id="upload" name="file" onChange='getoutput()'>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="button-task">Отправить решение</button>
+                        </form>
+                        
+                    </div>
+        </div>
+        <div class="wrapper_content_2">
+            <span class="competition_text">Соревнования</span>
+            <span class="time_text">Оставшееся время:</span>
+             <span class="time_settings">Скоро...<!--<span class="hours"><span class="number">1</span></span>:<span class="minutes"><span class="number">57</span></span>:<span class="seconds"><span class="number">58</span></span>--> </span> 
+            <div>
+                <span class="task_list">Задачи</span>
+                    <a href=""><div class="task right">A - Верёвка</div></a>
+                    <a href=""><div class="task right">B - мяч</div></a>
+                    <a href=""><div class="task wrong">C - Квадрат</div></a>
+                    <a href=""><div class="task">D - 5 человек</div></a>
+                    <a href=""><div class="task right">E - Круть</div></a>
+                    <a href=""><div class="task wrong">F - Задача</div></a>
+             </div>
+            <!-- <div class="cow-d-1">
+                <span style="font-weight: 600;margin-top: 30px;">Положение</span>
+                <span style="font-weight: 300;margin-bottom: 10px;">Положение на момент 12:01:35</span>
+                <div class="block_leaders_board">
+                    <span>4. vadim344</span>
+                    <span>5. melterex</span>
+                    <span>6. perchik</span>
+                </div>
+            </div> -->
+            
+            
+        </div> 
+    </div>
+    <script src="competition_now.js"></script>
