@@ -36,7 +36,7 @@ function createPass(){
         ) {
         passField.classList.remove("invalid2");
         passField.classList.remove("invalid3");
-        return passField.classList.add("good");
+        return passField.classList.add("successfully");
         }}
 }
 
@@ -63,12 +63,12 @@ function checkUsers(){
                 usersField.classList.remove("invalid");
             usersField.classList.remove("invalid2");
             usersField.classList.remove("invalid3");
-            return usersField.classList.add("good");
+            return usersField.classList.add("successfully");
             } 
         }
 }
-usersInput.addEventListener("keyup", checkUsers);
-passInput.addEventListener("keyup", createPass);
+// usersInput.addEventListener("keyup", checkUsers);
+// passInput.addEventListener("keyup", createPass);
 
 // form.addEventListener("submit", (e) => {
 //     e.preventDefault();
@@ -77,8 +77,28 @@ passInput.addEventListener("keyup", createPass);
 //     if (
 //         !usersField.classList.contains("invalid") &&
 //         !passField.classList.contains("invalid")
-
 //     ) {
-//         // location.href = form.getAttribute("method");
+//         location.href = form.getAttribute("method");
 //     }
 // });
+usersInput.addEventListener("keyup", () => {
+    checkUsers();
+    validation_check();
+});
+passInput.addEventListener("keyup", () => {
+    createPass();
+    validation_check();
+});
+function validation_check()
+{
+    if (
+        usersField.classList.contains("successfully") &&
+        passField.classList.contains("successfully")
+    ) {
+        document.getElementById('button_form').removeAttribute('disabled');
+    }
+    else{
+        document.getElementById('button_form').disabled = 'disabled';
+    }
+}
+validation_check();

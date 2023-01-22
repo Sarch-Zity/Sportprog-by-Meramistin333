@@ -4,7 +4,7 @@ from django.utils.timezone import localtime, now, timedelta, localdate,  get_def
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
-from .models import CustomUser, Competition, Task, Attempt, AttemptTask, Determined, File, Article
+from .models import CustomUser, Competition, Task, Attempt, File, Article
 from django.contrib.auth.hashers import check_password
 from .forms import CustomUserCreationFrom, CustomUserChangeFrom, PasswordChangeForm, CreateCompetitionForm, CustomUserImageChangeFrom, CustomUserUsernameChangeFrom, CreateTaskForm, ArticleForm, FileForm
 from django.contrib.auth import login, logout
@@ -114,7 +114,7 @@ def AccountPage(request, slug):
     }
     return render(request, 'main/user_page.html', content)
 
-def CreateCompetition (request):
+def CreateCompetition(request):
     if request.method == 'POST':
         if 'task' in request.POST:
             task_form = CreateTaskForm(request.POST)
@@ -142,39 +142,28 @@ def CreateCompetition (request):
     }
     return render(request, 'main/create_competition.html', content)
 
-def Competition_view(request):
+def Competitions(request):
     if not request.user.is_authenticated:
         return redirect('login')
     comp = Competition.objects.filter(actual = True).order_by('start_time')
-    print(comp)
-    print(comp[0].id)
+    past_comp = Competition.objects.filter(actual = False).order_by('start_time')
     content = {
         'comp': comp,
-    }
-    return render(request, 'main/competition_view.html', content)
-
-
-def Competition_page(request, id):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    comp = Competition.objects.get(id = id)
-    if comp.start_time > now():
-        return redirect('home')
-    content = {
-        'comp': comp,
+        'past_comp': past_comp,
     }
     return render(request, 'main/competition.html', content)
 
-def Task_page(request, id, task):
+
+def Сurrent_competition(request, id):
+    comp = Competition.objects.get(id = id)
+    return redirect('competition_task', id, comp.tasks.all()[0].id)
+
+def Competition_task(request, id, taskid):
     error = ''
     comp = Competition.objects.get(id = id)
     if comp.start_time > now():
         return redirect('home')
-    task = comp.tasks.get(id = task)
-    # if request.user in task.determined_users.all():
-    #     print("reshil")
-    # else:
-    #     print('loh')
+    task = comp.tasks.get(id = taskid)
     if not request.user.is_authenticated:
         return redirect('login')
     if request.method == 'POST':
@@ -183,6 +172,7 @@ def Task_page(request, id, task):
             if "test" in request.POST:
                 # Если отправили файл
                 if request.FILES:
+                    print(11)
                     # Получаем загруженный файл
                     file = request.FILES['file']
                     fs = FileSystemStorage()
@@ -309,7 +299,7 @@ def Task_page(request, id, task):
                                 elif y < k:
                                     y = k
                                 # Добавляем попытку в бд
-                                atmpt = Attempt.objects.create(time = now(), points = task.score*y, successfully = True, error = '-', hidden = False)
+                                atmpt = Attempt.objects.create(time = now(), points = round(task.score*y), successfully = True, error = '-', hidden = False)
                                 detuser = comp.determined_users.filter(user=request.user)
                                 print(detuser.exists())
                                 print(detuser)
@@ -354,7 +344,7 @@ def Task_page(request, id, task):
                                     elif y < k:
                                         y = k
                                     # Добавляем попытку в бд
-                                    atmpt = Attempt.objects.create(time = now(), points = task.score*y, successfully = True, error = '-', hidden = False)
+                                    atmpt = Attempt.objects.create(time = now(), points = round(task.score*y), successfully = True, error = '-', hidden = False)
                                     detuser = comp.determined_users.filter(user=request.user)
                                     print(detuser.exists())
                                     print(detuser)
@@ -482,12 +472,26 @@ def Task_page(request, id, task):
                     pass
         else:
             pass
+    if len(task.extra_text) > 0:
+        extra = True
+    else:
+        extra = False
+    timeLeft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+    x = timeLeft / comp.duration
+    h = 1
+    k = 0.4
+    y = h * x
+    if y > 1:
+        y = 1
+    elif y < k:
+        y = k
     content = {
-        'error': error,
         'comp': comp,
         'task': task,
+        'extra': extra,
+        'score': round(task.score*y)
     }
-    return render(request, 'main/task.html', content)
+    return render(request, 'main/competition_task.html', content)
 
 def Reg_page (request):
     if request.user.is_authenticated:

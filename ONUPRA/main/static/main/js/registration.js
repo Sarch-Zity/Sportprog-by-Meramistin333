@@ -65,7 +65,7 @@ function createPass(){
     if (true) 
 {
   const passPatterrn = 
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&./()'"])[A-Za-z\d@$!%*?&./()'"]{8,128}$/;
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-_=+)('"!@#№;$%?&*|/,.])[A-Za-z\d-_=+)('"!@#№;$%?&*|/,.]{8,128}$/;
 
     passField.classList.remove("invalid2");
     passField.classList.remove("invalid3");
@@ -105,7 +105,6 @@ function confirmPass(){
     if (true) 
     {
         function initialon(){
-            initial = window.setTimeout(() => {
         if (passInput.value !== cPassInput.value){
         cPassField.classList.remove("successfully");
         cPassField.classList.remove("invalid3");
@@ -120,7 +119,6 @@ function confirmPass(){
         cPassField.classList.remove("invalid3");
         return cPassField.classList.add("successfully");
         }
-        }, 3000);
     }
     initialon();
     }}
@@ -133,7 +131,7 @@ function checkUsers(){
         usersField.classList.remove("invalid");
         usersField.classList.remove("invalid2");
         usersField.classList.remove("invalid3");
-        const usersPattern = /^[a-zA-Z]+$/;
+        const usersPattern = /^[a-zA-Z0-9-_=+)('"!@#№;$%?&*|/,.]{3,16}$/;
         if (usersInput.value === ''){
             usersField.classList.remove("successfully");
             usersField.classList.remove("invalid");
@@ -161,29 +159,63 @@ function checkUsers(){
             } 
         }}}
 }
-usersInput.addEventListener("keyup", checkUsers);
-emailInput.addEventListener("keyup", checkEmail);
-passInput.addEventListener("keyup", createPass);
-cPassInput.addEventListener("keyup", confirmPass);
-
-
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    checkEmail();
+usersInput.addEventListener("keyup", () => {
     checkUsers();
+    validation_check();
+});
+emailInput.addEventListener("keyup", () => {
+    checkEmail();
+    validation_check();
+});
+passInput.addEventListener("keyup", () => {
     createPass();
+    validation_check();
+    if(!cPassInput.value == ''){
+        confirmPass();
+        console.log(1)
+    } 
+});
+cPassInput.addEventListener("keyup", () => {
     confirmPass();
-    if (
-        !usersField.classList.contains("invalid") &&
-        !emailField.classList.contains("invalid") &&
-        !passField.classList.contains("invalid") &&
-        !cPassField.classList.contains("invalid") &&
+    console.log(123);
+    validation_check();
+});
 
+
+function validation_check()
+{
+    if (
         usersField.classList.contains("successfully") &&
         emailField.classList.contains("successfully") &&
         passField.classList.contains("successfully") &&
         cPassField.classList.contains("successfully")
     ) {
-        location.href = form.getAttribute("method");
+        document.getElementById('button_form').removeAttribute('disabled');
     }
-});
+    else{
+        document.getElementById('button_form').disabled = 'disabled';
+    }
+}
+validation_check();
+
+
+// form.addEventListener("submit", (e) => {
+//     e.preventDefault();
+//     checkEmail();
+//     checkUsers();
+//     createPass();
+//     confirmPass();
+//     if (
+//         !usersField.classList.contains("invalid") &&
+//         !emailField.classList.contains("invalid") &&
+//         !passField.classList.contains("invalid") &&
+//         !cPassField.classList.contains("invalid") &&
+
+//         usersField.classList.contains("successfully") &&
+//         emailField.classList.contains("successfully") &&
+//         passField.classList.contains("successfully") &&
+//         cPassField.classList.contains("successfully")
+//     ) {
+//         location.href = form.getAttribute("method");
+//     }
+// });
