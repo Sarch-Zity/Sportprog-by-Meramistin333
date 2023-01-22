@@ -11,9 +11,9 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('edit/', views.Account_REDIR, name='edit'),
     path('top/', views.Rating, name='top'),
-    path('competition/', views.Competition_view, name='сompetitions_view'),
-    path('competition/<int:id>/', views.Competition_page, name='сompetition'),
-    path('competition/<int:id>/<int:task>/', views.Task_page, name='task'),
+    path('competitions/', views.Competitions, name='competitions'),
+    path('competition/<int:id>/', views.Сurrent_competition, name='сompetition'),
+    path('competition/<int:id>/<int:taskid>/', views.Competition_task, name='competition_task'),
     path('createcompetition/', views.CreateCompetition, name='ccc'),
     path('user/<slug:slug>/', views.AccountPage, name='account'),
 

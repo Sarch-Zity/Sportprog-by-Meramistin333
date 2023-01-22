@@ -12,7 +12,7 @@ href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
             <span class="header_span">Регистрация</span>
             <form method="post">
                 {% csrf_token %}
-                <div class="container_input_form field users-field">
+                <div class={% if error_username %}"container_input_form field users-field invalid"{% else %}"container_input_form field users-field"{% endif %}>
                     <span class="container_input_form_text">Введите ваш никнейм (от 3 до 16 символов)</span>
                     <input type="text" class="input_regestration users"  maxlength="32" name="username">
                     <span class="error err email-error">
@@ -28,7 +28,7 @@ href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
                         <p class="error-text">Заполните свой никнейм</p>
                     </span>
                 </div>
-                <div class="container_input_form field email-field">
+                <div class={% if error_email %}"container_input_form field email-field invalid"{% else %}"container_input_form field email-field"{% endif %}>
                     <span class="container_input_form_text">Введите ваш почтовый адрес</span>
                     <input type="text" class="input_regestration email" maxlength="254" name="email">
                     <span class="error err email-error">
@@ -71,7 +71,7 @@ href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
                     </span>
                 </div>
                 <div class="submit_input">
-                   <button type="submit"  class="button_submit">Зарегестрироваться</button>
+                   <button type="submit" class="button_submit" id="button_form">Зарегестрироваться</button>
                 </div>
             </form>
             <span class="exit">Есть аккаунт? <a href="{% url 'login' %}">Войти!</a></span>

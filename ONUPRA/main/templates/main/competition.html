@@ -1,38 +1,59 @@
-{% extends 'main/baza.html' %}
-{% load mathfilters %}
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Соревнования{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'main/css/competition.css' %}">
+{% endblock %}
 
-{% block title %}{{comp.title}}{% endblock %}
-
-{% block content %}    
-<div class="container__regestration">
-    {% for i in comp.tasks.all %}
-    <a href="{{i.id}}/">{{i.title}}</a>
-    <br>
-    {% endfor %}
+{% block body %}
+    <div class="wrapper">
+        <div class="wrapper-content">
+            <div class="competition_present">
+                <div class="competition_span">Еще актуальны</div>
+                {% for i in comp %}
+                    <a href="/competition/{{i.id}}"><div class="competition_block">
+                        <div class="competition_block_info">
+                            <div class="competition-text">
+                                <div class="block-icon">
+                                    <i class='bx bx-code-alt' ></i>
+                                <div class="text-info">
+                                    <span class="name">{{i.title}}</span>
+                                    <span class="info">X классы</span>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="competition_block_info_ code">
+                            <span>Автор: xtreme</span>
+                            <span>Начинается {{i.start_time}}</span>
+                        </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            <div class="competition_present">
+                <div class="competition_span">Предыдущие соревнования</div>
+                {% for i in past_comp %}
+                    <a href="/competition/{{i.id}}"><div class="competition_block">
+                        <div class="competition_block_info">
+                            <div class="competition-text">
+                                <div class="block-icon">
+                                    <i class='bx bx-code-alt' ></i>
+                                <div class="text-info">
+                                    <span class="name">{{i.title}}</span>
+                                    <span class="info">X классы</span>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="competition_block_info_ code">
+                            <span>Автор: xtreme</span>
+                            <span>Проходило {{i.start_time}}</span>
+                        </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    <table border="2">
-        <tr>
-         <th>Никнейм</th>
-         {% for i in comp.tasks.all %}
-         <th>{{i.title}}</th>
-         {% endfor %}
-        </tr>
-        {% for i in comp.determined_users.all %}
-        <tr>
-            <td>{% for x in i.user.all %}{{x.username}}{% endfor %}</td>
-            {% for j in i.task.all %}
-              <th>{% for k in j.attempts.all|dictsortreversed:"points"|slice:":1" %}{{k.points}}{% endfor %}</th>
-            {% endfor %}
-            {% if comp.tasks.all|length > i.task.all|length %}
-              {% with answer=i.task.all|length %}
-              {% with ans=comp.tasks.all|length|sub:answer %}
-              {% with ''|center:ans as range %}
-                {% for k in range %}<th>{{0}}</th>{% endfor %}
-              {% endwith %}
-              {% endwith %}
-              {% endwith %}
-            {% endif %}
-        </tr>
-        {% endfor %}
-      </table>
 {% endblock %}

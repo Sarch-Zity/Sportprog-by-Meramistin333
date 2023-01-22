@@ -33,7 +33,7 @@ href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
                     </span>
                 </div>
                 <div class="submit_input">
-                    <button type="sumbit" class={% if form.non_field_errors %}"button_submit_input error_busy"{% else %}"button_submit_input"{% endif %}>Войти</button>
+                    <button type="sumbit" class={% if form.non_field_errors %}"button_submit_input error_busy"{% else %}"button_submit_input"{% endif %} id="button_form">Войти</button>
                     <span class={% if form.non_field_errors %}"error_input error_input_active"{% else %}"error_input"{% endif %}>
                         <i class="bx bx-error-circle error-icon"></i>
                         <p class="error-text">Неверный пароль или логин</p>

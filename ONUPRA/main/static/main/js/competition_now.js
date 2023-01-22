@@ -20,29 +20,29 @@ const filename = fullPath.substring(startIndex);
     filetext.innerHTML = "Загрузите файл";
         }
 
-const seconds = document.querySelector(".seconds .number");
-const minutes = document.querySelector(".minutes .number");
-const hours = document.querySelector(".hours .number");
+// const seconds = document.querySelector(".seconds .number");
+// const minutes = document.querySelector(".minutes .number");
+// const hours = document.querySelector(".hours .number");
 
-let secValue = 58,
-minValue = 30,
-hourValue = 1
+// let secValue = 58,
+// minValue = 30,
+// hourValue = 1
 
-const timeFunctin = setInterval(() => {
-    secValue--;
+// const timeFunctin = setInterval(() => {
+//     secValue--;
 
-    if (secValue == 0) {
-        minValue--;
-        secValue = 60;
-    }
-    if (minValue == 0) {
-        hourValue--;
-        minValue = 60;
-    }
-    seconds.textContent = secValue < 10 ? `0${secValue}` : secValue;
-    minutes.textContent = minValue < 10 ? `0${minValue}` : minValue;
-    hours.textContent = hourValue < 10 ? `0${hourValue}` : hourValue;
-}, 1000);
+//     if (secValue == 0) {
+//         minValue--;
+//         secValue = 60;
+//     }
+//     if (minValue == 0) {
+//         hourValue--;
+//         minValue = 60;
+//     }
+//     seconds.textContent = secValue < 10 ? `0${secValue}` : secValue;
+//     minutes.textContent = minValue < 10 ? `0${minValue}` : minValue;
+//     hours.textContent = hourValue < 10 ? `0${hourValue}` : hourValue;
+// }, 1000);
 const optionMenu = document.querySelector(".select-menu"),
 selectBtn = optionMenu.querySelector(".select-btn"),
 options = optionMenu.querySelectorAll(".option"),
