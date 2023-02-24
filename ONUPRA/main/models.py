@@ -25,7 +25,20 @@ class CustomUser(AbstractUser):
             img.thumbnail(output_size)
             img.save(self.image.path)
 
+class Competition(models.Model):
+    creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
+    start_time = models.DateTimeField('Дата старта')
+    duration = models.PositiveIntegerField('Длительность соревнования') # минимум 30
+    title = models.CharField('Название', unique=True, max_length=30)
+    actual = models.BooleanField('Не закончен', default=True)
+    verified = models.BooleanField('Проверено администратором', default=False)
+    rating = models.BooleanField('Рейтинговое ли соревнование', default=False)
+
+    def __str__(self):
+        return self.title
+
 class Task(models.Model):
+    compet = models.ForeignKey(Competition, on_delete=models.CASCADE)
     title = models.CharField('Название задания', max_length=30)
     description = models.TextField('Описание задания')
     input_exmaple = models.TextField('Пример ввода кода')
@@ -38,29 +51,15 @@ class Task(models.Model):
     def __str__(self):
         return self.title
 
-class Competition(models.Model):
-    creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
-    start_time = models.DateTimeField('Дата старта')
-    duration = models.PositiveIntegerField('Длительность соревнования') # минимум 30
-    title = models.CharField('Название', unique=True, max_length=30)
-    tasks = models.ForeignKey(Task, on_delete=models.CASCADE)
-    actual = models.BooleanField('Не закончен', default=True)
-    verified = models.BooleanField('Проверено администратором', default=False)
-    rating = models.BooleanField('Рейтинговое ли соревнование', default=False)
-    rating_points = models.PositiveIntegerField('Количество очков рейтнга', default=0) # Удалить
-    tried_users = models.ManyToManyField(CustomUser, blank=True)
-
-    def __str__(self):
-        return self.title
-
 class Attempt(models.Model):
     link_competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     link_task = models.ForeignKey(Task, on_delete=models.CASCADE)
     link_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    time = models.DateTimeField('Время отправки')
-    points = models.PositiveIntegerField('Количество полученых очков')
+    time = models.DateTimeField(auto_now_add=True)
+    points = models.PositiveIntegerField('Количество полученых очков', default=0)
     successfully = models.BooleanField('Успешное решение', default=False)
-    error = models.CharField('Ошибка', max_length=30) #1 - time error, 2 = returncode 0, 3 - incorrect answer (3-1)(1 - run number)
+    error = models.CharField('Ошибка', max_length=30, default='-')
+    document = models.FileField(upload_to='comp_files/')
     hidden = models.BooleanField('Скрытая попытка', default=False)
 
     def __str__(self):

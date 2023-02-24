@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load mathfilters %}
 {% load static %}
 {% block title %}{{task.title}}{% endblock %}
 {% block style %}
@@ -8,7 +9,7 @@
     <div class="wrapper">
         <div class="wrapper_content">
             <div class="text-header">
-        <span>{{task.title}} {{score}}</span></div>
+        <span>{{actual_task.title}} {{score}}</span></div>
         <span class="span__block"><pre>{{task.description}}</pre></span>
                     <div class="block_test">
                         <div class="block_test_1">
@@ -95,8 +96,8 @@
              <span class="time_settings">Скоро...<!--<span class="hours"><span class="number">1</span></span>:<span class="minutes"><span class="number">57</span></span>:<span class="seconds"><span class="number">58</span></span>--> </span> 
             <div>
                 <span class="task_list">Задачи</span>
-                {% for i in comp.tasks.all %}
-                <a href="/competition/{{comp.id}}/{{i.id}}/"><div class="task right">{{i.title}}</div></a>
+                {% for i in task.all %}
+                <a href='/competition/{{comp.id}}/{{ forloop.counter|add:"-1"}}/'><div class="task right">{{i}}</div></a>
                 {% endfor %}
              </div>
             <div class="cow-d-1">

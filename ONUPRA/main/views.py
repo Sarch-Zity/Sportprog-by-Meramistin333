@@ -14,36 +14,74 @@ from django.db.models import Max
 import subprocess
 
 from pathlib import Path
-import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#------------------------internal functions------------------------#
-def check_changes(request, formaccedit):
-    # Проверяем пустые ли поля или заняты они или имеют пробелы
-    # УДАЛИТЬ
-    if re.search('[а-яА-Я]', request.POST.get('username')):
-        error = "Кирилицу нельзя"
-        return error
-    # Переделать что бы ошибки были отдельно ПЕРЕДЕЛАТЬ
-    elif (CustomUser.objects.filter(username=request.POST.get('username')).exists() and request.POST.get('username') != request.user.username) or (CustomUser.objects.filter(email=request.POST.get('email')).exists() and request.POST.get('email') != request.user.email):
-        error = "Такое имя или почта уже занято"
-        return error
-        # email = request.POST.get('email')
-        # nickname = request.POST.get('username')
-        # # нужно ли мне эти ероры спросить артема
-        # if CustomUser.objects.filter(username=nickname).exists():
-        #     error_username = "Данное имя уже занято"
-        # if CustomUser.objects.filter(email=email).exists():
-        #     error_email = "Данный адрес электронной почты уже занято"
-    # УДАЛИТЬ
-    # elif (" " in request.POST.get('username').strip()) or (" " in request.POST.get('email').strip()):
-    #     error = "Пробелов не должно быть в полях"
-    #     return error
-    if formaccedit.is_valid():
-        print("o net")
-        error = ""
-        return error
-#------------------------------------------------------------------#
+def create_output_file(command):
+    global compile_error
+    try:
+        subprocess.run(command, shell=True, check=True, stdout=subprocess.DEVNULL)
+        compile_error = 0
+    except subprocess.CalledProcessError as e:
+        compile_error = 1
+
+def run_command(file_name, tests):
+    global compile_error
+    path = 'main\\media\\comp_files\\'
+    command = ""
+    if file_name.endswith(".py"):
+        command = "python " + path + file_name
+    elif file_name.endswith(".cpp"):
+        command = "g++ " + path + file_name + " -o " + f"{path + file_name[:-4]}.out"
+        create_output_file(command)
+        command = f"{path + file_name[:-4]}.out"
+    elif file_name.endswith(".pas"):
+        command = "fpc " + path + file_name
+        create_output_file(command)
+        command = path + file_name[:-4]
+    elif file_name.endswith(".java"):
+        command = "javac " + path + file_name
+        create_output_file(command)
+        command = "java " + path + file_name[:-5]
+    elif file_name.endswith(".c"):
+        command = "gcc "  + path + file_name + " -o " + f"{path + file_name[:-2]}.out"
+        create_output_file(command)
+        command = f"{path + file_name[:-2]}.out"
+    elif file_name.endswith(".cs"):
+        command = "csc " + path + file_name
+        create_output_file(command)
+        command = "mono " + path + file_name[:-3] + ".exe"
+    elif file_name.endswith(".go"):
+        command = "go run " + path + file_name
+    elif file_name.endswith(".kt"):
+        command = "kotlinc " + path + file_name + f" -include-runtime -d {path + file_name[:-3]}.jar"
+        create_output_file(command)
+        command = f"java -jar {path + file_name[:-3]}.jar"
+    elif file_name.endswith(".php"):
+        command = "php " + path + file_name
+    elif file_name.endswith(".rb"):
+        command = "ruby " + path + file_name
+    elif file_name.endswith(".rs"):
+        command = "rustc " + path + file_name + f" -o {path + file_name[:-3]}.out"
+        create_output_file(command)
+        command = f"{path + file_name[:-3]}.out"
+    elif file_name.endswith(".js"):
+        command = "node " + path + file_name
+    else:
+        compile_error = 1
+        return "Нет такого языка програмирования"
+    if compile_error == 0:
+        try:
+            result = subprocess.run(command, input=tests, text=True, shell=True, timeout=10, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+            # result.stderr
+            return result.stdout
+        except subprocess.TimeoutExpired:
+            compile_error = 1
+            return "Время вышло"
+        except subprocess.CalledProcessError:
+            compile_error = 1
+            return "Проблема с принятием входных данных"
+    else:
+        return "Не удалось скомпилировать файл"
 
 def Index (request):
     return render(request, 'main/home.html')
@@ -54,8 +92,7 @@ def Account_REDIR (request):
     return redirect('account', request.user.slug)
 
 def Rating (request):
-    user = CustomUser.objects.order_by('rating')
-    user = user.reverse()[:len(user)-1]
+    user = CustomUser.objects.filter(is_staff = False).filter(is_superuser = False).order_by('-rating')
     return render(request, 'main/top.html', {'user': user})
 
 class AccountDetailView(DetailView):
@@ -155,344 +192,386 @@ def Competitions(request):
 
 
 def Сurrent_competition(request, id):
-    comp = Competition.objects.get(id = id)
-    return redirect('competition_task', id, comp.tasks.all()[0].id)
+    return redirect('competition_task', id, 0)
 
 def Competition_task(request, id, taskid):
-    error = ''
     comp = Competition.objects.get(id = id)
+    task = Task.objects.filter(compet = comp).order_by('title')[taskid]
     if comp.start_time > now():
         return redirect('home')
-    task = comp.tasks.get(id = taskid)
-    if not request.user.is_authenticated:
+    elif not request.user.is_authenticated:
         return redirect('login')
-    if request.method == 'POST':
-        if comp.actual:
-            # Если отправлена задание
-            if "test" in request.POST:
-                # Если отправили файл
-                if request.FILES:
-                    print(11)
-                    # Получаем загруженный файл
-                    file = request.FILES['file']
-                    fs = FileSystemStorage()
-                    # Сохраняем на файловой системе, решаем и удаляем
-                    filename = fs.save(file.name, file)
-                    # Функция которая будет декодировать ответ файла в нормальный
-                    encoding = sys.getdefaultencoding()
-                    # Если прописано много запусков, то создаем списки с различными запусками
-                    if '/br' in task.input_values:
-                        inptvals = task.input_values.strip().split("/br")
-                        ouptvals = task.output_values.strip().split("/br")
-                        listoutput = []
-                        for i in range(len(ouptvals)):
-                            listoutput.append(list(map(str, ouptvals[i].strip().split())))
-                        more = True
-                        b = False
-                    # Создаем "текст" который будем подовать в полученую программу
-                    else:
-                        target = task.input_values.strip()
-                        answer = list(map(str, task.output_values.strip().split()))
-                        more = False
-                    # Запускаем циклом если несколько запусков
-                    if more:
-                        for i in range(len(listoutput)):
-                            try:
-                                checkruncode = subprocess.run(['python.exe', f"{BASE_DIR}/main{fs.url(filename)}"], input=bytes(inptvals[i].strip(), encoding='utf8'), timeout=1)
-                                if checkruncode.returncode == 0:
-                                    runcode = subprocess.check_output(['python.exe', f"{BASE_DIR}/main{fs.url(filename)}"], input=bytes(inptvals[i].strip(), encoding='utf8'), timeout=1)
-                                    if listoutput[i] == list(map(str, runcode.decode(encoding).strip().split())):
-                                        print('fff')
-                                    else:
-                                        atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = f'Не верный ответ, запуск {i+1}', hidden = False)
-                                        detuser = comp.determined_users.filter(user=request.user)
-                                        print(detuser.exists())
-                                        print(detuser)
-                                        if detuser.exists():
-                                            detuserx = detuser[0].task.filter(task=task)
-                                            print(detuserx.exists())
-                                            print(detuserx)
-                                            if detuserx.exists():
-                                                print('dobavil')
-                                                detuserx[0].attempts.add(atmpt)
-                                            else:
-                                                print('sozdal i dobavil')
-                                                atmpttsk = AttemptTask.objects.create()
-                                                atmpttsk.task.add(task)
-                                                atmpttsk.attempts.add(atmpt)
-                                                detuser[0].task.add(atmpttsk)
-                                        else:
-                                            print('nebilo')
-                                            atmpttsk = AttemptTask.objects.create()
-                                            atmpttsk.task.add(task)
-                                            atmpttsk.attempts.add(atmpt)
-                                            dtmd = Determined.objects.create()
-                                            dtmd.user.add(request.user)
-                                            dtmd.task.add(atmpttsk)
-                                            comp.determined_users.add(dtmd)
-                                        break
-                                else:
-                                    atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не удалось получить ответ от программы', hidden = False)
-                                    detuser = comp.determined_users.filter(user=request.user)
-                                    print(detuser.exists())
-                                    print(detuser)
-                                    if detuser.exists():
-                                        detuserx = detuser[0].task.filter(task=task)
-                                        print(detuserx.exists())
-                                        print(detuserx)
-                                        if detuserx.exists():
-                                            print('dobavil')
-                                            detuserx[0].attempts.add(atmpt)
-                                        else:
-                                            print('sozdal i dobavil')
-                                            atmpttsk = AttemptTask.objects.create()
-                                            atmpttsk.task.add(task)
-                                            atmpttsk.attempts.add(atmpt)
-                                            detuser[0].task.add(atmpttsk)
-                                    else:
-                                        print('nebilo')
-                                        atmpttsk = AttemptTask.objects.create()
-                                        atmpttsk.task.add(task)
-                                        atmpttsk.attempts.add(atmpt)
-                                        dtmd = Determined.objects.create()
-                                        dtmd.user.add(request.user)
-                                        dtmd.task.add(atmpttsk)
-                                        comp.determined_users.add(dtmd)
-                            except subprocess.TimeoutExpired as e:
-                                atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Время испольнения превышело ограничение', hidden = False)
-                                detuser = comp.determined_users.filter(user=request.user)
-                                print(detuser.exists())
-                                print(detuser)
-                                if detuser.exists():
-                                    detuserx = detuser[0].task.filter(task=task)
-                                    print(detuserx.exists())
-                                    print(detuserx)
-                                    if detuserx.exists():
-                                        print('dobavil')
-                                        detuserx[0].attempts.add(atmpt)
-                                    else:
-                                        print('sozdal i dobavil')
-                                        atmpttsk = AttemptTask.objects.create()
-                                        atmpttsk.task.add(task)
-                                        atmpttsk.attempts.add(atmpt)
-                                        detuser[0].task.add(atmpttsk)
-                                else:
-                                    print('nebilo')
-                                    atmpttsk = AttemptTask.objects.create()
-                                    atmpttsk.task.add(task)
-                                    atmpttsk.attempts.add(atmpt)
-                                    dtmd = Determined.objects.create()
-                                    dtmd.user.add(request.user)
-                                    dtmd.task.add(atmpttsk)
-                                    comp.determined_users.add(dtmd)
-                                break
-                        else:
-                            if not b:
-                                # Считаем сколько получилось поинтов за задание
-                                timeLeft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
-                                x = timeLeft / comp.duration
-                                h = 1
-                                k = 0.4
-                                y = h * x
-                                if y > 1:
-                                    y = 1
-                                elif y < k:
-                                    y = k
-                                # Добавляем попытку в бд
-                                atmpt = Attempt.objects.create(time = now(), points = round(task.score*y), successfully = True, error = '-', hidden = False)
-                                detuser = comp.determined_users.filter(user=request.user)
-                                print(detuser.exists())
-                                print(detuser)
-                                if detuser.exists():
-                                    detuserx = detuser[0].task.filter(task=task)
-                                    print(detuserx.exists())
-                                    print(detuserx)
-                                    if detuserx.exists():
-                                        print('dobavil')
-                                        detuserx[0].attempts.add(atmpt)
-                                    else:
-                                        print('sozdal i dobavil')
-                                        atmpttsk = AttemptTask.objects.create()
-                                        atmpttsk.task.add(task)
-                                        atmpttsk.attempts.add(atmpt)
-                                        detuser[0].task.add(atmpttsk)
-                                else:
-                                    print('nebilo')
-                                    atmpttsk = AttemptTask.objects.create()
-                                    atmpttsk.task.add(task)
-                                    atmpttsk.attempts.add(atmpt)
-                                    dtmd = Determined.objects.create()
-                                    dtmd.user.add(request.user)
-                                    dtmd.task.add(atmpttsk)
-                                    comp.determined_users.add(dtmd)
-                                print(True)
-                    # Иначе запускаем одним разом
-                    elif not more:
-                        try:
-                            checkruncode = subprocess.run(['python.exe', f"{BASE_DIR}/main{fs.url(filename)}"], input=bytes(target, encoding='utf8'), timeout=1)
-                            if checkruncode.returncode == 0:
-                                runcode = subprocess.check_output(['python.exe', f"{BASE_DIR}/main{fs.url(filename)}"], input=bytes(target, encoding='utf8'), timeout=1)
-                                if answer == list(map(str, runcode.decode(encoding).strip().split())):
-                                    # Считаем сколько получилось поинтов за задание
-                                    timeLeft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
-                                    x = timeLeft / comp.duration
-                                    h = 1
-                                    k = 0.4
-                                    y = h * x
-                                    if y > 1:
-                                        y = 1
-                                    elif y < k:
-                                        y = k
-                                    # Добавляем попытку в бд
-                                    atmpt = Attempt.objects.create(time = now(), points = round(task.score*y), successfully = True, error = '-', hidden = False)
-                                    detuser = comp.determined_users.filter(user=request.user)
-                                    print(detuser.exists())
-                                    print(detuser)
-                                    if detuser.exists():
-                                        detuserx = detuser[0].task.filter(task=task)
-                                        print(detuserx.exists())
-                                        print(detuserx)
-                                        if detuserx.exists():
-                                            print('dobavil')
-                                            detuserx[0].attempts.add(atmpt)
-                                        else:
-                                            print('sozdal i dobavil')
-                                            atmpttsk = AttemptTask.objects.create()
-                                            atmpttsk.task.add(task)
-                                            atmpttsk.attempts.add(atmpt)
-                                            detuser[0].task.add(atmpttsk)
-                                    else:
-                                        print('nebilo')
-                                        atmpttsk = AttemptTask.objects.create()
-                                        atmpttsk.task.add(task)
-                                        atmpttsk.attempts.add(atmpt)
-                                        dtmd = Determined.objects.create()
-                                        dtmd.user.add(request.user)
-                                        dtmd.task.add(atmpttsk)
-                                        comp.determined_users.add(dtmd)
-                                    print(True)
-                                else:
-                                    atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не верный ответ, запуск 1', hidden = False)
-                                    detuser = comp.determined_users.filter(user=request.user)
-                                    print(detuser.exists())
-                                    print(detuser)
-                                    if detuser.exists():
-                                        detuserx = detuser[0].task.filter(task=task)
-                                        print(detuserx.exists())
-                                        print(detuserx)
-                                        if detuserx.exists():
-                                            print('dobavil')
-                                            detuserx[0].attempts.add(atmpt)
-                                        else:
-                                            print('sozdal i dobavil')
-                                            atmpttsk = AttemptTask.objects.create()
-                                            atmpttsk.task.add(task)
-                                            atmpttsk.attempts.add(atmpt)
-                                            detuser[0].task.add(atmpttsk)
-                                    else:
-                                        print('nebilo')
-                                        atmpttsk = AttemptTask.objects.create()
-                                        atmpttsk.task.add(task)
-                                        atmpttsk.attempts.add(atmpt)
-                                        dtmd = Determined.objects.create()
-                                        dtmd.user.add(request.user)
-                                        dtmd.task.add(atmpttsk)
-                                        comp.determined_users.add(dtmd)
-                                        for l in comp.objects.all():
-                                            if l == task:
-                                                continue
-                                            else:
-                                                atmpt1 = Attempt.objects.create(time = now(), points = 0, successfully = False, error = '-', hidden = True)
-                                                user = comp.determined_users.get(user = request.user)
-                                                atmpttsk1 = AttemptTask.objects.create()
-                                                atmpttsk1.task.add(l)
-                                                atmpttsk1.attempts.add(atmpt1)
-                                                user.task.add(atmpttsk)
-                            else:
-                                atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не удалось получить ответ от программы', hidden = False)
-                                detuser = comp.determined_users.filter(user=request.user)
-                                print(detuser.exists())
-                                print(detuser)
-                                if detuser.exists():
-                                    detuserx = detuser[0].task.filter(task=task)
-                                    print(detuserx.exists())
-                                    print(detuserx)
-                                    if detuserx.exists():
-                                        print('dobavil')
-                                        detuserx[0].attempts.add(atmpt)
-                                    else:
-                                        print('sozdal i dobavil')
-                                        atmpttsk = AttemptTask.objects.create()
-                                        atmpttsk.task.add(task)
-                                        atmpttsk.attempts.add(atmpt)
-                                        detuser[0].task.add(atmpttsk)
-                                else:
-                                    print('nebilo')
-                                    atmpttsk = AttemptTask.objects.create()
-                                    atmpttsk.task.add(task)
-                                    atmpttsk.attempts.add(atmpt)
-                                    dtmd = Determined.objects.create()
-                                    dtmd.user.add(request.user)
-                                    dtmd.task.add(atmpttsk)
-                                    comp.determined_users.add(dtmd)
-                        except subprocess.TimeoutExpired as e:
-                            atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Время испольнения превышело ограничение', hidden = False)
-                            detuser = comp.determined_users.filter(user=request.user)
-                            print(detuser.exists())
-                            print(detuser)
-                            if detuser.exists():
-                                detuserx = detuser[0].task.filter(task=task)
-                                print(detuserx.exists())
-                                print(detuserx)
-                                if detuserx.exists():
-                                    print('dobavil')
-                                    detuserx[0].attempts.add(atmpt)
-                                else:
-                                    print('sozdal i dobavil')
-                                    atmpttsk = AttemptTask.objects.create()
-                                    atmpttsk.task.add(task)
-                                    atmpttsk.attempts.add(atmpt)
-                                    detuser[0].task.add(atmpttsk)
-                            else:
-                                print('nebilo')
-                                atmpttsk = AttemptTask.objects.create()
-                                atmpttsk.task.add(task)
-                                atmpttsk.attempts.add(atmpt)
-                                dtmd = Determined.objects.create()
-                                dtmd.user.add(request.user)
-                                dtmd.task.add(atmpttsk)
-                                comp.determined_users.add(dtmd)
-                    # Если не верно
-                    else:
-                        print("neverno")
-                    # Удаляем файл
-                    fs.delete(file.name)
-                # УДАЛИТЬ
-                else:
-                    pass
+    elif request.method == 'POST' and comp.actual and request.FILES:
+        # if not Attempt.objects.filter(link_competition = comp).filter(link_user = request.user):
+        #     comp.amount_of_users += 1
+        #     comp.save()
+        file = request.FILES['file']
+        atmpt = Attempt(link_competition=comp, link_task=task, link_user=request.user, document=file)
+        atmpt.save()
+        global compile_error
+        compile_error = 0
+        file_name_num = atmpt.document.path.rfind("\\")
+        if file_name_num == -1:
+            file_name_num = atmpt.document.path.rfind("/")
+            file_name = atmpt.document.path[file_name_num + 1 :]
+            # path = atmpt.document.path[0 : file_name_num]
         else:
-            pass
-    if len(task.extra_text) > 0:
-        extra = True
-    else:
-        extra = False
-    timeLeft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
-    x = timeLeft / comp.duration
-    h = 1
-    k = 0.4
-    y = h * x
-    if y > 1:
-        y = 1
-    elif y < k:
-        y = k
+            file_name = atmpt.document.path[file_name_num + 1 :]
+            # path = atmpt.document.path[0 : file_name_num]
+        del file_name_num
+        answer = run_command(file_name, task.input_values)
+        if compile_error == 0:
+            if answer.strip() == task.output_values.strip():
+                atmpt.successfully = True
+                atmpt.points = 1000
+            else:
+                atmpt.error = "Программа выдала не верный ответ"
+        else:
+            atmpt.error = answer
+        atmpt.save()
     content = {
         'comp': comp,
-        'task': task,
-        'extra': extra,
-        'score': round(task.score*y)
+        'actual_task': task,
+        'task': Task.objects.filter(compet = comp).order_by('title'),
     }
     return render(request, 'main/competition_task.html', content)
 
+# def Competition_task(request, id, taskid):
+#     error = ''
+#     comp = Competition.objects.get(id = id)
+#     if comp.start_time > now():
+#         return redirect('home')
+#     task = comp.tasks.get(id = taskid)
+#     if not request.user.is_authenticated:
+#         return redirect('login')
+#     if request.method == 'POST':
+#         if comp.actual:
+#             # Если отправлена задание
+#             if "test" in request.POST:
+#                 # Если отправили файл
+#                 if request.FILES:
+#                     print(11)
+#                     # Получаем загруженный файл
+#                     file = request.FILES['file']
+#                     fs = FileSystemStorage()
+#                     # Сохраняем на файловой системе, решаем и удаляем
+#                     filename = fs.save(file.name, file)
+#                     # Функция которая будет декодировать ответ файла в нормальный
+#                     encoding = sys.getdefaultencoding()
+#                     # Если прописано много запусков, то создаем списки с различными запусками
+#                     if '/br' in task.input_values:
+#                         inptvals = task.input_values.strip().split("/br")
+#                         ouptvals = task.output_values.strip().split("/br")
+#                         listoutput = []
+#                         for i in range(len(ouptvals)):
+#                             listoutput.append(list(map(str, ouptvals[i].strip().split())))
+#                         more = True
+#                         b = False
+#                     # Создаем "текст" который будем подовать в полученую программу
+#                     else:
+#                         target = task.input_values.strip()
+#                         answer = list(map(str, task.output_values.strip().split()))
+#                         more = False
+#                     # Запускаем циклом если несколько запусков
+#                     if more:
+#                         for i in range(len(listoutput)):
+#                             try:
+#                                 checkruncode = subprocess.run(['python.exe', f"{BASE_DIR}/main{fs.url(filename)}"], input=bytes(inptvals[i].strip(), encoding='utf8'), timeout=1)
+#                                 if checkruncode.returncode == 0:
+#                                     runcode = subprocess.check_output(['python.exe', f"{BASE_DIR}/main{fs.url(filename)}"], input=bytes(inptvals[i].strip(), encoding='utf8'), timeout=1)
+#                                     if listoutput[i] == list(map(str, runcode.decode(encoding).strip().split())):
+#                                         print('fff')
+#                                     else:
+#                                         atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = f'Не верный ответ, запуск {i+1}', hidden = False)
+#                                         detuser = comp.determined_users.filter(user=request.user)
+#                                         print(detuser.exists())
+#                                         print(detuser)
+#                                         if detuser.exists():
+#                                             detuserx = detuser[0].task.filter(task=task)
+#                                             print(detuserx.exists())
+#                                             print(detuserx)
+#                                             if detuserx.exists():
+#                                                 print('dobavil')
+#                                                 detuserx[0].attempts.add(atmpt)
+#                                             else:
+#                                                 print('sozdal i dobavil')
+#                                                 atmpttsk = AttemptTask.objects.create()
+#                                                 atmpttsk.task.add(task)
+#                                                 atmpttsk.attempts.add(atmpt)
+#                                                 detuser[0].task.add(atmpttsk)
+#                                         else:
+#                                             print('nebilo')
+#                                             atmpttsk = AttemptTask.objects.create()
+#                                             atmpttsk.task.add(task)
+#                                             atmpttsk.attempts.add(atmpt)
+#                                             dtmd = Determined.objects.create()
+#                                             dtmd.user.add(request.user)
+#                                             dtmd.task.add(atmpttsk)
+#                                             comp.determined_users.add(dtmd)
+#                                         break
+#                                 else:
+#                                     atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не удалось получить ответ от программы', hidden = False)
+#                                     detuser = comp.determined_users.filter(user=request.user)
+#                                     print(detuser.exists())
+#                                     print(detuser)
+#                                     if detuser.exists():
+#                                         detuserx = detuser[0].task.filter(task=task)
+#                                         print(detuserx.exists())
+#                                         print(detuserx)
+#                                         if detuserx.exists():
+#                                             print('dobavil')
+#                                             detuserx[0].attempts.add(atmpt)
+#                                         else:
+#                                             print('sozdal i dobavil')
+#                                             atmpttsk = AttemptTask.objects.create()
+#                                             atmpttsk.task.add(task)
+#                                             atmpttsk.attempts.add(atmpt)
+#                                             detuser[0].task.add(atmpttsk)
+#                                     else:
+#                                         print('nebilo')
+#                                         atmpttsk = AttemptTask.objects.create()
+#                                         atmpttsk.task.add(task)
+#                                         atmpttsk.attempts.add(atmpt)
+#                                         dtmd = Determined.objects.create()
+#                                         dtmd.user.add(request.user)
+#                                         dtmd.task.add(atmpttsk)
+#                                         comp.determined_users.add(dtmd)
+#                             except subprocess.TimeoutExpired as e:
+#                                 atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Время испольнения превышело ограничение', hidden = False)
+#                                 detuser = comp.determined_users.filter(user=request.user)
+#                                 print(detuser.exists())
+#                                 print(detuser)
+#                                 if detuser.exists():
+#                                     detuserx = detuser[0].task.filter(task=task)
+#                                     print(detuserx.exists())
+#                                     print(detuserx)
+#                                     if detuserx.exists():
+#                                         print('dobavil')
+#                                         detuserx[0].attempts.add(atmpt)
+#                                     else:
+#                                         print('sozdal i dobavil')
+#                                         atmpttsk = AttemptTask.objects.create()
+#                                         atmpttsk.task.add(task)
+#                                         atmpttsk.attempts.add(atmpt)
+#                                         detuser[0].task.add(atmpttsk)
+#                                 else:
+#                                     print('nebilo')
+#                                     atmpttsk = AttemptTask.objects.create()
+#                                     atmpttsk.task.add(task)
+#                                     atmpttsk.attempts.add(atmpt)
+#                                     dtmd = Determined.objects.create()
+#                                     dtmd.user.add(request.user)
+#                                     dtmd.task.add(atmpttsk)
+#                                     comp.determined_users.add(dtmd)
+#                                 break
+#                         else:
+#                             if not b:
+#                                 # Считаем сколько получилось поинтов за задание
+#                                 timeLeft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+#                                 x = timeLeft / comp.duration
+#                                 h = 1
+#                                 k = 0.4
+#                                 y = h * x
+#                                 if y > 1:
+#                                     y = 1
+#                                 elif y < k:
+#                                     y = k
+#                                 # Добавляем попытку в бд
+#                                 atmpt = Attempt.objects.create(time = now(), points = round(task.score*y), successfully = True, error = '-', hidden = False)
+#                                 detuser = comp.determined_users.filter(user=request.user)
+#                                 print(detuser.exists())
+#                                 print(detuser)
+#                                 if detuser.exists():
+#                                     detuserx = detuser[0].task.filter(task=task)
+#                                     print(detuserx.exists())
+#                                     print(detuserx)
+#                                     if detuserx.exists():
+#                                         print('dobavil')
+#                                         detuserx[0].attempts.add(atmpt)
+#                                     else:
+#                                         print('sozdal i dobavil')
+#                                         atmpttsk = AttemptTask.objects.create()
+#                                         atmpttsk.task.add(task)
+#                                         atmpttsk.attempts.add(atmpt)
+#                                         detuser[0].task.add(atmpttsk)
+#                                 else:
+#                                     print('nebilo')
+#                                     atmpttsk = AttemptTask.objects.create()
+#                                     atmpttsk.task.add(task)
+#                                     atmpttsk.attempts.add(atmpt)
+#                                     dtmd = Determined.objects.create()
+#                                     dtmd.user.add(request.user)
+#                                     dtmd.task.add(atmpttsk)
+#                                     comp.determined_users.add(dtmd)
+#                                 print(True)
+#                     # Иначе запускаем одним разом
+#                     elif not more:
+#                         try:
+#                             checkruncode = subprocess.run(['python.exe', f"{BASE_DIR}/main{fs.url(filename)}"], input=bytes(target, encoding='utf8'), timeout=1)
+#                             if checkruncode.returncode == 0:
+#                                 runcode = subprocess.check_output(['python.exe', f"{BASE_DIR}/main{fs.url(filename)}"], input=bytes(target, encoding='utf8'), timeout=1)
+#                                 if answer == list(map(str, runcode.decode(encoding).strip().split())):
+#                                     # Считаем сколько получилось поинтов за задание
+#                                     timeLeft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+#                                     x = timeLeft / comp.duration
+#                                     h = 1
+#                                     k = 0.4
+#                                     y = h * x
+#                                     if y > 1:
+#                                         y = 1
+#                                     elif y < k:
+#                                         y = k
+#                                     # Добавляем попытку в бд
+#                                     atmpt = Attempt.objects.create(time = now(), points = round(task.score*y), successfully = True, error = '-', hidden = False)
+#                                     detuser = comp.determined_users.filter(user=request.user)
+#                                     print(detuser.exists())
+#                                     print(detuser)
+#                                     if detuser.exists():
+#                                         detuserx = detuser[0].task.filter(task=task)
+#                                         print(detuserx.exists())
+#                                         print(detuserx)
+#                                         if detuserx.exists():
+#                                             print('dobavil')
+#                                             detuserx[0].attempts.add(atmpt)
+#                                         else:
+#                                             print('sozdal i dobavil')
+#                                             atmpttsk = AttemptTask.objects.create()
+#                                             atmpttsk.task.add(task)
+#                                             atmpttsk.attempts.add(atmpt)
+#                                             detuser[0].task.add(atmpttsk)
+#                                     else:
+#                                         print('nebilo')
+#                                         atmpttsk = AttemptTask.objects.create()
+#                                         atmpttsk.task.add(task)
+#                                         atmpttsk.attempts.add(atmpt)
+#                                         dtmd = Determined.objects.create()
+#                                         dtmd.user.add(request.user)
+#                                         dtmd.task.add(atmpttsk)
+#                                         comp.determined_users.add(dtmd)
+#                                     print(True)
+#                                 else:
+#                                     atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не верный ответ, запуск 1', hidden = False)
+#                                     detuser = comp.determined_users.filter(user=request.user)
+#                                     print(detuser.exists())
+#                                     print(detuser)
+#                                     if detuser.exists():
+#                                         detuserx = detuser[0].task.filter(task=task)
+#                                         print(detuserx.exists())
+#                                         print(detuserx)
+#                                         if detuserx.exists():
+#                                             print('dobavil')
+#                                             detuserx[0].attempts.add(atmpt)
+#                                         else:
+#                                             print('sozdal i dobavil')
+#                                             atmpttsk = AttemptTask.objects.create()
+#                                             atmpttsk.task.add(task)
+#                                             atmpttsk.attempts.add(atmpt)
+#                                             detuser[0].task.add(atmpttsk)
+#                                     else:
+#                                         print('nebilo')
+#                                         atmpttsk = AttemptTask.objects.create()
+#                                         atmpttsk.task.add(task)
+#                                         atmpttsk.attempts.add(atmpt)
+#                                         dtmd = Determined.objects.create()
+#                                         dtmd.user.add(request.user)
+#                                         dtmd.task.add(atmpttsk)
+#                                         comp.determined_users.add(dtmd)
+#                                         for l in comp.objects.all():
+#                                             if l == task:
+#                                                 continue
+#                                             else:
+#                                                 atmpt1 = Attempt.objects.create(time = now(), points = 0, successfully = False, error = '-', hidden = True)
+#                                                 user = comp.determined_users.get(user = request.user)
+#                                                 atmpttsk1 = AttemptTask.objects.create()
+#                                                 atmpttsk1.task.add(l)
+#                                                 atmpttsk1.attempts.add(atmpt1)
+#                                                 user.task.add(atmpttsk)
+#                             else:
+#                                 atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Не удалось получить ответ от программы', hidden = False)
+#                                 detuser = comp.determined_users.filter(user=request.user)
+#                                 print(detuser.exists())
+#                                 print(detuser)
+#                                 if detuser.exists():
+#                                     detuserx = detuser[0].task.filter(task=task)
+#                                     print(detuserx.exists())
+#                                     print(detuserx)
+#                                     if detuserx.exists():
+#                                         print('dobavil')
+#                                         detuserx[0].attempts.add(atmpt)
+#                                     else:
+#                                         print('sozdal i dobavil')
+#                                         atmpttsk = AttemptTask.objects.create()
+#                                         atmpttsk.task.add(task)
+#                                         atmpttsk.attempts.add(atmpt)
+#                                         detuser[0].task.add(atmpttsk)
+#                                 else:
+#                                     print('nebilo')
+#                                     atmpttsk = AttemptTask.objects.create()
+#                                     atmpttsk.task.add(task)
+#                                     atmpttsk.attempts.add(atmpt)
+#                                     dtmd = Determined.objects.create()
+#                                     dtmd.user.add(request.user)
+#                                     dtmd.task.add(atmpttsk)
+#                                     comp.determined_users.add(dtmd)
+#                         except subprocess.TimeoutExpired as e:
+#                             atmpt = Attempt.objects.create(time = now(), points = 0, successfully = False, error = 'Время испольнения превышело ограничение', hidden = False)
+#                             detuser = comp.determined_users.filter(user=request.user)
+#                             print(detuser.exists())
+#                             print(detuser)
+#                             if detuser.exists():
+#                                 detuserx = detuser[0].task.filter(task=task)
+#                                 print(detuserx.exists())
+#                                 print(detuserx)
+#                                 if detuserx.exists():
+#                                     print('dobavil')
+#                                     detuserx[0].attempts.add(atmpt)
+#                                 else:
+#                                     print('sozdal i dobavil')
+#                                     atmpttsk = AttemptTask.objects.create()
+#                                     atmpttsk.task.add(task)
+#                                     atmpttsk.attempts.add(atmpt)
+#                                     detuser[0].task.add(atmpttsk)
+#                             else:
+#                                 print('nebilo')
+#                                 atmpttsk = AttemptTask.objects.create()
+#                                 atmpttsk.task.add(task)
+#                                 atmpttsk.attempts.add(atmpt)
+#                                 dtmd = Determined.objects.create()
+#                                 dtmd.user.add(request.user)
+#                                 dtmd.task.add(atmpttsk)
+#                                 comp.determined_users.add(dtmd)
+#                     # Если не верно
+#                     else:
+#                         print("neverno")
+#                     # Удаляем файл
+#                     fs.delete(file.name)
+#                 # УДАЛИТЬ
+#                 else:
+#                     pass
+#         else:
+#             pass
+#     if len(task.extra_text) > 0:
+#         extra = True
+#     else:
+#         extra = False
+#     timeLeft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+#     x = timeLeft / comp.duration
+#     h = 1
+#     k = 0.4
+#     y = h * x
+#     if y > 1:
+#         y = 1
+#     elif y < k:
+#         y = k
+#     content = {
+#         'comp': comp,
+#         'task': task,
+#         'extra': extra,
+#         'score': round(task.score*y)
+#     }
+#     return render(request, 'main/competition_task.html', content)
+
+# Переписать
 def Reg_page (request):
     if request.user.is_authenticated:
         return redirect('account', request.user.slug)
