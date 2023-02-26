@@ -35,8 +35,7 @@
                         <div style="display: flex;">
                             <div class="select-btn2">
                                 <ul>
-                                    <li class="tab tab1 tab--active" style="margin-right: 30px;">ввести код</li>  
-                                    <li class="tab tab2">отправить файл</li>
+                                    <li class="tab tab2 tab--active">отправить файл</li>
                                 </ul>
                             </div>
                             <div class="select-menu">
@@ -74,9 +73,7 @@
                         
                         <form class="container_content" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div class="content content-1 content--active">
-                            </div> 
-                            <div class="content content-2">
+                            <div class="content content-2 content--active">
                                 <div class="textarea_upload upload_input_container_setting">
                                     <div class="upload_input_container">
                                         <i class='bx bxl-dropbox' ></i>

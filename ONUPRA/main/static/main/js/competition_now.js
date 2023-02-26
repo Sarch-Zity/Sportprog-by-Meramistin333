@@ -90,22 +90,22 @@ fileinputContainer.addEventListener("mouseout", ()=> {
     icon_file.classList.remove("bx-tada");
 });
 
-     const tabs = document.querySelectorAll(".tab");
-const contents = document.querySelectorAll(".content");
+//      const tabs = document.querySelectorAll(".tab");
+// const contents = document.querySelectorAll(".content");
  
-for (let i = 0; i < tabs.length; i++) {
-	tabs[i].addEventListener("click", ( event ) => {
+// for (let i = 0; i < tabs.length; i++) {
+// 	tabs[i].addEventListener("click", ( event ) => {
  
-		let tabsChildren = event.target.parentElement.children;
-		for (let t = 0; t < tabsChildren.length; t++) {
-			tabsChildren[t].classList.remove("tab--active");
-		}
-		tabs[i].classList.add("tab--active");
-		let tabContentChildren = document.querySelector('.container_content').children;
-		for (let c = 0; c < tabContentChildren.length; c++) {
-			tabContentChildren[c].classList.remove("content--active");
-		}
-		contents[i].classList.add("content--active");
+// 		let tabsChildren = event.target.parentElement.children;
+// 		for (let t = 0; t < tabsChildren.length; t++) {
+// 			tabsChildren[t].classList.remove("tab--active");
+// 		}
+// 		tabs[i].classList.add("tab--active");
+// 		let tabContentChildren = document.querySelector('.container_content').children;
+// 		for (let c = 0; c < tabContentChildren.length; c++) {
+// 			tabContentChildren[c].classList.remove("content--active");
+// 		}
+// 		contents[i].classList.add("content--active");
  
-	});
-}
+// 	});
+// }
