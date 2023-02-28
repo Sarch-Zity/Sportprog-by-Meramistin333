@@ -1,6 +1,7 @@
 import re
 import sys
-from django.utils.timezone import localtime, now, timedelta, localdate,  get_default_timezone_name
+from datetime import date
+from django.utils.timezone import localtime, now, timedelta, localdate,  get_default_timezone_name, datetime
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
@@ -93,7 +94,7 @@ def Account_REDIR (request):
 
 def Rating (request):
     user = CustomUser.objects.filter(is_staff = False).filter(is_superuser = False).order_by('-rating')
-    return render(request, 'main/top.html', {'user': user})
+    return render(request, 'main/top.html', {'users': user})
 
 class AccountDetailView(DetailView):
     model = CustomUser
@@ -223,16 +224,39 @@ def Competition_task(request, id, taskid):
         if compile_error == 0:
             if answer.strip() == task.output_values.strip():
                 atmpt.successfully = True
-                atmpt.points = 1000
+                timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+                x = timeleft / comp.duration
+                h = 1
+                k = 0.4
+                y = h * x
+                if y > 1:
+                    y = 1
+                elif y < k:
+                    y = k
+                atmpt.points = round(task.score * y)
             else:
                 atmpt.error = "Программа выдала не верный ответ"
         else:
             atmpt.error = answer
         atmpt.save()
+    timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+    x = timeleft / comp.duration
+    h = 1
+    k = 0.4
+    y = h * x
+    if y > 1:
+        y = 1
+    elif y < k:
+        y = k
+    if timeleft <= 0:
+        timeleft = 0
     content = {
         'comp': comp,
         'actual_task': task,
         'task': Task.objects.filter(compet = comp).order_by('title'),
+        'time': now().strftime("%H:%M:%S"),
+        'timeleft': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (now() - comp.start_time)).strftime("%H:%M:%S"),
+        'actual_score': round(task.score * y)
     }
     return render(request, 'main/competition_task.html', content)
 
@@ -367,8 +391,8 @@ def Competition_task(request, id, taskid):
 #                         else:
 #                             if not b:
 #                                 # Считаем сколько получилось поинтов за задание
-#                                 timeLeft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
-#                                 x = timeLeft / comp.duration
+#                                 timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+#                                 x = timeleft / comp.duration
 #                                 h = 1
 #                                 k = 0.4
 #                                 y = h * x
@@ -412,8 +436,8 @@ def Competition_task(request, id, taskid):
 #                                 runcode = subprocess.check_output(['python.exe', f"{BASE_DIR}/main{fs.url(filename)}"], input=bytes(target, encoding='utf8'), timeout=1)
 #                                 if answer == list(map(str, runcode.decode(encoding).strip().split())):
 #                                     # Считаем сколько получилось поинтов за задание
-#                                     timeLeft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
-#                                     x = timeLeft / comp.duration
+#                                     timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+#                                     x = timeleft / comp.duration
 #                                     h = 1
 #                                     k = 0.4
 #                                     y = h * x
@@ -554,8 +578,8 @@ def Competition_task(request, id, taskid):
 #         extra = True
 #     else:
 #         extra = False
-#     timeLeft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
-#     x = timeLeft / comp.duration
+#     timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+#     x = timeleft / comp.duration
 #     h = 1
 #     k = 0.4
 #     y = h * x

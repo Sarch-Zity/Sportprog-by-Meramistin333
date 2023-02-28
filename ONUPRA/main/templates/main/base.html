@@ -26,7 +26,7 @@
             <a href="{% url 'accountREDIR' %}">
                 <div class="image-text">
                     <span class="image">
-                        <img src="/media/{{user.image}}" alt="">
+                        <img src="{{ user.image.url }}" alt="">
                     </span>
                     
                     <div class="text logo-text">
@@ -101,7 +101,7 @@
         </div>
     </nav>
 {% block body %}{% endblock %}
-<script>
+<!-- <script>
 let switchMode = document.getElementById("switchMode");
 
     switchMode.onclick = function () {
@@ -113,7 +113,7 @@ let switchMode = document.getElementById("switchMode");
             theme.href = "{% static 'main/css/light-mode.css' %}"
         }
     }
-    </script>
+    </script> -->
 {% block js %}{% endblock %}
 </body>
 </html>
