@@ -10,23 +10,27 @@
         <div class="wrapper_content">
             <div class="text-header">
         <span>{{actual_task.title}} {{score}}</span></div>
-        <span class="span__block"><pre>{{task.description}}</pre></span>
+        <span class="span__block"><pre>{{actual_task.condition}}</pre></span>
+        <span class="span__block cow-1-1">Входные данные</span>
+        <span class="span__block cow-1-2">{{actual_task.required_input}}</span>
+        <span class="span__block cow-1-1">Выходные данные</span>
+        <span class="span__block cow-1-2">{{actual_task.required_output}}</span>
                     <div class="block_test">
                         <div class="block_test_1">
                             <span class="cow-1-1">Тесты</span>
                             <div class="block_data">
                                 <span class="cow-2-2">входные данные</span>
-                                <span class="cow-2-1"><pre>{{task.input_exmaple}}</pre></span>
+                                <span class="cow-2-1"><pre>{{actual_task.input_exmaple}}</pre></span>
 
                                 <span class="cow-2-2">выходные данные</span>
-                                <span class="cow-2-1"><pre>{{task.output_exmaple}}</pre></span>
+                                <span class="cow-2-1"><pre>{{actual_task.output_exmaple}}</pre></span>
                             </div>
                         </div>
-                        {% if extra %}
+                        {% if actual_task.extra_text %}
                         <div class="block_test_2">
                             <span class="cow-1-1 margin-1">Пояснение к тестам</span>
                             <img class="img_b" src="e5872e9b009e502f2afc32237b1a5e59ed8d508a.png" alt="">
-                            <span class="span__block" style="margin: 0px;"><pre>{{task.extra_text}}</pre></span>
+                            <span class="span__block" style="margin: 0px;"><pre>{{actual_task.extra_text}}</pre></span>
                         </div>
                         {% endif %}
                     </div>
@@ -41,31 +45,43 @@
                             <div class="select-menu">
                                 <div class="select-btn">
                                     <div><span span style="color: #706F6F; font-weight: 700;">Компилятор:</span>
-                                    <span class="sBtn-text" style="font-weight: 700;">Список</span></div>
+                                        <span class="sBtn-text blocked_text" style="font-weight: 700;">Список</span></div>
                                     <i class="bx bx-chevron-down" style="font-weight: 700;"></i>
                                 </div>
                         
                                 <ul class="options">
                                     <li class="option">
-                                        <span class="option-text" data-type=".py">Pypy 3.5</span>
+                                        <span class="option-text" data-type=".py">Python</span>
                                     </li>
                                     <li class="option">
-                                        <span class="option-text" data-type=".py">Pypy 10</span>
+                                        <span class="option-text" data-type=".cpp">C++</span>
                                     </li>
                                     <li class="option">
-                                        <span class="option-text" data-type=".py">Pypy 3.5v</span>
+                                        <span class="option-text" data-type=".pas">Pascal</span>
                                     </li>
                                     <li class="option"> 
-                                        <span class="option-text" data-type=".text">GNC 3+</span>
+                                        <span class="option-text" data-type=".c">C</span>
                                     </li>
                                     <li class="option">
                                         <span class="option-text" data-type=".js">JavaScript</span>
                                     </li>
                                     <li class="option">
-                                        <span class="option-text" data-type=".text">Pascal</span>
+                                        <span class="option-text" data-type=".cs">C#</span>
                                     </li>
                                     <li class="option">
-                                        <span class="option-text" data-type=".js">Java 5</span>
+                                        <span class="option-text" data-type=".kt">Kotlin</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text" data-type=".rs">Rust</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text" data-type=".php">PHP</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text" data-type=".rb">Ruby</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text" data-type=".go">Go</span>
                                     </li>
                                 </ul>
                             </div>
@@ -78,7 +94,7 @@
                                     <div class="upload_input_container">
                                         <i class='bx bxl-dropbox' ></i>
                                         <span class="upload_text_">Загрузите файл</span> 
-                                        <input accept=".py" title="" class="upload_text" type="file" id="upload" name="file" onChange='getoutput()'>
+                                        <input accept=".py, .cpp, .pas, .c, .cs, .kt, .rs, .php, .rb, .go, .js" title="" class="upload_text" type="file" id="upload" name="file" onChange='getoutput()'>
                                     </div>
                                 </div>
                             </div>
@@ -90,8 +106,12 @@
         <div class="wrapper_content_2">
             <span class="competition_text">Соревнования</span>
             <span class="time_text">Оставшееся время:</span>
-             <span class="time_settings">Скоро...<!--<span class="hours"><span class="number">1</span></span>:<span class="minutes"><span class="number">57</span></span>:<span class="seconds"><span class="number">58</span></span>--> </span> 
-            <div>
+            {% if time_shower %}
+                <span class="time_settings"><span class="hours"><span class="number">{{ timeleftH }}</span></span>:<span class="minutes"><span class="number">{{ timeleftM }}</span></span>:<span class="seconds"><span class="number">{{ timeleftS }}</span></span></span> 
+            {% else %}
+                <span class="time_settings">--:--:--</span>
+            {% endif %}
+             <div>
                 <span class="task_list">Задачи</span>
                 {% for i in task.all %}
                 <a href='/competition/{{comp.id}}/{{ forloop.counter|add:"-1"}}/'><div class="task right">{{i}}</div></a>
@@ -99,7 +119,7 @@
              </div>
             <div class="cow-d-1">
                 <span style="font-weight: 600;margin-top: 30px;">Положение</span>
-                <span style="font-weight: 300;margin-bottom: 10px;">Положение на момент 12:01:35</span>
+                <span style="font-weight: 300;margin-bottom: 10px;">Положение на момент {{ time }}</span>
                 <div class="block_leaders_board">
                     <span>4. vadim344</span>
                     <span>5. melterex</span>

@@ -1,16 +1,30 @@
 const filetext = document.querySelector(".upload_text_");
 const fileinput = document.querySelector(".upload_text");
 const fileinputContainer = document.querySelector(".upload_input_container");
-        
+const button_task = document.querySelector(".button-task");
+const stn_text = document.querySelector(".sBtn-text");
+const select_menu = document.querySelector(".select-menu");
+
+function blocked_button_task()
+{
+    if(stn_text.classList.contains("blocked_text")){
+        button_task.disabled = 'disabled';
+    }
+    else{
+        button_task.removeAttribute('disabled');
+
+    }
+}
+blocked_button_task();
         
 function getoutput()
     {
 const fullPath = document.getElementById('upload').value;  
 const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
 const filename = fullPath.substring(startIndex);
+const icon_file = document.querySelector('.bxl-dropbox');
     if(filename != ""){
         filetext.innerHTML = filename;
-        const icon_file = document.querySelector('.bxl-dropbox');
         icon_file.classList.remove("bx-tada");
         icon_file.classList.add("bx-package");
         return true;
@@ -20,29 +34,52 @@ const filename = fullPath.substring(startIndex);
     filetext.innerHTML = "Загрузите файл";
         }
 
-// const seconds = document.querySelector(".seconds .number");
-// const minutes = document.querySelector(".minutes .number");
-// const hours = document.querySelector(".hours .number");
 
-// let secValue = 58,
-// minValue = 30,
-// hourValue = 1
+
+if(document.querySelector(".time_settings").textContent === "--:--:--"){
+    ;
+}
+else{
+    const seconds = document.querySelector(".seconds .number");
+    const minutes = document.querySelector(".minutes .number");
+    const hours = document.querySelector(".hours .number");
+
+    let secValue = document.querySelector(".seconds .number").textContent,
+    minValue = document.querySelector(".minutes .number").textContent,
+    hourValue = document.querySelector(".hours .number").textContent
+
+    const timeFunctin = setInterval(() => {
+        secValue--;
+    
+        if (secValue == 0) {
+            minValue--;
+            secValue = 60;
+        }
+        if (minValue == 0) {
+            hourValue--;
+            minValue = 60;
+        }
+        seconds.textContent = secValue < 10 ? `0${secValue}` : secValue;
+        minutes.textContent = minValue < 10 ? `0${minValue}` : minValue;
+        hours.textContent = hourValue < 10 ? `${hourValue}` : hourValue;
+    }, 1000);
+}
 
 // const timeFunctin = setInterval(() => {
-//     secValue--;
+//     const seconds_text = document.querySelector(".seconds .number").textContent;
+//     const minutes_text = document.querySelector(".minutes .number").textContent;
+//     const hours_text = document.querySelector(".hours .number").textContent;
 
-//     if (secValue == 0) {
-//         minValue--;
-//         secValue = 60;
-//     }
-//     if (minValue == 0) {
-//         hourValue--;
-//         minValue = 60;
-//     }
-//     seconds.textContent = secValue < 10 ? `0${secValue}` : secValue;
-//     minutes.textContent = minValue < 10 ? `0${minValue}` : minValue;
-//     hours.textContent = hourValue < 10 ? `0${hourValue}` : hourValue;
+//     const seconds = document.querySelector(".seconds .number");
+//     const minutes = document.querySelector(".minutes .number");
+//     const hours = document.querySelector(".hours .number");
+
+//     seconds.textContent = seconds_text < 10 ? '0${seconds_text}' : seconds_text;
+//     minutes.textContent = minutes_text < 10 ? '0${minutes_text}' : minutes_text;
+//     hours.textContent = hours_text < 10 ? '0${hours_text}' : hours_text;
+//     console.log(seconds_text, minutes_text, hours_text, seconds, minutes, hours)
 // }, 1000);
+
 const optionMenu = document.querySelector(".select-menu"),
 selectBtn = optionMenu.querySelector(".select-btn"),
 options = optionMenu.querySelectorAll(".option"),
@@ -73,9 +110,11 @@ options.forEach(option =>{
         sBtn_text.innerText = selectedOption;
         let selectedOptionAttribyteQuerySelector = option.querySelector(".option-text");
         let selectedOptionAttribyte = selectedOptionAttribyteQuerySelector.dataset.type;
-        ileinput.setAttribute("accept", selectedOptionAttribyte);
+        fileinput.setAttribute("accept", selectedOptionAttribyte);
 
-     
+        const stn_text = document.querySelector(".sBtn-text");
+        stn_text.classList.remove("blocked_text");
+        blocked_button_task();
         optionMenu.classList.remove("active");
     });
 });

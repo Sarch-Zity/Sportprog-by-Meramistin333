@@ -1,11 +1,11 @@
 {% load static %}
-{% block title %}Вход{% endblock %}
-{% block style %}
+<!DOCTYPE html>
+<head>
+<title>Вход</title>
     <link rel="stylesheet" href="{% static 'main/css/registration.css' %}">
-    <link rel="stylesheet"
-href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-{% endblock %}
-{% block body %}
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+</head>
+<body>
     {% if request.user.is_authenticated %}
     <meta http-equiv="REFRESH" content="0;url=/you/">
     {% else %}
@@ -43,5 +43,5 @@ href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
             <span class="exit">Нет аккаунта? <a href="{% url 'signup' %}">Зарегестрироваться!</a></span>
         </div>
     {% endif %}
-{% endblock %}
-{% block js %}<script src="{% static 'main/js/login.js' %}"></script>{% endblock %}
+    <script src="{% static 'main/js/login.js' %}"></script>
+</body>

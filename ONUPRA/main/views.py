@@ -222,6 +222,7 @@ def Competition_task(request, id, taskid):
         del file_name_num
         answer = run_command(file_name, task.input_values)
         if compile_error == 0:
+            print(answer.strip(), task.output_values.strip())
             if answer.strip() == task.output_values.strip():
                 atmpt.successfully = True
                 timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
@@ -248,15 +249,20 @@ def Competition_task(request, id, taskid):
         y = 1
     elif y < k:
         y = k
-    if timeleft <= 0:
-        timeleft = 0
+    if comp.start_time + timedelta(minutes=comp.duration) < now():
+        time_shower = False
+    else:
+        time_shower = True
     content = {
         'comp': comp,
         'actual_task': task,
         'task': Task.objects.filter(compet = comp).order_by('title'),
         'time': now().strftime("%H:%M:%S"),
-        'timeleft': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (now() - comp.start_time)).strftime("%H:%M:%S"),
-        'actual_score': round(task.score * y)
+        'timeleftH': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (now() - comp.start_time)).strftime("%H"),
+        'timeleftM': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (now() - comp.start_time)).strftime("%M"),
+        'timeleftS': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (now() - comp.start_time)).strftime("%S"),
+        'actual_score': round(task.score * y),
+        'time_shower': time_shower
     }
     return render(request, 'main/competition_task.html', content)
 

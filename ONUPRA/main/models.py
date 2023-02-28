@@ -40,7 +40,9 @@ class Competition(models.Model):
 class Task(models.Model):
     compet = models.ForeignKey(Competition, on_delete=models.CASCADE)
     title = models.CharField('Название задания', max_length=30)
-    description = models.TextField('Описание задания')
+    condition = models.TextField('Описание задания')
+    required_input = models.TextField('Входные данные')
+    required_output = models.TextField('Выходные данные')
     input_exmaple = models.TextField('Пример ввода кода')
     output_exmaple = models.TextField('Пример ввода кода')
     extra_text = models.TextField('Дополнительные пояснение, недочеты', blank=True)
