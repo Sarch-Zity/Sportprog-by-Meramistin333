@@ -49,18 +49,22 @@ else{
     hourValue = document.querySelector(".hours .number").textContent
 
     const timeFunctin = setInterval(() => {
-        secValue--;
-    
+        if (hourValue != 0 || minValue != 0 || secValue != 0){
+            secValue--;
+        }
+        if(hourValue == 0 && minValue == 0 && secValue == 0){
+            location.reload();
+        }
         if (secValue == 0) {
             minValue--;
-            secValue = 60;
+            secValue = 59;
         }
-        if (minValue == 0) {
+        if (minValue == 0 && hourValue != 0) {
             hourValue--;
-            minValue = 60;
+            minValue = 59;
         }
         seconds.textContent = secValue < 10 ? `0${secValue}` : secValue;
-        minutes.textContent = minValue < 10 ? `0${minValue}` : minValue;
+        minutes.textContent = minValue < 10 ? `${minValue}` : minValue;
         hours.textContent = hourValue < 10 ? `${hourValue}` : hourValue;
     }, 1000);
 }

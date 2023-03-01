@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 {% load mathfilters %}
 {% load static %}
-{% block title %}{{task.title}}{% endblock %}
+{% block title %}{{actual_task.title}}{% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'main/css/competition_now.css' %}">
 {% endblock %}
@@ -29,19 +29,19 @@
                         {% if actual_task.extra_text %}
                         <div class="block_test_2">
                             <span class="cow-1-1 margin-1">Пояснение к тестам</span>
-                            <img class="img_b" src="e5872e9b009e502f2afc32237b1a5e59ed8d508a.png" alt="">
                             <span class="span__block" style="margin: 0px;"><pre>{{actual_task.extra_text}}</pre></span>
                         </div>
                         {% endif %}
                     </div>
+                    {% if time_shower and actual %}
                     <div class="uploud_fail">
                         <span class="font-header">Отправка решения</span>
                         <div style="display: flex;">
-                            <div class="select-btn2">
+                            <!-- <div class="select-btn2">
                                 <ul>
-                                    <li class="tab tab2 tab--active">отправить файл</li>
+                                    <li class="tab tab2 tab--active">Отправка файла</li>
                                 </ul>
-                            </div>
+                            </div> -->
                             <div class="select-menu">
                                 <div class="select-btn">
                                     <div><span span style="color: #706F6F; font-weight: 700;">Компилятор:</span>
@@ -102,11 +102,13 @@
                         </form>
                         
                     </div>
+                    {% else %}
+                    {% endif %}
         </div>
         <div class="wrapper_content_2">
             <span class="competition_text">Соревнования</span>
             <span class="time_text">Оставшееся время:</span>
-            {% if time_shower %}
+            {% if time_shower and actual %}
                 <span class="time_settings"><span class="hours"><span class="number">{{ timeleftH }}</span></span>:<span class="minutes"><span class="number">{{ timeleftM }}</span></span>:<span class="seconds"><span class="number">{{ timeleftS }}</span></span></span> 
             {% else %}
                 <span class="time_settings">--:--:--</span>
@@ -114,7 +116,7 @@
              <div>
                 <span class="task_list">Задачи</span>
                 {% for i in task.all %}
-                <a href='/competition/{{comp.id}}/{{ forloop.counter|add:"-1"}}/'><div class="task right">{{i}}</div></a>
+                <a href="{% url 'competition_task' comp.id forloop.counter|add:'-1' %}"><div class="task right">{{i}}</div></a>
                 {% endfor %}
              </div>
             <div class="cow-d-1">

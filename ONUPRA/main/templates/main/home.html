@@ -17,7 +17,10 @@
     <div class="wrapper_content_homee">
         <div class="wrapper_content_home">
             <span>Всем привет!</span>
-            <p>Мы создали этот проект втроем: режиссер Дэвид Кроненберг, сценарист Дэвид Кроненбергом и актер Ричард Линклэйтер. Все трое - поклонники жанра хоррор. Когда мы познакомились, Дэвид сказал, что хотел бы снять хоррор, но не знает, с чего начать. Я предложил ему написать сценарий, и он ответил: "Я никогда не слышал ни о чем подобном, но готов попробовать". Сценарий был написан, а мы начали снимать. В процессе съемки я понял, что хорроры - это не только страшные истории, но и нечто большее.</p>
+            <p>Мы рады сообщить, что наш сайт Onupra проводит соревнования по спортивному программированию для всех желающих. Если вы хотите проверить свои силы в решении задач на знание языков программирования, алгоритмов и структур данных, то присоединяйтесь к нам и примите участие в соревнованиях.
+                В рамках соревнований вы сможете соперничать с другими участниками и повысить свой уровень в программировании. Это отличная возможность попрактиковаться и узнать о новых технологиях.
+                Соревнования будут проходить на нашем сайте регулярно, поэтому вы сможете принимать участие в них несколько раз в месяц. Мы уверены, что опыт, который вы получите, будет для вас не менее ценным, чем любые призы.
+                Не теряйте время и присоединяйтесь к нашим соревнованиям уже сегодня. Ждем вас на страницах Onupra!</p>
         </div>
         <div class="wrapper_content_home_faq">
             <span class="FAQ">FAQ</span>
@@ -116,45 +119,50 @@
             </div>
         </div>
     </div>
-    <div class="wrapper_content_info">
-        <div class="wrapper_content_info_competition">
-            <div class="competition_block">
-                <div class="competition_block_info">
-                    <div class="competition-text">
-                        <div class="block-icon">
-                        <i class='bx bx-code-alt' ></i>
-                        <div class="text-info">
-                            <span class="name">«Задачи на теорию вероятностей»</span>
-                            <span class="info">9 классы</span>
+        <div class="wrapper_content_info">
+            <div class="wrapper_content_info_competition">
+                {% if comp %}
+                <a href="{% url 'сompetition' comp.id %}">
+                    <div class="competition_block">
+                        <div class="competition_block_info">
+                            <div class="competition-text" style="width: 100%;">
+                                <div class="block-icon">
+                                <i class='bx bx-code-alt' ></i>
+                                </div>
+                                <div class="text-info" style="width: 100%;">
+                                    <span class="name">«{{ comp.title }}»</span>
+                                    <!-- <span class="info">9 классы</span> -->
+                                </div>
+                            </div>
                         </div>
+                        <div class="competition_block_info_ code">
+                            <span>Автор: ONUPRA</span>
+                            <span>{{ date }}</span>
                         </div>
                     </div>
-                </div>
-                <div class="competition_block_info_ code">
-                     <span>Автор: xtreme</span>
-                     <span>27 декабря</span>
-                </div>
-            </div>
-            <div class="competition_block">
-                <div class="competition_block_info_ code code_info">
-                    <span style="font-size: 23px;">v10.12.3</span>
-                </div>
-                <div class="competition_block_info">
-                    <span class="Now_ihfo">Что нового?</span>
-                    <ul>
-                        <li>Обновление рейтинга</li>
-                        <li>новый функционал</li>
-                        <li>переработка регистрации</li>
-                        <li>переделка дизайна профиля</li>
-                        <li>и другое</li>
-                    </ul>
-                    <div class="more">
-                        <span>Подробнее >>>></span> 
+                </a>
+                {% else %}
+                {% endif %}
+                <div class="competition_block">
+                    <div class="competition_block_info_ code code_info">
+                        <span style="font-size: 23px;">beta v2.1</span>
+                    </div>
+                    <div class="competition_block_info">
+                        <span class="Now_ihfo">Что нового?</span>
+                        <ul>
+                            <li>Обновление рейтинга</li>
+                            <li>новый функционал</li>
+                            <li>переработка регистрации</li>
+                            <li>переделка дизайна профиля</li>
+                            <li>и другое</li>
+                        </ul>
+                        <!-- <div class="more">
+                            <span>Подробнее >>>></span> 
+                        </div> -->
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </div>
 {% endblock %}
 {% block js %}<script src="{% static 'main/js/home.js' %}"></script>{% endblock %}

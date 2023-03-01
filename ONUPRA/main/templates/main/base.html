@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" type="image/png" href="{% static 'main/favicon.ico' %}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,12 +27,12 @@
             <a href="{% url 'accountREDIR' %}">
                 <div class="image-text">
                     <span class="image">
-                        <img src="{{ user.image.url }}" alt="">
+                        <img src="{{ request.user.image.url }}" alt="">
                     </span>
                     
                     <div class="text logo-text">
-                        <span class="name">{{user.username}}</span>
-                        <span class="profession">{{user.rating}}</span>
+                        <span class="name">{{request.user.username}}</span>
+                        <span class="profession">{{request.user.rating}}</span>
                     </div>
                 </div>
             </a>
@@ -64,11 +65,17 @@
                         </a>
                     </li>
                     {% if request.user.is_authenticated %}
-                    <li class="nav-link">
+                    <!-- <li class="nav-link">
                         <a href="#">
                             <i class='bx bx-heart icon' ></i>
                             <span class="text nav-text">Друзья</span>
                         </a>
+                    </li> -->
+                    <li class="nav-link">
+                        <div class="blocked">
+                            <i class='bx bxs-dizzy icon'></i>
+                            <span class="text">Друзья</span>
+                        </div>
                     </li>
                     {% else %}
                     <li class="nav-link">

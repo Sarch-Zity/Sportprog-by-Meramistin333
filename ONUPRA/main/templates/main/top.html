@@ -27,7 +27,23 @@
                 </thead>
                 <tbody class="elastik page">
                     {% for i in users %}
-                    <a style="text-decoration: none;" href="{% url 'account' i.slug %}"><tr class="string" style="display: none;"><td class="position">{{ forloop.counter }}</td><td class="position__user">{{ i.username }}</td><td class="position__user__reiting">{{ i.rating }}</td></tr></a>
+                        <tr class="string" style="display: none;">
+                            <td class="position">
+                                <a style="text-decoration: none;" href="{% url 'account' i.slug %}">
+                                    {{ forloop.counter }}
+                                </a>
+                            </td>
+                            <td class="position__user">
+                                <a style="text-decoration: none;" href="{% url 'account' i.slug %}">
+                                    {{ i.username }}
+                                </a>
+                            </td>
+                            <td class="position__user__reiting">
+                                <a style="text-decoration: none;" href="{% url 'account' i.slug %}">
+                                    {{ i.rating }}
+                                </a>
+                            </td>
+                        </tr>
                     {% endfor %}
                 </tbody>
                 <tbody class="elastik list_pagination" id="list_pagination"></tbody>     

@@ -1,6 +1,8 @@
 import re
 import sys
 from datetime import date
+import locale
+import pytils
 from django.utils.timezone import localtime, now, timedelta, localdate,  get_default_timezone_name, datetime
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.files.storage import FileSystemStorage
@@ -85,7 +87,9 @@ def run_command(file_name, tests):
         return "Не удалось скомпилировать файл"
 
 def Index (request):
-    return render(request, 'main/home.html')
+    locale.setlocale(locale.LC_TIME, 'ru_RU')
+    comp = Competition.objects.filter(actual = True).order_by('start_time')[0]
+    return render(request, 'main/home.html', {'comp': comp, 'date': pytils.dt.ru_strftime(u'%d %B', inflected=True, date=comp.start_time)})
 
 def Account_REDIR (request):
     if not request.user.is_authenticated:
@@ -101,7 +105,7 @@ class AccountDetailView(DetailView):
     template_name = 'main/user_page.html'
     context_object_name = 'form'
 
-def AccountPage(request, slug):
+def Profile(request, slug):
     try:
         user = CustomUser.objects.get(slug = slug)
     except CustomUser.DoesNotExist as e:
@@ -150,7 +154,7 @@ def AccountPage(request, slug):
         'form2': FileForm(),
         'articles': Article.objects.filter(user = user)
     }
-    return render(request, 'main/user_page.html', content)
+    return render(request, 'main/Profile.html', content)
 
 def CreateCompetition(request):
     if request.method == 'POST':
@@ -262,7 +266,8 @@ def Competition_task(request, id, taskid):
         'timeleftM': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (now() - comp.start_time)).strftime("%M"),
         'timeleftS': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (now() - comp.start_time)).strftime("%S"),
         'actual_score': round(task.score * y),
-        'time_shower': time_shower
+        'time_shower': time_shower,
+        'actual': comp.actual
     }
     return render(request, 'main/competition_task.html', content)
 
