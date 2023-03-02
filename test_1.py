@@ -1,4 +1,3 @@
-a = input()
-b = input()
+a = int(input())
 print(a)
-print(b)
+print(a**2)

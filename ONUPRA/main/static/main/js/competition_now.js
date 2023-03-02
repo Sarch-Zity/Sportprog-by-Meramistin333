@@ -4,7 +4,7 @@ const fileinputContainer = document.querySelector(".upload_input_container");
 const button_task = document.querySelector(".button-task");
 const stn_text = document.querySelector(".sBtn-text");
 const select_menu = document.querySelector(".select-menu");
-
+console.log(stn_text)
 function blocked_button_task()
 {
     if(stn_text.classList.contains("blocked_text")){

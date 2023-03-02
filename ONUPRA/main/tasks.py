@@ -40,15 +40,17 @@ def cheker():
                                 d1[k] += d0[k]
                     average_score = max_score / len(users)
                     del d0, max_score
-                    print(users)
+                    # print(users)
                     for j in users:
                         if j.rating == 0:
-                            print(j.username, j.rating, d1[j], average_score, 200 * ((d1[j] / average_score - 1) / 3 + 1))
+                            # print(j.username, j.rating, d1[j], average_score, 200 * ((d1[j] / average_score - 1) / 3 + 1))
                             j.rating = 200 * ((d1[j] / average_score - 1) / 3 + 1)
                         else:
-                            print(j.username, j.rating, d1[j], average_score, j.rating * ((d1[j] / average_score - 1) / 3 + 1))
+                            # print(j.username, j.rating, d1[j], average_score, j.rating * ((d1[j] / average_score - 1) / 3 + 1))
                             j.rating = j.rating * ((d1[j] / average_score - 1) / 3 + 1)
                         j.save()
+                        point = ScorePoint(score = j.rating, link_user = j)
+                        point.save()
             else:
                 break
 

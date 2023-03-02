@@ -1,13 +1,13 @@
 import re
 import sys
 from datetime import date
-import locale
-import pytils
+# import locale
+# import pytils
 from django.utils.timezone import localtime, now, timedelta, localdate,  get_default_timezone_name, datetime
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
-from .models import CustomUser, Competition, Task, Attempt, File, Article
+from .models import CustomUser, Competition, Task, Attempt, File, Article, ScorePoint
 from django.contrib.auth.hashers import check_password
 from .forms import CustomUserCreationFrom, CustomUserChangeFrom, PasswordChangeForm, CreateCompetitionForm, CustomUserImageChangeFrom, CustomUserUsernameChangeFrom, CreateTaskForm, ArticleForm, FileForm
 from django.contrib.auth import login, logout
@@ -20,76 +20,102 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 def create_output_file(command):
-    global compile_error
+    global compile_error, delete_files
     try:
-        subprocess.run(command, shell=True, check=True, stdout=subprocess.DEVNULL)
+        subprocess.run(command, shell=True, check=True,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         compile_error = 0
     except subprocess.CalledProcessError as e:
         compile_error = 1
 
-def run_command(file_name, tests):
-    global compile_error
+def run_command(file_name, tests_input, tests_output):
+    global compile_error, delete_files
     path = 'main\\media\\comp_files\\'
     command = ""
     if file_name.endswith(".py"):
         command = "python " + path + file_name
     elif file_name.endswith(".cpp"):
-        command = "g++ " + path + file_name + " -o " + f"{path + file_name[:-4]}.out"
+        command = "g++ " + path + file_name + \
+            " -o " + f"{path + file_name[:-4]}.out"
         create_output_file(command)
         command = f"{path + file_name[:-4]}.out"
+        delete_files.append(f"{path + file_name[:-4]}.out")
     elif file_name.endswith(".pas"):
         command = "fpc " + path + file_name
         create_output_file(command)
-        command = path + file_name[:-4]
-    elif file_name.endswith(".java"):
-        command = "javac " + path + file_name
-        create_output_file(command)
-        command = "java " + path + file_name[:-5]
+        command = path + file_name[:-4] + ".exe"
+        delete_files.append(path + file_name[:-4] + ".exe")
     elif file_name.endswith(".c"):
-        command = "gcc "  + path + file_name + " -o " + f"{path + file_name[:-2]}.out"
+        command = "gcc " + path + file_name + \
+            " -o " + f"{path + file_name[:-2]}.out"
         create_output_file(command)
         command = f"{path + file_name[:-2]}.out"
+        delete_files.append(f"{path + file_name[:-4]}.out")
     elif file_name.endswith(".cs"):
         command = "csc " + path + file_name
         create_output_file(command)
         command = "mono " + path + file_name[:-3] + ".exe"
+        delete_files.append(path + file_name[:-3] + ".exe")
     elif file_name.endswith(".go"):
         command = "go run " + path + file_name
     elif file_name.endswith(".kt"):
-        command = "kotlinc " + path + file_name + f" -include-runtime -d {path + file_name[:-3]}.jar"
+        command = "kotlinc " + path + file_name + \
+            f" -include-runtime -d {path + file_name[:-3]}.jar"
         create_output_file(command)
         command = f"java -jar {path + file_name[:-3]}.jar"
+        delete_files.append(f"{path + file_name[:-3]}.jar")
     elif file_name.endswith(".php"):
         command = "php " + path + file_name
     elif file_name.endswith(".rb"):
         command = "ruby " + path + file_name
     elif file_name.endswith(".rs"):
-        command = "rustc " + path + file_name + f" -o {path + file_name[:-3]}.out"
+        command = "rustc " + path + file_name + \
+            f" -o {path + file_name[:-3]}.out"
         create_output_file(command)
         command = f"{path + file_name[:-3]}.out"
+        delete_files.append(f"{path + file_name[:-4]}.out")
     elif file_name.endswith(".js"):
-        command = "node " + path + file_name
+        command = "d8 " + path + file_name
     else:
         compile_error = 1
         return "Нет такого языка програмирования"
+    # delete_files.append(path + file_name)
     if compile_error == 0:
-        try:
-            result = subprocess.run(command, input=tests, text=True, shell=True, timeout=10, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-            # result.stderr
-            return result.stdout
-        except subprocess.TimeoutExpired:
-            compile_error = 1
-            return "Время вышло"
-        except subprocess.CalledProcessError:
-            compile_error = 1
-            return "Проблема с принятием входных данных"
+        for i in range(len(tests_input)):
+            try:
+                result = subprocess.run(command, input=(tests_input[i] + "\n"), text=True, shell=True,
+                                        timeout=5, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+                print(result.stderr)
+                if result.stdout.strip() != tests_output[i].strip():
+                    for j in delete_files:
+                        os.remove(j)
+                    return [(i / len(tests_input)), f"Неправильный ответ на тесте {i}"]
+            except subprocess.TimeoutExpired:
+                compile_error = 1
+                for j in delete_files:
+                    os.remove(j)
+                return [(i / len(tests_input)), f"Превышено ограничение времени на тесте {i}"]
+            except subprocess.CalledProcessError as e:
+                print(e.stderr)
+                compile_error = 1
+                for j in delete_files:
+                    os.remove(j)
+                return [(i / len(tests_input)), f"Проблема с принятием входных данных на тесте {i}"]
+        else:
+            return [1, "Все тесты прошли успешно"]
     else:
+        for i in delete_files:
+            os.remove(i)
         return "Не удалось скомпилировать файл"
 
 def Index (request):
-    locale.setlocale(locale.LC_TIME, 'ru_RU')
-    comp = Competition.objects.filter(actual = True).order_by('start_time')[0]
-    return render(request, 'main/home.html', {'comp': comp, 'date': pytils.dt.ru_strftime(u'%d %B', inflected=True, date=comp.start_time)})
+    # locale.setlocale(locale.LC_TIME, 'ru_RU')
+    comp = Competition.objects.filter(actual = True).order_by('start_time')
+    if comp:
+        comp = comp[0]
+        # return render(request, 'main/home.html', {'comp': comp, 'date': pytils.dt.ru_strftime(u'%d %B', inflected=True, date=comp.start_time)})
+        return render(request, 'main/home.html', {'comp': comp, 'date': comp.start_time.strftime(u'%d.%m')})
+    return render(request, 'main/home.html', {'comp': comp})
 
 def Account_REDIR (request):
     if not request.user.is_authenticated:
@@ -152,7 +178,8 @@ def Profile(request, slug):
         'user': user,
         'form': ArticleForm(),
         'form2': FileForm(),
-        'articles': Article.objects.filter(user = user)
+        'articles': Article.objects.filter(user = user),
+        'point': ScorePoint.objects.filter(link_user = user).order_by("date")
     }
     return render(request, 'main/Profile.html', content)
 
@@ -213,8 +240,10 @@ def Competition_task(request, id, taskid):
         file = request.FILES['file']
         atmpt = Attempt(link_competition=comp, link_task=task, link_user=request.user, document=file)
         atmpt.save()
-        global compile_error
+        global compile_error, delete_files
+        delete_files = []
         compile_error = 0
+        print(atmpt.document.path)
         file_name_num = atmpt.document.path.rfind("\\")
         if file_name_num == -1:
             file_name_num = atmpt.document.path.rfind("/")
@@ -224,25 +253,22 @@ def Competition_task(request, id, taskid):
             file_name = atmpt.document.path[file_name_num + 1 :]
             # path = atmpt.document.path[0 : file_name_num]
         del file_name_num
-        answer = run_command(file_name, task.input_values)
+        answer = run_command(file_name, [task.input_values_1.replace('\r\n', '\n'), task.input_values_2.replace('\r\n', '\n'), task.input_values_3.replace('\r\n', '\n'), task.input_values_4.replace('\r\n', '\n'), task.input_values_5.replace('\r\n', '\n')], [task.output_values_1.replace('\r\n', '\n'), task.output_values_2.replace('\r\n', '\n'), task.output_values_3.replace('\r\n', '\n'), task.output_values_4.replace('\r\n', '\n'), task.output_values_5.replace('\r\n', '\n')])
         if compile_error == 0:
-            print(answer.strip(), task.output_values.strip())
-            if answer.strip() == task.output_values.strip():
-                atmpt.successfully = True
-                timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
-                x = timeleft / comp.duration
-                h = 1
-                k = 0.4
-                y = h * x
-                if y > 1:
-                    y = 1
-                elif y < k:
-                    y = k
-                atmpt.points = round(task.score * y)
-            else:
-                atmpt.error = "Программа выдала не верный ответ"
+            atmpt.successfully = True
+            timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+            x = timeleft / comp.duration
+            h = 1
+            k = 0.4
+            y = h * x
+            if y > 1:
+                y = 1
+            elif y < k:
+                y = k
+            atmpt.points = round(task.score * y * answer[0])
+            atmpt.error = answer[1]
         else:
-            atmpt.error = answer
+            atmpt.error = answer[1]
         atmpt.save()
     timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
     x = timeleft / comp.duration
@@ -626,6 +652,8 @@ def Reg_page (request):
         elif form.is_valid():
             formsv = form.save()
             login(request, formsv)
+            point = ScorePoint(score = 0, link_user = formsv)
+            point.save()
             return redirect('accountREDIR')
 
     form = CustomUserCreationFrom()

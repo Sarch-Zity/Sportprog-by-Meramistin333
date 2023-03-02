@@ -20,10 +20,10 @@
                             <span class="cow-1-1">Тесты</span>
                             <div class="block_data">
                                 <span class="cow-2-2">входные данные</span>
-                                <span class="cow-2-1"><pre>{{actual_task.input_exmaple}}</pre></span>
+                                <span class="cow-2-1"><pre id="consolas-font">{{actual_task.input_exmaple}}</pre></span>
 
                                 <span class="cow-2-2">выходные данные</span>
-                                <span class="cow-2-1"><pre>{{actual_task.output_exmaple}}</pre></span>
+                                <span class="cow-2-1"><pre id="consolas-font">{{actual_task.output_exmaple}}</pre></span>
                             </div>
                         </div>
                         {% if actual_task.extra_text %}
@@ -105,32 +105,37 @@
                     {% else %}
                     {% endif %}
         </div>
-        <div class="wrapper_content_2">
-            <span class="competition_text">Соревнования</span>
-            <span class="time_text">Оставшееся время:</span>
-            {% if time_shower and actual %}
-                <span class="time_settings"><span class="hours"><span class="number">{{ timeleftH }}</span></span>:<span class="minutes"><span class="number">{{ timeleftM }}</span></span>:<span class="seconds"><span class="number">{{ timeleftS }}</span></span></span> 
-            {% else %}
-                <span class="time_settings">--:--:--</span>
-            {% endif %}
-             <div>
-                <span class="task_list">Задачи</span>
-                {% for i in task.all %}
-                <a href="{% url 'competition_task' comp.id forloop.counter|add:'-1' %}"><div class="task right">{{i}}</div></a>
-                {% endfor %}
-             </div>
-            <div class="cow-d-1">
-                <span style="font-weight: 600;margin-top: 30px;">Положение</span>
-                <span style="font-weight: 300;margin-bottom: 10px;">Положение на момент {{ time }}</span>
-                <div class="block_leaders_board">
-                    <span>4. vadim344</span>
-                    <span>5. melterex</span>
-                    <span>6. perchik</span>
+        <div class="wrapper_content_block_2">
+            <div class="wrapper_content_2">
+                <span class="competition_text">Соревнования</span>
+                <span class="time_text">Оставшееся время:</span>
+                {% if time_shower %}
+                    <span class="time_settings"><span class="hours"><span class="number">{{ timeleftH }}</span></span>:<span class="minutes"><span class="number">{{ timeleftM }}</span></span>:<span class="seconds"><span class="number">{{ timeleftS }}</span></span></span> 
+                {% else %}
+                    <span class="time_settings">--:--:--</span>
+                {% endif %}
+                 <div>
+                    <span class="task_list">Задачи</span>
+                    {% for i in task.all %}
+                    <a href='/competition/{{comp.id}}/{{ forloop.counter|add:"-1"}}/'><div class="task">{{i}}</div></a>
+                    {% endfor %}
+                 </div>
+                <div class="cow-d-1">
+                    <span style="font-weight: 600;margin-top: 30px;">Положение</span>
+                    <span style="font-weight: 300;margin-bottom: 10px;">Положение на момент {{ time }}</span>
+                    <div class="block_leaders_board">
+                        <span>4. vadim344</span>
+                        <span>5. melterex</span>
+                        <span>6. perchik</span>
+                    </div>
                 </div>
             </div>
-            
-            
-        </div> 
-    </div>
+            <div class="wrapper_content_2_1">
+                <span>Последние решения</span>
+                <div class="content-block">
+                    <span><p class="time">11:44:35</p><p class="tasktime"></p>-<p class="test"></p></span>
+                </div>
+            </div>
+        </div>
 {% endblock %}
 {% block js %}<script src="{% static 'main/js/competition_now.js' %}"></script>{% endblock %}

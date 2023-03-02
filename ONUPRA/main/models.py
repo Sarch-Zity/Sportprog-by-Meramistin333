@@ -25,6 +25,14 @@ class CustomUser(AbstractUser):
             img.thumbnail(output_size)
             img.save(self.image.path)
 
+class ScorePoint(models.Model):
+    link_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    score = models.IntegerField('Рейтинг', default=0)
+    date = models.DateTimeField('Дата изменения', auto_now_add=True)
+
+    def __str__(self):
+        return str(self.score)
+
 class Competition(models.Model):
     creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
     start_time = models.DateTimeField('Дата старта')
@@ -46,8 +54,16 @@ class Task(models.Model):
     input_exmaple = models.TextField('Пример ввода кода')
     output_exmaple = models.TextField('Пример ввода кода')
     extra_text = models.TextField('Дополнительные пояснение, недочеты', blank=True)
-    input_values = models.TextField('Вводимые значения')
-    output_values = models.TextField('Получаемые значения')
+    input_values_1 = models.TextField('Вводимые значения 1')
+    output_values_1 = models.TextField('Получаемые значения 1')
+    input_values_2 = models.TextField('Вводимые значения 2')
+    output_values_2 = models.TextField('Получаемые значения 2')
+    input_values_3 = models.TextField('Вводимые значения 3')
+    output_values_3 = models.TextField('Получаемые значения 3')
+    input_values_4 = models.TextField('Вводимые значения 4')
+    output_values_4 = models.TextField('Получаемые значения 4')
+    input_values_5 = models.TextField('Вводимые значения 5')
+    output_values_5 = models.TextField('Получаемые значения 5')
     score = models.PositiveIntegerField('Количество очков за задание', help_text = 'Указывать половину от максимального числа')
 
     def __str__(self):

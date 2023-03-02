@@ -8,7 +8,11 @@
 a 
 {
     text-decoration: none;
-    color: #707070;
+    color: #333;
+}
+#consolas-font
+{
+    font-family: 'Consolas', sans-serif;
 }
 pre {
     white-space: pre-wrap;

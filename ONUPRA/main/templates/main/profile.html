@@ -86,4 +86,38 @@
     {% endif %}
 {% endblock %}
 {% block js %}<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
-<script src="{% static 'main/js/profile.js' %}"></script>{% endblock %}
+<script src="{% static 'main/js/profile.js' %}"></script>
+<script>const ctx = document.getElementById('myChart');
+
+    var chart = new Chart(ctx, {
+      type: 'line',
+    
+      data: {
+        labels: [{% for i in point %}'{{i.date}}',{% endfor %}],
+        datasets: [{
+            label: '',
+            data: [{% for i in point %}{{i.score}},{% endfor %}],
+            fill: false,
+            borderColor: '#91BFBC',
+            backgroundColor: '#91BFBC',
+            tension: 0.01,
+            pointBackgroundColor: '#91BFBC',
+            pointBorderColor: '#91BFBC',
+            order: 1,
+            spanGaps: false,
+            drawActiveElementsOnTop: false,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+            display: true,
+            text: 'Chart.js Line Chart'
+          }
+        }
+      },
+    });</script>{% endblock %}

@@ -64,8 +64,7 @@ eyeIcons.forEach((eyeIcon) => {
 function createPass(){
     if (true) 
 {
-  const passPatterrn = 
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-_=+)('"!@#№;$%?&*|/,.])[A-Za-z\d-_=+)('"!@#№;$%?&*|/,.]{8,128}$/;
+  const passPatterrn = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8,128}$/;
 
     passField.classList.remove("invalid2");
     passField.classList.remove("invalid3");
@@ -172,12 +171,10 @@ passInput.addEventListener("keyup", () => {
     validation_check();
     if(!cPassInput.value == ''){
         confirmPass();
-        console.log(1)
     } 
 });
 cPassInput.addEventListener("keyup", () => {
     confirmPass();
-    console.log(123);
     validation_check();
 });
 
