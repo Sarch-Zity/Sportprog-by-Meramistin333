@@ -9,7 +9,9 @@
     <div class="wrapper">
         <div class="wrapper_content">
             <div class="text-header">
-        <span>{{actual_task.title}} {{score}}</span></div>
+        <span>{{actual_task.title}}</span>
+        <span style="font-size: 24px; margin-top: 15px; display: flex; align-items: center; justify-content: center;">Баллы за задачу по состояннию на <p style="margin-left: 5px;">{{ time }}</p> <p style="margin-left: 5px; margin-right: 5px;">-</p> <p style="color: #558987;">{{ actual_score }}</p></span>
+        </div>
         <span class="span__block"><pre>{{actual_task.condition}}</pre></span>
         <span class="span__block cow-1-1">Входные данные</span>
         <span class="span__block cow-1-2">{{actual_task.required_input}}</span>
@@ -28,7 +30,7 @@
                         </div>
                         {% if actual_task.extra_text %}
                         <div class="block_test_2">
-                            <span class="cow-1-1 margin-1">Пояснение к тестам</span>
+                            <span class="cow-1-1 margin-1">Примечания к задаче</span>
                             <span class="span__block" style="margin: 0px;"><pre>{{actual_task.extra_text}}</pre></span>
                         </div>
                         {% endif %}
@@ -107,7 +109,7 @@
         </div>
         <div class="wrapper_content_block_2">
             <div class="wrapper_content_2">
-                <span class="competition_text">Соревнования</span>
+                <span class="competition_text">Соревнование</span>
                 <span class="time_text">Оставшееся время:</span>
                 {% if time_shower %}
                     <span class="time_settings"><span class="hours"><span class="number">{{ timeleftH }}</span></span>:<span class="minutes"><span class="number">{{ timeleftM }}</span></span>:<span class="seconds"><span class="number">{{ timeleftS }}</span></span></span> 
@@ -120,7 +122,7 @@
                     <a href='/competition/{{comp.id}}/{{ forloop.counter|add:"-1"}}/'><div class="task">{{i}}</div></a>
                     {% endfor %}
                  </div>
-                <div class="cow-d-1">
+                <!-- <div class="cow-d-1">
                     <span style="font-weight: 600;margin-top: 30px;">Положение</span>
                     <span style="font-weight: 300;margin-bottom: 10px;">Положение на момент {{ time }}</span>
                     <div class="block_leaders_board">
@@ -128,14 +130,15 @@
                         <span>5. melterex</span>
                         <span>6. perchik</span>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="wrapper_content_2_1">
                 <span>Последние решения</span>
+                {% for i in attempt %}
                 <div class="content-block">
-                    <span><p class="time">11:44:35</p><p class="tasktime"></p>-<p class="test"></p></span>
+                    <span><p class="time">{{ i.time|time:"H:i:s" }}</p><p class="tasktime">{{ i.link_task.title }}</p>-<p class="test">{{ i.error }}</p></span>
                 </div>
+                {% endfor %}
             </div>
-        </div>
 {% endblock %}
 {% block js %}<script src="{% static 'main/js/competition_now.js' %}"></script>{% endblock %}

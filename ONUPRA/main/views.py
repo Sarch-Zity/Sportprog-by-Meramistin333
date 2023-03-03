@@ -1,5 +1,6 @@
 import re
 import sys
+import os
 from datetime import date
 # import locale
 # import pytils
@@ -19,6 +20,7 @@ import subprocess
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 def create_output_file(command):
     global compile_error, delete_files
     try:
@@ -27,6 +29,7 @@ def create_output_file(command):
         compile_error = 0
     except subprocess.CalledProcessError as e:
         compile_error = 1
+
 
 def run_command(file_name, tests_input, tests_output):
     global compile_error, delete_files
@@ -86,9 +89,11 @@ def run_command(file_name, tests_input, tests_output):
                 result = subprocess.run(command, input=(tests_input[i] + "\n"), text=True, shell=True,
                                         timeout=5, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
                 print(result.stderr)
+                print(tests_output[i].strip(), tests_output[i].strip())
                 if result.stdout.strip() != tests_output[i].strip():
                     for j in delete_files:
                         os.remove(j)
+                    print(result.stdout.strip(), tests_output[i].strip())
                     return [(i / len(tests_input)), f"Неправильный ответ на тесте {i}"]
             except subprocess.TimeoutExpired:
                 compile_error = 1
@@ -108,32 +113,38 @@ def run_command(file_name, tests_input, tests_output):
             os.remove(i)
         return "Не удалось скомпилировать файл"
 
-def Index (request):
+
+def Index(request):
     # locale.setlocale(locale.LC_TIME, 'ru_RU')
-    comp = Competition.objects.filter(actual = True).order_by('start_time')
+    comp = Competition.objects.filter(actual=True).order_by('start_time')
     if comp:
         comp = comp[0]
         # return render(request, 'main/home.html', {'comp': comp, 'date': pytils.dt.ru_strftime(u'%d %B', inflected=True, date=comp.start_time)})
         return render(request, 'main/home.html', {'comp': comp, 'date': comp.start_time.strftime(u'%d.%m')})
     return render(request, 'main/home.html', {'comp': comp})
 
-def Account_REDIR (request):
+
+def Account_REDIR(request):
     if not request.user.is_authenticated:
         return redirect('login')
     return redirect('account', request.user.slug)
 
-def Rating (request):
-    user = CustomUser.objects.filter(is_staff = False).filter(is_superuser = False).order_by('-rating')
+
+def Rating(request):
+    user = CustomUser.objects.filter(is_staff=False).filter(
+        is_superuser=False).order_by('-rating')
     return render(request, 'main/top.html', {'users': user})
+
 
 class AccountDetailView(DetailView):
     model = CustomUser
     template_name = 'main/user_page.html'
     context_object_name = 'form'
 
+
 def Profile(request, slug):
     try:
-        user = CustomUser.objects.get(slug = slug)
+        user = CustomUser.objects.get(slug=slug)
     except CustomUser.DoesNotExist as e:
         return redirect('home')
     # если решили обновить аватарку
@@ -145,7 +156,8 @@ def Profile(request, slug):
             return redirect('account', request.user.slug)
         elif 'update image' in request.POST and request.FILES:
             # В форму добавляем инфу которую пользователь добавил
-            form = CustomUserImageChangeFrom(request.POST, request.FILES, instance=request.user)
+            form = CustomUserImageChangeFrom(
+                request.POST, request.FILES, instance=request.user)
             print(form.errors)
             if form.is_valid():
                 form.save()
@@ -154,7 +166,7 @@ def Profile(request, slug):
             form = ArticleForm(request.POST)
             form2 = FileForm(request.POST, request.FILES)
             if form.is_valid():
-                if form2.is_valid(): 
+                if form2.is_valid():
                     article = form.save(commit=False)
                     article.user = request.user
                     article.save()
@@ -167,7 +179,8 @@ def Profile(request, slug):
                     article.save()
                 return redirect('account', request.user.slug)
         elif 'change username' in request.POST:
-            form = CustomUserUsernameChangeFrom(request.POST, instance=request.user)
+            form = CustomUserUsernameChangeFrom(
+                request.POST, instance=request.user)
             print(form.is_valid())
             if form.is_valid():
                 user = form.save(commit=False)
@@ -178,10 +191,11 @@ def Profile(request, slug):
         'user': user,
         'form': ArticleForm(),
         'form2': FileForm(),
-        'articles': Article.objects.filter(user = user),
-        'point': ScorePoint.objects.filter(link_user = user).order_by("date")
+        'articles': Article.objects.filter(user=user),
+        'point': ScorePoint.objects.filter(link_user=user).order_by("date")
     }
     return render(request, 'main/Profile.html', content)
+
 
 def CreateCompetition(request):
     if request.method == 'POST':
@@ -211,11 +225,12 @@ def CreateCompetition(request):
     }
     return render(request, 'main/create_competition.html', content)
 
+
 def Competitions(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    comp = Competition.objects.filter(actual = True).order_by('start_time')
-    past_comp = Competition.objects.filter(actual = False).order_by('start_time')
+    comp = Competition.objects.filter(actual=True).order_by('start_time')
+    past_comp = Competition.objects.filter(actual=False).order_by('start_time')
     content = {
         'comp': comp,
         'past_comp': past_comp,
@@ -226,10 +241,11 @@ def Competitions(request):
 def Сurrent_competition(request, id):
     return redirect('competition_task', id, 0)
 
+
 def Competition_task(request, id, taskid):
-    comp = Competition.objects.get(id = id)
-    task = Task.objects.filter(compet = comp).order_by('title')[taskid]
-    if comp.start_time > now():
+    comp = Competition.objects.get(id=id)
+    task = Task.objects.filter(compet=comp).order_by('title')[taskid]
+    if comp.start_time > localtime():
         return redirect('home')
     elif not request.user.is_authenticated:
         return redirect('login')
@@ -238,7 +254,8 @@ def Competition_task(request, id, taskid):
         #     comp.amount_of_users += 1
         #     comp.save()
         file = request.FILES['file']
-        atmpt = Attempt(link_competition=comp, link_task=task, link_user=request.user, document=file)
+        atmpt = Attempt(link_competition=comp, link_task=task,
+                        link_user=request.user, document=file)
         atmpt.save()
         global compile_error, delete_files
         delete_files = []
@@ -247,16 +264,18 @@ def Competition_task(request, id, taskid):
         file_name_num = atmpt.document.path.rfind("\\")
         if file_name_num == -1:
             file_name_num = atmpt.document.path.rfind("/")
-            file_name = atmpt.document.path[file_name_num + 1 :]
+            file_name = atmpt.document.path[file_name_num + 1:]
             # path = atmpt.document.path[0 : file_name_num]
         else:
-            file_name = atmpt.document.path[file_name_num + 1 :]
+            file_name = atmpt.document.path[file_name_num + 1:]
             # path = atmpt.document.path[0 : file_name_num]
         del file_name_num
-        answer = run_command(file_name, [task.input_values_1.replace('\r\n', '\n'), task.input_values_2.replace('\r\n', '\n'), task.input_values_3.replace('\r\n', '\n'), task.input_values_4.replace('\r\n', '\n'), task.input_values_5.replace('\r\n', '\n')], [task.output_values_1.replace('\r\n', '\n'), task.output_values_2.replace('\r\n', '\n'), task.output_values_3.replace('\r\n', '\n'), task.output_values_4.replace('\r\n', '\n'), task.output_values_5.replace('\r\n', '\n')])
+        answer = run_command(file_name, [task.input_values_1.replace('\r\n', '\n'), task.input_values_2.replace('\r\n', '\n'), task.input_values_3.replace('\r\n', '\n'), task.input_values_4.replace('\r\n', '\n'), task.input_values_5.replace(
+            '\r\n', '\n')], [task.output_values_1.replace('\r\n', '\n'), task.output_values_2.replace('\r\n', '\n'), task.output_values_3.replace('\r\n', '\n'), task.output_values_4.replace('\r\n', '\n'), task.output_values_5.replace('\r\n', '\n')])
         if compile_error == 0:
             atmpt.successfully = True
-            timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+            timeleft = comp.duration - \
+                int((localtime() - comp.start_time).total_seconds() // 60)
             x = timeleft / comp.duration
             h = 1
             k = 0.4
@@ -270,7 +289,8 @@ def Competition_task(request, id, taskid):
         else:
             atmpt.error = answer[1]
         atmpt.save()
-    timeleft = comp.duration - int((now() - comp.start_time).total_seconds() // 60)
+    timeleft = comp.duration - \
+        int((localtime() - comp.start_time).total_seconds() // 60)
     x = timeleft / comp.duration
     h = 1
     k = 0.4
@@ -279,21 +299,22 @@ def Competition_task(request, id, taskid):
         y = 1
     elif y < k:
         y = k
-    if comp.start_time + timedelta(minutes=comp.duration) < now():
+    if comp.start_time + timedelta(minutes=comp.duration) < localtime():
         time_shower = False
     else:
         time_shower = True
     content = {
         'comp': comp,
         'actual_task': task,
-        'task': Task.objects.filter(compet = comp).order_by('title'),
-        'time': now().strftime("%H:%M:%S"),
-        'timeleftH': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (now() - comp.start_time)).strftime("%H"),
-        'timeleftM': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (now() - comp.start_time)).strftime("%M"),
-        'timeleftS': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (now() - comp.start_time)).strftime("%S"),
+        'task': Task.objects.filter(compet=comp).order_by('title'),
+        'time': localtime().strftime("%H:%M:%S"),
+        'timeleftH': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (localtime() - comp.start_time)).strftime("%H"),
+        'timeleftM': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (localtime() - comp.start_time)).strftime("%M"),
+        'timeleftS': (datetime.combine(date.today(), datetime.min.time()) + timedelta(minutes=comp.duration) - (localtime() - comp.start_time)).strftime("%S"),
         'actual_score': round(task.score * y),
         'time_shower': time_shower,
-        'actual': comp.actual
+        'actual': comp.actual,
+        'attempt': Attempt.objects.filter(link_user=request.user).order_by('time')[0:15]
     }
     return render(request, 'main/competition_task.html', content)
 
@@ -633,7 +654,9 @@ def Competition_task(request, id, taskid):
 #     return render(request, 'main/competition_task.html', content)
 
 # Переписать
-def Reg_page (request):
+
+
+def Reg_page(request):
     if request.user.is_authenticated:
         return redirect('account', request.user.slug)
     error_username = False
@@ -641,34 +664,37 @@ def Reg_page (request):
     if request.method == 'POST':
         form = CustomUserCreationFrom(request.POST)
         email = request.POST.get('email')
-        nickname = request.POST.get('username')
-        if CustomUser.objects.filter(username=nickname).exists():
+        nickname = request.POST.get('username').lower()
+        if CustomUser.objects.filter(slug=nickname).exists():
+            if CustomUser.objects.filter(email=email).exists():
+                error_email = True
             error_username = True
-        if CustomUser.objects.filter(email=email).exists():
+        elif CustomUser.objects.filter(email=email).exists():
             error_email = True
-        if re.search('[а-яА-Я]', nickname):
+        elif re.search('[а-яА-Я]', nickname):
             pass
         # Если форма коректна, то она сохраняется
         elif form.is_valid():
             formsv = form.save()
             login(request, formsv)
-            point = ScorePoint(score = 0, link_user = formsv)
+            point = ScorePoint(score=0, link_user=formsv)
             point.save()
             return redirect('accountREDIR')
 
     form = CustomUserCreationFrom()
     content = {
-        'error_username':error_username,
-        'error_email':error_email
+        'error_username': error_username,
+        'error_email': error_email
     }
     return render(request, 'main/registration.html', content)
 
-def AccountUpdate (request):
+
+def AccountUpdate(request):
     if not request.user.is_authenticated:
         return redirect('login')
     # Вывод ошибки
     error = ''
-    # Если метод пост 
+    # Если метод пост
     if request.method == 'POST':
         # Если отправлена форма редактирования пользователя
         if "editbtn" in request.POST:
@@ -686,7 +712,8 @@ def AccountUpdate (request):
                     if request.POST.get('username').strip() == "":
                         pass
                     else:
-                        request.user.username = request.POST.get('username').strip()
+                        request.user.username = request.POST.get(
+                            'username').strip()
                         request.user.slug = request.user.username
                     if request.POST.get('email').strip() == "":
                         pass
@@ -717,7 +744,8 @@ def AccountUpdate (request):
                     if request.POST.get('username').strip() == "":
                         pass
                     else:
-                        request.user.username = request.POST.get('username').strip()
+                        request.user.username = request.POST.get(
+                            'username').strip()
                         request.user.slug = request.user.username
                     if request.POST.get('email').strip() == "":
                         pass
@@ -736,12 +764,12 @@ def AccountUpdate (request):
             pswd1 = request.POST.get("new_password")
             pswd2 = request.POST.get("new_password_repeat")
             # Если все совпадает устанвливаем новый пароль и редиректим
-            if check_password(old_password,request.user.password) and pswd1 == pswd2:
+            if check_password(old_password, request.user.password) and pswd1 == pswd2:
                 request.user.set_password(pswd1)
                 request.user.save()
                 return redirect('login')
             # Различные ошибки если форма не верная ПЕРЕДЕЛАТЬ
-            elif not check_password(old_password,request.user.password):
+            elif not check_password(old_password, request.user.password):
                 if not silence:
                     error = "Не верный старый пароль"
                 else:

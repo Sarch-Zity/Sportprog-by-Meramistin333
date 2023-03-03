@@ -64,7 +64,7 @@ eyeIcons.forEach((eyeIcon) => {
 function createPass(){
     if (true) 
 {
-  const passPatterrn = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8,128}$/;
+  const passPatterrn = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Zа-яА-Я0-9!"#$%&')(*+,-./:;<=>?@^_`|]{8,128}$/;
 
     passField.classList.remove("invalid2");
     passField.classList.remove("invalid3");
