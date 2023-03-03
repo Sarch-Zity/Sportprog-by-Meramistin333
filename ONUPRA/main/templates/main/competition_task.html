@@ -132,6 +132,7 @@
                     </div>
                 </div> -->
             </div>
+            {% if attempt %}
             <div class="wrapper_content_2_1">
                 <span>Последние решения</span>
                 {% for i in attempt %}
@@ -140,5 +141,7 @@
                 </div>
                 {% endfor %}
             </div>
+            {% else %} 
+            {% endif %}
 {% endblock %}
 {% block js %}<script src="{% static 'main/js/competition_now.js' %}"></script>{% endblock %}

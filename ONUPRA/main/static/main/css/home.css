@@ -93,7 +93,7 @@
 }
 .wrapper_content_info
 {
-    width: 20%;
+    min-width: 320px;
     margin-bottom: 16px;
 }
 .competition_block
