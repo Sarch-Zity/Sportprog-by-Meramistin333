@@ -144,4 +144,13 @@
             {% else %} 
             {% endif %}
 {% endblock %}
-{% block js %}<script src="{% static 'main/js/competition_now.js' %}"></script>{% endblock %}
+{% block js %}<script src="{% static 'main/js/competition_now.js' %}"></script>
+<!-- <script>
+    const dateString = '{{ time }}'; // пример строки времени в формате YYYY-MM-DDTHH:MM:SS+HH:MM:SS
+    const targetDate = new Date(dateString);
+    const delay = targetDate.getTime() - Date.now(); // вычисление задержки в миллисекундах между текущим временем и заданным временем
+    setTimeout(() => {
+      location.reload(); // обновление страницы
+    }, delay);
+</script> -->
+{% endblock %}

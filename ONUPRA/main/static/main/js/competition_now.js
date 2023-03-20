@@ -44,28 +44,44 @@ else{
     const minutes = document.querySelector(".minutes .number");
     const hours = document.querySelector(".hours .number");
 
-    let secValue = document.querySelector(".seconds .number").textContent,
-    minValue = document.querySelector(".minutes .number").textContent,
-    hourValue = document.querySelector(".hours .number").textContent
+    let secValue = Number(document.querySelector(".seconds .number").textContent),
+    minValue = Number(document.querySelector(".minutes .number").textContent),
+    hourValue = Number(document.querySelector(".hours .number").textContent)
 
     const timeFunctin = setInterval(() => {
-        if (hourValue != 0 || minValue != 0 || secValue != 0){
+        if (secValue != 0){
             secValue--;
         }
-        if(hourValue == 0 && minValue == 0 && secValue == 0){
-            location.reload();
-        }
-        if (secValue == 0) {
+        else if (secValue == 0 && minValue != 0) {
             minValue--;
             secValue = 59;
         }
-        if (minValue == 0 && hourValue != 0) {
+        else if (secValue == 0 && minValue == 0 && hourValue != 0) {
+            hourValue--;
+            minValue = 59;
+            secValue = 59;
+        }
+        else if (minValue == 0 && hourValue != 0) {
             hourValue--;
             minValue = 59;
         }
+        // if (hourValue != 0 || minValue != 0 || secValue != 0){
+        //     secValue--;
+        // }
+        // if(hourValue == 0 && minValue == 0 && secValue == 0){
+        //     location.reload();
+        // }
+        // if (secValue == 0) {
+        //     minValue--;
+        //     secValue = 59;
+        // }
+        // if (minValue == 0 && hourValue != 0){
+        //     hourValue--;
+        //     minValue = 59;
+        // }
         seconds.textContent = secValue < 10 ? `0${secValue}` : secValue;
-        minutes.textContent = minValue < 10 ? `${minValue}` : minValue;
-        hours.textContent = hourValue < 10 ? `${hourValue}` : hourValue;
+        minutes.textContent = minValue < 10 ? `0${minValue}` : minValue;
+        hours.textContent = hourValue < 10 ? `0${hourValue}` : hourValue;
     }, 1000);
 }
 

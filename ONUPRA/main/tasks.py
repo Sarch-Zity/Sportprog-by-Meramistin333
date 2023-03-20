@@ -1,5 +1,5 @@
 from celery import Celery
-from .models import Competition, Task, Attempt
+from .models import Competition, Task, Attempt, ScorePoint
 from django.utils.timezone import now
 
 app = Celery('ONUPRA')

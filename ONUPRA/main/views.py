@@ -20,7 +20,6 @@ import subprocess
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 def create_output_file(command):
     global compile_error, delete_files
     try:
@@ -91,26 +90,25 @@ def run_command(file_name, tests_input, tests_output):
                 print(result.stderr)
                 print(tests_output[i].strip(), tests_output[i].strip())
                 if result.stdout.strip() != tests_output[i].strip():
-                    for j in delete_files:
-                        os.remove(j)
-                    print(result.stdout.strip(), tests_output[i].strip())
+                    # for j in delete_files:
+                        # os.remove(j)
                     return [(i / len(tests_input)), f"Неправильный ответ на тесте {i}"]
             except subprocess.TimeoutExpired:
                 compile_error = 1
-                for j in delete_files:
-                    os.remove(j)
+                # for j in delete_files:
+                    # os.remove(j)
                 return [(i / len(tests_input)), f"Превышено ограничение времени на тесте {i}"]
             except subprocess.CalledProcessError as e:
                 print(e.stderr)
                 compile_error = 1
-                for j in delete_files:
-                    os.remove(j)
+                # for j in delete_files:
+                    # os.remove(j)
                 return [(i / len(tests_input)), f"Проблема с принятием входных данных на тесте {i}"]
         else:
             return [1, "Все тесты прошли успешно"]
     else:
-        for i in delete_files:
-            os.remove(i)
+        # for i in delete_files:
+            # os.remove(i)
         return "Не удалось скомпилировать файл"
 
 
@@ -119,8 +117,20 @@ def Index(request):
     comp = Competition.objects.filter(actual=True).order_by('start_time')
     if comp:
         comp = comp[0]
+        # user_tz = request.COOKIES.get('timezone')
+        # if user_tz:
+        #     user_tz = pytz.timezone(user_tz)
+        #     server_time = comp.start_time
+        #     user_time = server_time.astimezone(user_tz)
+        #     date = user_time.strftime(u'%d.%m')
+        #     time = user_time.strftime(u'%H:%M')
+        # else:
+        #     date = comp.start_time.strftime(u'%d.%m')
+        #     time = comp.start_time.strftime(u'%H:%M')
+        date = comp.start_time.strftime(u'%d.%m')
+        time = comp.start_time.strftime(u'%H:%M')
         # return render(request, 'main/home.html', {'comp': comp, 'date': pytils.dt.ru_strftime(u'%d %B', inflected=True, date=comp.start_time)})
-        return render(request, 'main/home.html', {'comp': comp, 'date': comp.start_time.strftime(u'%d.%m')})
+        return render(request, 'main/home.html', {'comp': comp, 'date': date, 'time': time})
     return render(request, 'main/home.html', {'comp': comp})
 
 
@@ -227,8 +237,8 @@ def CreateCompetition(request):
 
 
 def Competitions(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
+    # if not request.user.is_authenticated:
+    #     return redirect('login')
     comp = Competition.objects.filter(actual=True).order_by('start_time')
     past_comp = Competition.objects.filter(actual=False).order_by('start_time')
     content = {
@@ -245,10 +255,10 @@ def Сurrent_competition(request, id):
 def Competition_task(request, id, taskid):
     comp = Competition.objects.get(id=id)
     task = Task.objects.filter(compet=comp).order_by('title')[taskid]
-    if comp.start_time > localtime():
-        return redirect('home')
-    elif not request.user.is_authenticated:
+    if not request.user.is_authenticated:
         return redirect('login')
+    elif comp.start_time > localtime():
+        return redirect('home')
     elif request.method == 'POST' and comp.actual and request.FILES:
         # if not Attempt.objects.filter(link_competition = comp).filter(link_user = request.user):
         #     comp.amount_of_users += 1
@@ -260,7 +270,6 @@ def Competition_task(request, id, taskid):
         global compile_error, delete_files
         delete_files = []
         compile_error = 0
-        print(atmpt.document.path)
         file_name_num = atmpt.document.path.rfind("\\")
         if file_name_num == -1:
             file_name_num = atmpt.document.path.rfind("/")
@@ -314,7 +323,8 @@ def Competition_task(request, id, taskid):
         'actual_score': round(task.score * y),
         'time_shower': time_shower,
         'actual': comp.actual,
-        'attempt': Attempt.objects.filter(link_user=request.user).order_by('time')[0:15]
+        'attempt': Attempt.objects.filter(link_user=request.user).order_by('-time')[0:15],
+        'time': comp.start_time + timedelta(minutes=comp.duration)
     }
     return render(request, 'main/competition_task.html', content)
 
