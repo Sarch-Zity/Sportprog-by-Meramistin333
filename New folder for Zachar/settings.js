@@ -23,6 +23,7 @@ const change_settings_1 = document.querySelector(".a_1"),
     oppacty1 = document.getElementById("oppacty1"),
     list_w2 = document.querySelector(".w_2");
 console.log(change_settings_1)
+    
     change_settings_1.addEventListener("click", () => {
         if (list_w1.classList.contains('active_1')) {
             list_w1.classList.remove("active_1");
@@ -80,7 +81,22 @@ console.log(change_settings_1)
         passwordValueNew = document.getElementById("passwordValueNew"),
         passwordValue = document.getElementById("passwordValue"),
         CpasswordValueNew = document.getElementById("CpasswordValueNew")
-
+form_nickname.addEventListener("click", () => {
+    if (list_w1.classList.contains('active_1')) {
+        list_w1.classList.remove("active_1");
+        list_w1.classList.add("inactive_1");
+    
+        bxrightarrowalt.style.transform = 'rotate(0deg)'; 
+        oppacty1.style.opacity = '0';
+    }
+    if (list_w2.classList.contains('active_2')) {
+        list_w2.classList.remove("active_2");
+        list_w2.classList.add("inactive_2");
+        
+        bxrightarrowalt2.style.transform = 'rotate(0deg)'; 
+        oppacty2.style.opacity = '0';
+    }
+});
 function checkUsers(){
     if (true) 
     {

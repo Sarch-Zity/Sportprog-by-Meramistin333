@@ -32,8 +32,7 @@
                 <p class="error-text">Заполните свой никнейм</p>
             </span>
             </div>
-            
-            <span style="font-size: 20px; color: #333;">Баллы за задачу по состояннию на <p style="margin-left: 5px;"></p> <p style="margin-left: 5px; margin-right: 5px;">-</p> <p style="color: #832020;"></p></span>
+        
 
             <form class="list_settings w_1 inactive_1">
                 <div class="list_settings__change a_1">
@@ -44,24 +43,27 @@
                     <div class="input_mail input_set field-icon" id="form_mail">
                         <span>Ваша почта</span>
                         <input type="text" class="input_regestration" name="" id="const_email" value="kslsider@gmail.com">
-                        <span class="error-absolute err email-error">
+                        <span class="error-absolute err email-error err-0">
                             <i class="bx bx-error-circle error-icon"></i>
                         </span>
-                        <span title="Электронная почта не подходит по требованиям" class="error-absolute err2 email-error">
+                        <span data-info="Электронная почта не подходит по требованиям" class="error-absolute err2 email-error err-0">
                             <i title="Электронная почта не подходит по требованиям" class="bx bx-error-circle error-icon"></i>
                             <!-- <p class="error-text">Электронная почта не подходит по требованиям</p> -->
                         </span>
-                        <span class="error-absolute err3 email-error">
-                            <i title="Введите вашу почту!" class="bx bx-error-circle error-icon"></i>
+                        <span data-info="Введите вашу почту!" class="error-absolute err3 email-error err-0">
+                            <i class="bx bx-error-circle error-icon"></i>
                             <!-- <p class="error-text">Введите вашу почту!</p> -->
                         </span>
                     </div>
-                    <div class="input_password_repeat input_set" id="form_mail_password">
+                    <div class="input_password_repeat field-icon input_set" id="form_mail_password">
                         <span>Введите ваш пароль</span>
                         <div class="password-relative">
                             <input type="password" class="input_regestration" name="" id="email_password">
                             <i class='bx bx-hide show-hide'></i>
                         </div>
+                        <span data-info="Пароль неверный" class="error-absolute err err-0">
+                            <i class="bx bx-error-circle error-icon"></i>
+                        </span>
                     </div>
                     <input type="submit" id="email_submit" class="button_submit_settings d-settings_1" value="Сохранить">
                 </div>
@@ -79,7 +81,7 @@
                         <span>Введите ваш пароль</span>
                         <i class='bx bx-hide show-hide'></i>
                         <input type="password" class="input_regestration" name="" id="const_password">
-                        <span class="error-absolute err email-error">
+                        <span data-info="Пароль неверный" class="error-absolute err email-error err-0">
                             <i class="bx bx-error-circle error-icon"></i>
                             <!-- <p class="error-text">Неправильный пароль</p> -->
                         </span>
@@ -88,12 +90,12 @@
                         <span>Введите ваш новый пароль</span>
                         <i class='bx bx-hide show-hide'></i>
                         <input type="password" class="input_regestration" name="" id="password_new">
-                        <span title="Пароль не подходит по требованиям" class="error-absolute err2 email-error">
+                        <span data-info="Пароль не подходит по требованиям" class="err-0 error-absolute err2 email-error">
                             <i  class="bx bx-error-circle error-icon"></i>
                             <!-- <p class="error-text">Пароль не подходит по требованиям</p> -->
                         </span>
-                        <span class="error-absolute err3 email-error">
-                            <i title="Введите ваш пароль!" class="bx bx-error-circle error-icon"></i>
+                        <span data-info="Введите ваш пароль!" class="error-absolute err3 email-error err-0">
+                            <i class="bx bx-error-circle error-icon"></i>
                             <!-- <p class="error-text">Введите ваш пароль!</p> -->
                         </span>
                     </div>
@@ -101,12 +103,12 @@
                         <span>Повторите ваш новый пароль</span>
                         <i class='bx bx-hide show-hide'></i>
                         <input type="password" class="input_regestration" name="" id="Cpassword_new">
-                        <span title="Пароль не подходит по требованиям" class="error-absolute err2 email-error">
+                        <span data-info="Пароли не совпадают" class="err-0 error-absolute err2 email-error">
                             <i  class="bx bx-error-circle error-icon"></i>
                             <!-- <p class="error-text">Пароли не совпадают</p> -->
                         </span>
-                        <span class="error-absolute err3 email-error">
-                            <i title="Введите ваш пароль!" class="bx bx-error-circle error-icon"></i>
+                        <span data-info="Введите ваш пароль!" class="error-absolute err3 email-error err-0">
+                            <i class="bx bx-error-circle error-icon"></i>
                             <!-- <p class="error-text">Повторите свой пароль!</p> -->
                         </span>
                     </div>

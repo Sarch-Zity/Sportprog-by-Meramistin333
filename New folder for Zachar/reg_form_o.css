@@ -332,13 +332,13 @@ svg
     height: 55px;
 }  
 .active_1 {
-    height: 279px;
+    height: 305px;
 } 
 .inactive_2 {
     height: 54px;
 } 
 .active_2 {
-    height: 349px;
+    height: 372px;
 } 
 .delete_account
 {
@@ -449,15 +449,11 @@ svg
 {
     margin-right: 3px;
 }
-.field-icon
-{
-
-}
 .error-absolute
 {
     position: absolute;
     left: 95%;
-    bottom: -35%;
+    bottom: -38%;
     display: flex;
     align-items: center;
     margin-top: 6px;
@@ -482,4 +478,27 @@ svg
 }
 .invalid .input_regestration, .invalid2 .input_regestration, .invalid3 .input_regestration{
     border: 1px solid #d93025;
+}
+.err-0{
+    cursor:help;
+}
+.err-0:hover::after {
+    content: attr(data-info);
+    position: absolute;
+    width: 250px;
+    padding: 8px;
+    bottom: -170%;
+    right: 100%;
+    border-radius: 7px;
+    background-color: #f49c8c;
+    text-align: center;
+    color: #fff;
+    cursor: help;
+    z-index: 300;
+    font-size: 14px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.input_password_now, .input_password_repeat, .input_mail
+{
+    margin-bottom: 20px;
 }
