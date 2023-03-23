@@ -4,6 +4,7 @@ import os
 from datetime import date
 # import locale
 # import pytils
+from django.http import JsonResponse
 from django.utils.timezone import localtime, now, timedelta, localdate,  get_default_timezone_name, datetime
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.files.storage import FileSystemStorage
@@ -87,8 +88,6 @@ def run_command(file_name, tests_input, tests_output):
             try:
                 result = subprocess.run(command, input=(tests_input[i] + "\n"), text=True, shell=True,
                                         timeout=5, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-                print(result.stderr)
-                print(tests_output[i].strip(), tests_output[i].strip())
                 if result.stdout.strip() != tests_output[i].strip():
                     # for j in delete_files:
                         # os.remove(j)
@@ -99,7 +98,6 @@ def run_command(file_name, tests_input, tests_output):
                     # os.remove(j)
                 return [(i / len(tests_input)), f"Превышено ограничение времени на тесте {i}"]
             except subprocess.CalledProcessError as e:
-                print(e.stderr)
                 compile_error = 1
                 # for j in delete_files:
                     # os.remove(j)
@@ -133,24 +131,32 @@ def Index(request):
         return render(request, 'main/home.html', {'comp': comp, 'date': date, 'time': time})
     return render(request, 'main/home.html', {'comp': comp})
 
+def my_ajax_view(request):
+    if request.method == 'POST':
+        # handle the form submission here
+        a = request.POST.get("name")
+        # do something with the content
+        data = {
+        'message': f'{a}1111',
+        }
+        return JsonResponse(data)
+    data = {
+        'message': f'22',
+        }
+    return JsonResponse(data)
+
+def Test(request):
+    return render(request, 'main/test.html')
 
 def Account_REDIR(request):
     if not request.user.is_authenticated:
         return redirect('login')
     return redirect('account', request.user.slug)
 
-
-def Rating(request):
+def Top(request):
     user = CustomUser.objects.filter(is_staff=False).filter(
         is_superuser=False).order_by('-rating')
     return render(request, 'main/top.html', {'users': user})
-
-
-class AccountDetailView(DetailView):
-    model = CustomUser
-    template_name = 'main/user_page.html'
-    context_object_name = 'form'
-
 
 def Profile(request, slug):
     try:
@@ -204,8 +210,72 @@ def Profile(request, slug):
         'articles': Article.objects.filter(user=user),
         'point': ScorePoint.objects.filter(link_user=user).order_by("date")
     }
-    return render(request, 'main/Profile.html', content)
+    return render(request, 'main/profile.html', content)
 
+def Settings(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    # Если метод пост
+    if request.method == 'POST':
+        # Если отправлена форма редактирования пользователя
+        if "username_edit" in request.POST:
+            successfully = True
+            nickname = request.POST.get('username').lower().strip() 
+            if CustomUser.objects.filter(slug=nickname).exists() or re.search('[а-яА-Я]', nickname) or len(nickname) < 3 or nickname == "":
+                successfully = False
+            if successfully:
+                request.user.username = request.POST.get('username').strip()
+                request.user.slug = request.user.username
+                request.user.save()
+            data = {
+                'username': request.user.username,
+                'successfully': successfully,
+                }
+            return JsonResponse(data)
+        # Если отправлена форма редактирования почты
+        if "email_edit" in request.POST:
+            successfully = True
+            email = request.POST.get('email').lower().strip()
+            password = request.POST.get('password').strip()
+            if (CustomUser.objects.filter(email=email).exists() or email.strip() == "") or (not check_password(password, request.user.password) or password.strip() == "" or not '@' in email or not '.' in email):
+                successfully = False
+            if successfully:
+                request.user.email = email
+                request.user.save()
+            data = {
+                'email': request.user.email,
+                'successfully': successfully,
+                }
+            return JsonResponse(data)
+        # Если нажали кнопку редактирования пароля
+        elif "password_edit" in request.POST:
+            successfully = True
+            old_password = request.POST.get("old_password")
+            new_password = request.POST.get("new_password")
+            new_password2 = request.POST.get("new_password2")
+            # Если все совпадает устанвливаем новый пароль и редиректим
+            if check_password(old_password, request.user.password) and new_password == new_password2:
+                successfully = True
+                request.user.set_password(new_password)
+                request.user.save()
+            else:
+                successfully = False
+            data = {
+                'successfully': successfully,
+                }
+            return JsonResponse(data)
+        elif "delete" in request.POST:
+            successfully = True
+            old_password = request.POST.get("old_password")
+            if check_password(old_password, request.user.password):
+                request.user.delete()
+            else:
+                successfully = False
+            data = {
+                'successfully': successfully,
+                }
+            return JsonResponse(data)
+    return render(request, 'main/settings.html')
 
 def CreateCompetition(request):
     if request.method == 'POST':
@@ -252,9 +322,10 @@ def Сurrent_competition(request, id):
     return redirect('competition_task', id, 0)
 
 
-def Competition_task(request, id, taskid):
+def Competition_now(request, id, taskid):
     comp = Competition.objects.get(id=id)
     task = Task.objects.filter(compet=comp).order_by('title')[taskid]
+    print(request.FILES)
     if not request.user.is_authenticated:
         return redirect('login')
     elif comp.start_time > localtime():
@@ -298,6 +369,18 @@ def Competition_task(request, id, taskid):
         else:
             atmpt.error = answer[1]
         atmpt.save()
+        data = {
+        'id': atmpt.id,
+        'link_competition': atmpt.link_competition,
+        'link_task': atmpt.link_task,
+        'link_user': atmpt.link_user,
+        'document': atmpt.document.url,
+        'successfully': atmpt.successfully,
+        'points': atmpt.points,
+        'error': atmpt.error,
+        'time': atmpt.time,
+        }
+        return JsonResponse(data)
     timeleft = comp.duration - \
         int((localtime() - comp.start_time).total_seconds() // 60)
     x = timeleft / comp.duration
@@ -326,7 +409,7 @@ def Competition_task(request, id, taskid):
         'attempt': Attempt.objects.filter(link_user=request.user).order_by('-time')[0:15],
         'time': comp.start_time + timedelta(minutes=comp.duration)
     }
-    return render(request, 'main/competition_task.html', content)
+    return render(request, 'main/competition_now.html', content)
 
 # def Competition_task(request, id, taskid):
 #     error = ''
@@ -697,104 +780,3 @@ def Reg_page(request):
         'error_email': error_email
     }
     return render(request, 'main/registration.html', content)
-
-
-def AccountUpdate(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    # Вывод ошибки
-    error = ''
-    # Если метод пост
-    if request.method == 'POST':
-        # Если отправлена форма редактирования пользователя
-        if "editbtn" in request.POST:
-            # Если отправили изображение
-            if request.FILES:
-                # Не помню
-                formaccedit = CustomUserChangeFrom(request.POST, request.FILES)
-                error = check_changes(request, formaccedit)
-                # ПЕРЕДЕЛАТЬ
-                if error != '':
-                    pass
-                # Если все ок сохраняем
-                else:
-                    # Проверяем пустые ли поля что бы не сохранить пустое поле
-                    if request.POST.get('username').strip() == "":
-                        pass
-                    else:
-                        request.user.username = request.POST.get(
-                            'username').strip()
-                        request.user.slug = request.user.username
-                    if request.POST.get('email').strip() == "":
-                        pass
-                    else:
-                        request.user.email = request.POST.get('email').strip()
-                    # Получаем загруженный файл
-                    file = request.FILES['image']
-                    fs = FileSystemStorage()
-                    # Сохраняем на файловой системе
-                    filename = fs.save(file.name, file)
-                    # Получение адреса по которому лежит файл
-                    request.user.image = file_url = fs.url(filename)
-                    # Сохраняем изменения
-                    request.user.save()
-                    # Редиректим
-                    return redirect('account', request.user.slug)
-            # Если не отправили изображение
-            else:
-                # Не помню
-                formaccedit = CustomUserChangeFrom(request.POST)
-                error = check_changes(request, formaccedit)
-                # ПЕРЕДЕЛАТЬ
-                if error != '':
-                    pass
-                # Если все ок сохраняем
-                else:
-                    # Проверяем пустые ли поля что бы не сохранить пустое поле
-                    if request.POST.get('username').strip() == "":
-                        pass
-                    else:
-                        request.user.username = request.POST.get(
-                            'username').strip()
-                        request.user.slug = request.user.username
-                    if request.POST.get('email').strip() == "":
-                        pass
-                    else:
-                        request.user.email = request.POST.get('email').strip()
-                    # Сохраняем изменения
-                    request.user.save()
-                    # Редиректим
-                    return redirect('account', request.user.slug)
-        # Если нажали кнопку редактирования пароля
-        elif "changepswd" in request.POST:
-            # Не помню
-            formpswdedit = PasswordChangeForm(request.POST)
-            # Получаем пароли
-            old_password = request.POST.get("old_password")
-            pswd1 = request.POST.get("new_password")
-            pswd2 = request.POST.get("new_password_repeat")
-            # Если все совпадает устанвливаем новый пароль и редиректим
-            if check_password(old_password, request.user.password) and pswd1 == pswd2:
-                request.user.set_password(pswd1)
-                request.user.save()
-                return redirect('login')
-            # Различные ошибки если форма не верная ПЕРЕДЕЛАТЬ
-            elif not check_password(old_password, request.user.password):
-                if not silence:
-                    error = "Не верный старый пароль"
-                else:
-                    pass
-            elif pswd1 != pswd2:
-                error = "Новые пароли не совпадают"
-            # УДАЛИТЬ
-            else:
-                error = "Не известная нам проблема"
-        # Если нажали кнопку удалить
-        elif "deletbtn" in request.POST:
-            request.user.delete()
-            return redirect('home')
-
-    content = {
-        'error': error
-    }
-    return render(request, 'main/custom_profile_form.html', content)

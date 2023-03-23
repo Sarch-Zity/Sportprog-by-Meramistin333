@@ -1,21 +1,33 @@
 const filetext = document.querySelector(".upload_text_");
 const fileinput = document.querySelector(".upload_text");
 const fileinputContainer = document.querySelector(".upload_input_container");
-const button_task = document.querySelector(".button-task");
+const button_task1 = document.querySelector(".button-task1");
+const button_task2 = document.querySelector(".button-task2");
 const stn_text = document.querySelector(".sBtn-text");
 const select_menu = document.querySelector(".select-menu");
-console.log(stn_text)
-function blocked_button_task()
+function blocked_button_task1()
 {
     if(stn_text.classList.contains("blocked_text")){
-        button_task.disabled = 'disabled';
+        button_task1.disabled = 'disabled';
     }
     else{
-        button_task.removeAttribute('disabled');
+        button_task1.removeAttribute('disabled');
 
     }
 }
-blocked_button_task();
+blocked_button_task1();
+
+function blocked_button_task2()
+{
+    if(stn_text.classList.contains("blocked_text")){
+        button_task2.disabled = 'disabled';
+    }
+    else{
+        button_task2.removeAttribute('disabled');
+
+    }
+}
+blocked_button_task2();
         
 function getoutput()
     {
@@ -138,7 +150,8 @@ options.forEach(option =>{
 
         const stn_text = document.querySelector(".sBtn-text");
         stn_text.classList.remove("blocked_text");
-        blocked_button_task();
+        blocked_button_task1();
+        blocked_button_task2();
         optionMenu.classList.remove("active");
     });
 });
@@ -153,22 +166,22 @@ fileinputContainer.addEventListener("mouseout", ()=> {
     icon_file.classList.remove("bx-tada");
 });
 
-//      const tabs = document.querySelectorAll(".tab");
-// const contents = document.querySelectorAll(".content");
+const tabs = document.querySelectorAll(".tab");
+const contents = document.querySelectorAll(".content");
  
-// for (let i = 0; i < tabs.length; i++) {
-// 	tabs[i].addEventListener("click", ( event ) => {
+for (let i = 0; i < tabs.length; i++) {
+	tabs[i].addEventListener("click", ( event ) => {
  
-// 		let tabsChildren = event.target.parentElement.children;
-// 		for (let t = 0; t < tabsChildren.length; t++) {
-// 			tabsChildren[t].classList.remove("tab--active");
-// 		}
-// 		tabs[i].classList.add("tab--active");
-// 		let tabContentChildren = document.querySelector('.container_content').children;
-// 		for (let c = 0; c < tabContentChildren.length; c++) {
-// 			tabContentChildren[c].classList.remove("content--active");
-// 		}
-// 		contents[i].classList.add("content--active");
+		let tabsChildren = event.target.parentElement.children;
+		for (let t = 0; t < tabsChildren.length; t++) {
+			tabsChildren[t].classList.remove("tab--active");
+		}
+		tabs[i].classList.add("tab--active");
+		let tabContentChildren = document.querySelector('.container_content').children;
+		for (let c = 0; c < tabContentChildren.length; c++) {
+			tabContentChildren[c].classList.remove("content--active");
+		}
+		contents[i].classList.add("content--active");
  
-// 	});
-// }
+	});
+}

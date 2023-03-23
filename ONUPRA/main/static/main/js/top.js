@@ -93,17 +93,14 @@ let inputBox = document.querySelector(".search_container"),
             var main_page_main = document.querySelectorAll(".pagination_button");
             if (val != '') {
                 ne_otobchachenie();
-                console.log(paginator);
                 if(main_page_main.length != 0){
                     for(var i = 0; i < cnt_page; i++){
-                        console.log(main_page_main);
                     main_page_main[i].remove()
                 };
                 }
                 elastikItems.forEach(function (elem) {
                     let elem_itemms = elem.querySelector('.position__user');
                     let elem_itemms_upper = elem_itemms.textContent.toLowerCase();
-                    console.log(elem_itemms_upper)
                     if (elem_itemms_upper.search(val.toLowerCase()) == -1) {
                         elem.style.display = "none";
                     }

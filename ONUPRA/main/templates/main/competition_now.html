@@ -39,11 +39,13 @@
                     <div class="uploud_fail">
                         <span class="font-header">Отправка решения</span>
                         <div style="display: flex;">
-                            <!-- <div class="select-btn2">
+                            <div class="select-btn2">
                                 <ul>
+                                    <li class="tab tab1 tab--inactive">Ввести код</li>
+                                    <p style="margin:0 15px 0 15px">|</p>
                                     <li class="tab tab2 tab--active">Отправка файла</li>
                                 </ul>
-                            </div> -->
+                            </div>
                             <div class="select-menu">
                                 <div class="select-btn">
                                     <div><span span style="color: #706F6F; font-weight: 700;">Компилятор:</span>
@@ -88,20 +90,28 @@
                                 </ul>
                             </div>
                         </div>
-                        
-                        <form class="container_content" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="content content-2 content--active">
-                                <div class="textarea_upload upload_input_container_setting">
-                                    <div class="upload_input_container">
-                                        <i class='bx bxl-dropbox' ></i>
-                                        <span class="upload_text_">Загрузите файл</span> 
-                                        <input accept=".py, .cpp, .pas, .c, .cs, .kt, .rs, .php, .rb, .go, .js" title="" class="upload_text" type="file" id="upload" name="file" onChange='getoutput()'>
+                        <div class="container_content">
+                            <form class="content content-1" method="post" enctype="multipart/form-data" id="textarea_form">
+                                {% csrf_token %}
+                                <div>
+                                    <textarea id="consolas-font" class="textarea_upload upload_input_container_setting"></textarea>
+                                </div>
+                                <button type="submit" class="button-task1 button-task">Отправить решение</button>
+                            </form>
+                            <form class="content content-2 content--active" method="post" enctype="multipart/form-data" id="file_form">
+                                {% csrf_token %}
+                                <div>
+                                    <div class="textarea_upload upload_input_container_setting">
+                                        <div class="upload_input_container">
+                                            <i class='bx bxl-dropbox' ></i>
+                                            <span class="upload_text_">Загрузите файл</span> 
+                                            <input accept=".py, .cpp, .pas, .c, .cs, .kt, .rs, .php, .rb, .go, .js" title="" class="upload_text" type="file" id="upload" name="file" onChange='getoutput()'>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <button name="test" type="submit" class="button-task">Отправить решение</button>
-                        </form>
+                                <button type="submit" class="button-task2 button-task">Отправить решение</button>
+                            </form>
+                        </div>
                         
                     </div>
                     {% else %}
@@ -145,12 +155,73 @@
             {% endif %}
 {% endblock %}
 {% block js %}<script src="{% static 'main/js/competition_now.js' %}"></script>
-<!-- <script>
-    const dateString = '{{ time }}'; // пример строки времени в формате YYYY-MM-DDTHH:MM:SS+HH:MM:SS
-    const targetDate = new Date(dateString);
-    const delay = targetDate.getTime() - Date.now(); // вычисление задержки в миллисекундах между текущим временем и заданным временем
-    setTimeout(() => {
-      location.reload(); // обновление страницы
-    }, delay);
-</script> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+    // add event listener for form submit
+    $('#file_form').submit(function(e) {
+        e.preventDefault(); // prevent default form submission behavior
+
+        // get file input element
+        const fileInput = $('#upload')[0];
+
+        // create FormData object
+        const formData = new FormData();
+
+        // append file to form data object
+        formData.append('file', fileInput.files[0]);
+
+        // create AJAX request
+        $.ajax({
+        type: 'POST',
+        url: '',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        data: formData,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            console.log(response.attempt); // do something with response data
+        },
+        error: function(response) {
+            console.log('Error:', response);
+        }
+        });
+    });
+
+    $('#textarea_form').submit(function(e) {
+        e.preventDefault(); // prevent default form submission behavior
+
+        // get file input element
+        const fileInput = $('#upload')[0];
+
+        // create FormData object
+        const formData = new FormData();
+
+        // append file to form data object
+        formData.append('file', fileInput.files[0]);
+
+        // create AJAX request
+        $.ajax({
+        type: 'POST',
+        url: '',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        data: formData,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            console.log(response.attempt); // do something with response data
+        },
+        error: function(response) {
+            console.log('Error:', response);
+        }
+        });
+    });
+    });
+</script>
 {% endblock %}

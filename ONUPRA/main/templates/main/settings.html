@@ -1,11 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" type="image/png" href="{% static 'main/favicon.ico' %}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="reg_form_o.css">
+    <link rel="stylesheet" href="{% static 'main/css/registration.css' %}">
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -15,13 +17,13 @@
             <span class="header_span">Настройки профиля</span>
 
             <div class="field" id="form_nickname">
-            <form class="form_nickname">
-                <input type="text" class="input_regestration_user" name="" id="user_name" value="Никнейм">
+            <form class="form_nickname" id="nickname">
+                <input type="text" class="input_regestration_user" name="" id="username" value="{{ request.user.username }}">
                 <input type="submit" id="user_submit" class="unput_submit_nickname" value="~">
             </form>    
             <span class="error err email-error">
                 <i class="bx bx-error-circle error-icon"></i>
-                <p class="error-text">Имя пользователя занято</p>
+                <p class="error-text">Имя пользователя занято или он не соответствует требованиям</p>
             </span>
             <span class="error err2 email-error">
                 <i class="bx bx-error-circle error-icon"></i>
@@ -32,17 +34,15 @@
                 <p class="error-text">Заполните свой никнейм</p>
             </span>
             </div>
-        
-
-            <form class="list_settings w_1 inactive_1">
+            <form class="list_settings w_1 inactive_1" id="email">
                 <div class="list_settings__change a_1">
                     <span>Редактировать почту</span>
                     <i class='bx bx-right-arrow-alt bx-right-arrow-alt1' style="transform: rotate(0deg); transition: 0.3s; color: rgb(113, 112, 112);"></i>
                 </div>
                 <div id="oppacty1" style="transition: 0.4s; opacity: 0;">
                     <div class="input_mail input_set field-icon" id="form_mail">
-                        <span>Ваша почта</span>
-                        <input type="text" class="input_regestration" name="" id="const_email" value="kslsider@gmail.com">
+                        <span>Новая почта</span>
+                        <input type="text" class="input_regestration" id="const_email" value="{{ request.user.email }}">
                         <span class="error-absolute err email-error err-0">
                             <i class="bx bx-error-circle error-icon"></i>
                         </span>
@@ -58,7 +58,7 @@
                     <div class="input_password_repeat field-icon input_set" id="form_mail_password">
                         <span>Введите ваш пароль</span>
                         <div class="password-relative">
-                            <input type="password" class="input_regestration" name="" id="email_password">
+                            <input type="password" class="input_regestration" id="email_password">
                             <i class='bx bx-hide show-hide'></i>
                         </div>
                         <span data-info="Пароль неверный" class="error-absolute err err-0">
@@ -70,14 +70,14 @@
             </form>
 
 
-            <form class="list_settings w_2 inactive_2" id="form_password">
+            <form class="list_settings w_2 inactive_2" id="password">
                 <div class="list_settings__change a_2">
                     <span>Редактировать пароль</span>
                     <i class='bx bx-right-arrow-alt bx-right-arrow-alt2' style="transform: rotate(0deg);  transition: 0.2s; color: rgb(113, 112, 112);" ></i>
                 </div>
 
                 <div id="oppacty2" style="transition: 0.4s; opacity: 0;">
-                    <div class="input_password_repeat input_set field-icon" id="passwordValue">
+                    <div class="input_password_repeat input_set field-icon successfully" id="passwordValue">
                         <span>Введите ваш пароль</span>
                         <i class='bx bx-hide show-hide'></i>
                         <input type="password" class="input_regestration" name="" id="const_password">
@@ -122,7 +122,7 @@
         </div>
 
         <div class="popup__bg"> 
-            <form class="popup">
+            <form class="popup" id="delete">
                 <i class='bx bx-x close-popup'></i>
 
                 <p></p>
@@ -140,6 +140,137 @@
                 <button type="submit">Удалить аккаунт</button>
             </form>
         </div>
-            <script src="settings.js"></script>
+    <script src="{% static 'main/js/settings.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // add event listener for form submit
+            $('#nickname').submit(function(e) {
+            e.preventDefault(); // prevent default form submission behavior
+        
+            // get name input value
+            const name = $('#username').val();
+        
+            // create AJAX request
+            $.ajax({
+                type: 'POST',
+                url: '',
+                headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+                },
+                data: {
+                'username': name,
+                'username_edit': true
+                },
+                dataType: 'json',
+                success: function(response) {
+                    const form_nickname = document.getElementById("form_nickname");
+                    const user_name = document.getElementById("user_name");
+                    if (response.successfully == false){
+                        form_nickname.classList.remove("successfully");
+                        form_nickname.classList.add("invalid");
+                    }
+                    else {
+                        user_name.value = response.username
+                    }
+                console.log(response.successfully); // do something with response data
+                },
+            //   error: function(response) {
+            //     console.log('Error:', response);
+            //   }
+            });
+            });
+
+            // add event listener for form submit
+            $('#email').submit(function(e) {
+            e.preventDefault(); // prevent default form submission behavior
+        
+            // get email input value
+            const email = $('#const_email').val();
+            const password = $('#email_password').val();
+        
+            // create AJAX request
+            $.ajax({
+                type: 'POST',
+                url: '',
+                headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+                },
+                data: {
+                'email': email,
+                'password': password,
+                'email_edit': true
+                },
+                dataType: 'json',
+                success: function(response) {
+                console.log(response); // do something with response data
+                },
+            //   error: function(response) {
+            //     console.log('Error:', response);
+            //   }
+            });
+            });
+
+            // add event listener for form submit
+            $('#password').submit(function(e) {
+            e.preventDefault(); // prevent default form submission behavior
+        
+            // get passwords input value
+            const old_password = $('#const_password').val();
+            const new_password = $('#password_new').val();
+            const new_password2 = $('#Cpassword_new').val();
+        
+            // create AJAX request
+            $.ajax({
+                type: 'POST',
+                url: '',
+                headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+                },
+                data: {
+                'old_password': old_password,
+                'new_password': new_password,
+                'new_password2': new_password2,
+                'password_edit': true
+                },
+                dataType: 'json',
+                success: function(response) {
+                console.log(response); // do something with response data
+                },
+            //   error: function(response) {
+            //     console.log('Error:', response);
+            //   }
+            });
+            });
+
+            // add event listener for form submit
+            $('#delete').submit(function(e) {
+            e.preventDefault(); // prevent default form submission behavior
+        
+            // get passwords input value
+            const old_password = $('#const_password').val();
+        
+            // create AJAX request
+            $.ajax({
+                type: 'POST',
+                url: '',
+                headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+                },
+                data: {
+                'old_password': old_password,
+                'delete': true
+                },
+                dataType: 'json',
+                success: function(response) {
+                console.log(response); // do something with response data
+                },
+            //   error: function(response) {
+            //     console.log('Error:', response);
+            //   }
+            });
+            });
+        });
+    </script>
 </body>
 </html>

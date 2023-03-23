@@ -22,7 +22,6 @@ const change_settings_1 = document.querySelector(".a_1"),
     oppacty2 = document.getElementById("oppacty2"),
     oppacty1 = document.getElementById("oppacty1"),
     list_w2 = document.querySelector(".w_2");
-console.log(change_settings_1)
     
     change_settings_1.addEventListener("click", () => {
         if (list_w1.classList.contains('active_1')) {
@@ -73,7 +72,7 @@ console.log(change_settings_1)
         email_password = document.getElementById("email_password"),
         password_new = document.getElementById("password_new"),
         Cpassword_new = document.getElementById("Cpassword_new"),
-        user_name = document.getElementById("user_name"),
+        username = document.getElementById("username"),
         form_nickname = document.getElementById("form_nickname"),
         form_mail = document.getElementById("form_mail"),
         form_mail_password = document.getElementById("form_mail_password"),
@@ -104,14 +103,14 @@ function checkUsers(){
         form_nickname.classList.remove("invalid2");
         form_nickname.classList.remove("invalid3");
         const usersPattern = /^[a-zA-Zа-яА-Я0-9!"#$%&')(*+,-./:;<=>?@^_`|]{3,16}$/;
-        if (user_name.value === ''){
+        if (username.value === ''){
             form_nickname.classList.remove("successfully");
             form_nickname.classList.remove("invalid");
             form_nickname.classList.remove("invalid2");
             return form_nickname.classList.add("invalid3"); }
         if (true) 
         {
-            if (!user_name.value.match(usersPattern)){
+            if (!username.value.match(usersPattern)){
             form_nickname.classList.remove("successfully");
             form_nickname.classList.remove("invalid");
             form_nickname.classList.remove("invalid3");
@@ -166,7 +165,7 @@ function checkEmail() {
     }}}
     
 }
-user_name.addEventListener("keyup", () => {
+username.addEventListener("keyup", () => {
     checkUsers();
     validation_check_form_nickname();
 });
@@ -306,9 +305,9 @@ Cpassword_new.addEventListener("keyup", () => {
 function validation_check_form_password()
 {
     if (
-        const_password.classList.contains("successfully") &&
-        password_new.classList.contains("successfully") &&
-        Cpassword_new.classList.contains("successfully")
+        passwordValue.classList.contains("successfully") &&
+        passwordValueNew.classList.contains("successfully") &&
+        CpasswordValueNew.classList.contains("successfully")
     ) {
         document.getElementById('password_submit').removeAttribute('disabled');
     }

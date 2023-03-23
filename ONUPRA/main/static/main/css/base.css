@@ -121,6 +121,7 @@ header .image-text .name {
 
 header .image-text .profession{
     font-size: 18px;
+    margin-top: -2px;
     display: block;
 }
 
@@ -132,7 +133,6 @@ header .image-text .profession{
 
 .sidebar header .image img{
     width: 50px;
-    height: 50px;
     border-radius: 6px;
 }
 .sidebar .menu{
@@ -154,6 +154,7 @@ header .image-text .profession{
 .sidebar li a:hover{
     background: #91BFBC;
 }
+
 .sidebar li a:hover .icon,
 .sidebar li a:hover .text{
     color: var(--sidebar-color);
@@ -171,7 +172,7 @@ header .image-text .profession{
 ::-webkit-scrollbar-thumb {
      border-radius: 3px;
      height: 100px;
-     background-color: #ffffff;
+     background-color: #ffffffa6;
 }
 .menu-bar::-webkit-scrollbar{
     display: none;
@@ -182,7 +183,7 @@ header .image-text .profession{
     position: relative;
     transition: var(--tran-05);
 }
-.mode .sun-moon i{
+/* .mode .sun-moon i{
     position: absolute;
 }
 .mode .sun-moon i.sun{
@@ -193,7 +194,7 @@ body.dark .mode .sun-moon i.sun{
 }
 body.dark .mode .sun-moon i.moon{
     opacity: 0;
-}
+} */
 .wrapper
 {
     margin-left: 250px;
@@ -281,3 +282,201 @@ body.dark .mode .sun-moon i.moon{
     /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
     transition: 0.3s;
 }
+.cursor-p
+{
+    cursor: pointer;
+}
+
+
+
+.popup__bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    opacity: 0; 
+    pointer-events: none; 
+    transition: 0.5s all;
+    z-index: 22220;
+}
+.base-popup{
+    display: flex;
+    flex-direction: column;
+}
+.confirmation_logout
+{
+    width: 100%;
+    color: #FFF;
+    padding: 15px;
+    margin-top: 15px;
+    font-size: 15px;
+    background-color: #91BFBC;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.base-popup span{
+    font-size: 20px;
+    color: #333;
+}
+.popup__bg.active { 
+    opacity: 1; 
+    pointer-events: all; 
+    transition: 0.5s all;
+}
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); 
+    background: rgba(223, 223, 223, 0.961);
+    width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    transition: 0.5s all;
+}
+.popup.active { 
+    transform: translate(-50%, -50%) scale(1); 
+    transition: 0.4s all;
+}
+/* Конец важной части */
+/* Далее код для стилизации формы */
+.close-popup {
+    position: absolute;
+    top: 13px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+}
+.header_burger-btn{
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    background-color: #fff;
+    display: none;
+}
+.header_burger-btn span{
+    position: absolute;
+    width: 30px;
+    height: 2px;
+    background-color: #333;
+    left: 5px;
+    border-radius: 6px;
+}
+.header_burger-btn span:nth-child(1){
+    transform: translateY(-10px);
+}
+.header_burger-btn span:nth-child(3){
+    transform: translateY(10px);
+}
+@media screen and (max-width: 800px) {
+    
+    .sidebar{
+        display: flex;
+        height: 90px;
+        width: 100%;
+        padding: 10px;
+        bottom: 0;
+        top: calc(100% - 90px);
+    }
+    .sidebar header .image{
+        display: none;
+    }
+    .sidebar header{
+        position: relative;
+    }
+    .sidebar header .image-text, .sidebar header .image img, .sidebar header .logo-text, .sidebar .text, header .image-text .profession, header .image-text .name{
+        display: none;
+    }
+    
+    /* .sidebar header .image{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    } */
+    
+    .menu-links{
+        display: flex;
+        justify-content: space-between;
+        margin: 0 40px 0 20px;
+    }
+    .sidebar .menu{
+        margin-top: 0px;
+        z-index: 200;
+    }
+    .sidebar .menu-bar{
+        height: 65px;
+        display: flex;
+        width: 100%;
+    }
+
+    .sidebar li a{
+        width: 50px;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+    }
+    .blocked
+    {
+        width: 50px;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+    }
+    .sidebar li a .icon{
+        height: auto;
+        width: auto;
+    }
+    .wrapper{
+        margin: 80px 0 0 0;
+    }
+    .image-input
+    {
+        width: 180px;
+    }
+
+    .nav-link-profile
+    {
+        height: 50px;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+    .nav-link-profile a
+    {
+        width: 250px;
+    }
+    .nav-link-profile a:hover{
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+        background: #9cc6c3;
+    }
+    .bx-user
+    {
+        color: rgba(255, 255, 255, 0);
+    }
+    .text-prof
+    {
+        margin: 0;
+    }
+    .icon-prof
+    {
+        min-width: 50px;
+    }
+    .blocked
+    {
+        width: 50px;
+    }
+    body{
+        overflow-x:auto;
+    }
+  }
+  
