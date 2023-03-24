@@ -194,7 +194,13 @@ svg
     color: #d93025;
     font-size: 16px;
 }
-
+.field .success {
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    color: #639321;
+    font-size: 16px;
+}
 .field .err{
     display: none;
 }
@@ -308,8 +314,6 @@ svg
     overflow: hidden;
     position: relative;
 }
-.bx-right-arrow-alt
-{}
 .list_settings__change
 {
     display: flex;
@@ -458,8 +462,30 @@ svg
     height: 20px;
     width: 20px;
 }
+.succ-absolute
+{
+    position: absolute;
+    left: 95%;
+    bottom: -38%;
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    color: #25d931;
+    font-size: 16px;
+    height: 20px;
+    width: 20px;
+}
 .field-icon .err, .field-icon .err2, .field-icon .err3{
     display: none;
+}
+.field-icon .succ{
+    display: none;
+}
+.field .succ{
+    display: none;
+}
+.successfully .succ{
+    display: flex;
 }
 .invalid .input_regestration_user, .invalid2 .input_regestration_user, .invalid3 .input_regestration_user{
     border: 1px solid #d931257a;
@@ -483,6 +509,26 @@ svg
     right: 100%;
     border-radius: 7px;
     background-color: #f49c8c;
+    text-align: center;
+    color: #fff;
+    cursor: help;
+    z-index: 300;
+    font-size: 14px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.succ-0{
+    cursor:help;
+}
+.succ-0:hover::after {
+    content: attr(data-info);
+    position: absolute;
+    width: 250px;
+    padding: 8px;
+    bottom: -170%;
+    right: 100%;
+    border-radius: 7px;
+    background-color: #9ee582;
     text-align: center;
     color: #fff;
     cursor: help;

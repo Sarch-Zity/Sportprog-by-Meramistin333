@@ -217,12 +217,23 @@ def Settings(request):
         return redirect('login')
     # Если метод пост
     if request.method == 'POST':
+        # Если отправлена форма проверки никнейма
+        if "check_username" in request.POST:
+            successfully = False
+            nickname = request.POST.get('username').lower().strip() 
+            if (not CustomUser.objects.filter(slug=nickname).exists()) and (not re.search('[а-яА-Я]', nickname)) and (not len(nickname) < 3) and (not nickname == ""):
+                successfully = True
+            data = {
+                'username': request.POST.get('username').strip(),
+                'successfully': successfully,
+                }
+            return JsonResponse(data)
         # Если отправлена форма редактирования пользователя
         if "username_edit" in request.POST:
-            successfully = True
-            nickname = request.POST.get('username').lower().strip() 
-            if CustomUser.objects.filter(slug=nickname).exists() or re.search('[а-яА-Я]', nickname) or len(nickname) < 3 or nickname == "":
-                successfully = False
+            successfully = False
+            nickname = request.POST.get('username').lower().strip()
+            if (not CustomUser.objects.filter(slug=nickname).exists()) and (not re.search('[а-яА-Я]', nickname)) and (not len(nickname) < 3) and (not nickname == ""):
+                successfully = True
             if successfully:
                 request.user.username = request.POST.get('username').strip()
                 request.user.slug = request.user.username
@@ -234,22 +245,29 @@ def Settings(request):
             return JsonResponse(data)
         # Если отправлена форма редактирования почты
         if "email_edit" in request.POST:
-            successfully = True
-            email = request.POST.get('email').lower().strip()
+            print(request)
+            email_successfully = False
+            password_successfully = False
+            email = request.POST.get('email').strip()
             password = request.POST.get('password').strip()
-            if (CustomUser.objects.filter(email=email).exists() or email.strip() == "") or (not check_password(password, request.user.password) or password.strip() == "" or not '@' in email or not '.' in email):
-                successfully = False
-            if successfully:
+            print(email, ((not CustomUser.objects.filter(email=email).exists()) and (not email.strip() == "") and ('@' in email) and ('.' in email)))
+            print(password, (check_password(password, request.user.password) and (not password.strip() == "")))
+            if ((not CustomUser.objects.filter(email=email).exists()) and (not email.strip() == "") and ('@' in email) and ('.' in email)):
+                email_successfully = True
+            if (check_password(password, request.user.password) and (not password.strip() == "")):
+                password_successfully = True
+            if email_successfully and password_successfully:
                 request.user.email = email
                 request.user.save()
             data = {
                 'email': request.user.email,
-                'successfully': successfully,
+                'email_successfully': email_successfully,
+                'password_successfully': password_successfully,
                 }
             return JsonResponse(data)
         # Если нажали кнопку редактирования пароля
         elif "password_edit" in request.POST:
-            successfully = True
+            successfully = False
             old_password = request.POST.get("old_password")
             new_password = request.POST.get("new_password")
             new_password2 = request.POST.get("new_password2")
@@ -258,19 +276,18 @@ def Settings(request):
                 successfully = True
                 request.user.set_password(new_password)
                 request.user.save()
-            else:
-                successfully = False
+            print(old_password, new_password, new_password2, check_password(old_password, request.user.password), successfully)
             data = {
                 'successfully': successfully,
                 }
             return JsonResponse(data)
         elif "delete" in request.POST:
-            successfully = True
-            old_password = request.POST.get("old_password")
-            if check_password(old_password, request.user.password):
+            successfully = False
+            delete_password = request.POST.get("delete_password")
+            print(delete_password, successfully, check_password(delete_password, request.user.password))
+            if check_password(delete_password, request.user.password):
                 request.user.delete()
-            else:
-                successfully = False
+                successfully = True
             data = {
                 'successfully': successfully,
                 }
@@ -309,8 +326,8 @@ def CreateCompetition(request):
 def Competitions(request):
     # if not request.user.is_authenticated:
     #     return redirect('login')
-    comp = Competition.objects.filter(actual=True).order_by('start_time')
-    past_comp = Competition.objects.filter(actual=False).order_by('start_time')
+    comp = Competition.objects.filter(actual=True).order_by('-start_time')
+    past_comp = Competition.objects.filter(actual=False).order_by('-start_time')
     content = {
         'comp': comp,
         'past_comp': past_comp,
@@ -770,9 +787,7 @@ def Reg_page(request):
         elif form.is_valid():
             formsv = form.save()
             login(request, formsv)
-            point = ScorePoint(score=0, link_user=formsv)
-            point.save()
-            return redirect('accountREDIR')
+            return redirect('you')
 
     form = CustomUserCreationFrom()
     content = {

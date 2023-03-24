@@ -96,40 +96,8 @@ form_nickname.addEventListener("click", () => {
         oppacty2.style.opacity = '0';
     }
 });
-function checkUsers(){
-    if (true) 
-    {
-        form_nickname.classList.remove("invalid");
-        form_nickname.classList.remove("invalid2");
-        form_nickname.classList.remove("invalid3");
-        const usersPattern = /^[a-zA-Zа-яА-Я0-9!"#$%&')(*+,-./:;<=>?@^_`|]{3,16}$/;
-        if (username.value === ''){
-            form_nickname.classList.remove("successfully");
-            form_nickname.classList.remove("invalid");
-            form_nickname.classList.remove("invalid2");
-            return form_nickname.classList.add("invalid3"); }
-        if (true) 
-        {
-            if (!username.value.match(usersPattern)){
-            form_nickname.classList.remove("successfully");
-            form_nickname.classList.remove("invalid");
-            form_nickname.classList.remove("invalid3");
-            return form_nickname.classList.add("invalid2");
-        }
-        if (true) 
-        {   
-            if (
-                !form_nickname.classList.contains("invalid") &&
-                !form_nickname.classList.contains("invalid2") &&
-                !form_nickname.classList.contains("invalid3")
-            ) {
-                form_nickname.classList.remove("invalid");
-            form_nickname.classList.remove("invalid2");
-            form_nickname.classList.remove("invalid3");
-            return form_nickname.classList.add("successfully");
-            } 
-        }}}
-};
+
+
 function checkEmail() {
     if (true) 
 {
@@ -165,10 +133,7 @@ function checkEmail() {
     }}}
     
 }
-username.addEventListener("keyup", () => {
-    checkUsers();
-    validation_check_form_nickname();
-});
+
 function createPass(){
     if (true) 
 {
@@ -199,26 +164,13 @@ email_password.addEventListener("keyup", () => {
     validation_check_form_mail();
 });
 
-function validation_check_form_nickname()
-{
-    if (
-        form_nickname.classList.contains("successfully") 
-    ) {
-        document.getElementById('user_submit').removeAttribute('disabled');
-    }
-    else{
-        document.getElementById('user_submit').disabled = 'disabled';
-    }
-}
-validation_check_form_nickname();
-
 
 
 
 function validation_check_form_mail()
 {
     if (
-        const_email.classList.contains("successfully") &&
+        form_mail.classList.contains("successfully") &&
         email_password.classList.contains("successfully") 
     ) {
         document.getElementById('email_submit').removeAttribute('disabled');
@@ -262,7 +214,7 @@ function createNewPass(){
 }
 password_new.addEventListener("keyup", () => {
     createNewPass();
-    confirmPass();
+    if (Cpassword_new.value != ''){confirmPass();}
     validation_check_form_password();
 });
 
@@ -305,7 +257,6 @@ Cpassword_new.addEventListener("keyup", () => {
 function validation_check_form_password()
 {
     if (
-        passwordValue.classList.contains("successfully") &&
         passwordValueNew.classList.contains("successfully") &&
         CpasswordValueNew.classList.contains("successfully")
     ) {
@@ -316,7 +267,6 @@ function validation_check_form_password()
     }
 }
 validation_check_form_password();
-
 
 
 
