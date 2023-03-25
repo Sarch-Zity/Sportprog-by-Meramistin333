@@ -1,6 +1,7 @@
 const upload_photo = document.querySelector(".input_upload_"),
 save_photo = document.querySelector(".input_upload_save"),
 input_upload_photo = document.querySelector(".upload-photo-file")
+console.log(upload_photo, save_photo, input_upload_photo)
 
 input_upload_photo.addEventListener('change', function(){
   if( this.value ){
@@ -10,26 +11,26 @@ input_upload_photo.addEventListener('change', function(){
   }
 });
 
-let popupBg = document.querySelector('.popup__bg');
-let popup = document.querySelector('.popup');
-let openPopupButtons = document.querySelector('.open-popup');
-let closePopupButton = document.querySelector('.close-popup'); 
+let popupBg2 = document.querySelector('.pbg2');
+let popup2 = document.querySelector('.p2');
+let openPopupButtons2 = document.querySelector('.op2');
+let closePopupButton2 = document.querySelector('.cp2'); 
 
 
-openPopupButtons.addEventListener('click', (e) => { 
+openPopupButtons2.addEventListener('click', (e) => { 
     e.preventDefault(); 
-    popupBg.classList.add('active'); 
-    popup.classList.add('active'); 
+    popupBg2.classList.add('active'); 
+    popup2.classList.add('active'); 
 });
 
-closePopupButton.addEventListener('click',() => { 
-    popupBg.classList.remove('active');
-    popup.classList.remove('active'); 
+closePopupButton2.addEventListener('click',() => { 
+    popupBg2.classList.remove('active');
+    popup2.classList.remove('active'); 
 });
 
 document.addEventListener('click', (e) => { 
-    if(e.target === popupBg) { 
-        popupBg.classList.remove('active'); 
-        popup.classList.remove('active'); 
+    if(e.target === popupBg2) { 
+        popupBg2.classList.remove('active'); 
+        popup2.classList.remove('active'); 
     }
 });

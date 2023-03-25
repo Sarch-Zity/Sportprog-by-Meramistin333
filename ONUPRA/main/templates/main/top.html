@@ -29,17 +29,17 @@
                     {% for i in users %}
                         <tr class="string" style="display: none;">
                             <td class="position">
-                                <a style="text-decoration: none;" href="{% url 'account' i.slug %}">
+                                <a style="text-decoration: none;" href="{% url 'account' i.username %}">
                                     {{ forloop.counter }}
                                 </a>
                             </td>
                             <td class="position__user">
-                                <a style="text-decoration: none;" href="{% url 'account' i.slug %}">
+                                <a style="text-decoration: none;" href="{% url 'account' i.username %}">
                                     {{ i.username }}
                                 </a>
                             </td>
                             <td class="position__user__reiting">
-                                <a style="text-decoration: none;" href="{% url 'account' i.slug %}">
+                                <a style="text-decoration: none;" href="{% url 'account' i.username %}">
                                     {{ i.rating }}
                                 </a>
                             </td>

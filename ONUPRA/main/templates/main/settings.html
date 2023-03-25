@@ -27,7 +27,7 @@
             </span>
             <span class="error err2 email-error">
                 <i class="bx bx-error-circle error-icon"></i>
-                <p class="error-text">Имя пользователя не соответствует требованиям</p>
+                <p class="error-text">Имя пользователя не соответствует требованиям (Размер 3-16)</p>
             </span>
             <span class="error err3 email-error">
                 <i class="bx bx-error-circle error-icon"></i>
@@ -36,6 +36,10 @@
             <span class="success succ">
                 <i class="bx bx-error-circle error-icon"></i>
                 <p class="error-text">Никнейм успешно изменён</p>
+            </span>
+            <span class="success succ1">
+                <i class="bx bx-error-circle error-icon"></i>
+                <p class="error-text">Никнейм свободен</p>
             </span>
             </div>
             <form class="list_settings w_1 inactive_1" id="email">
@@ -50,8 +54,8 @@
                         <span class="error-absolute err email-error err-0">
                             <i class="bx bx-error-circle error-icon"></i>
                         </span>
-                        <span data-info="Электронная почта не подходит по требованиям" class="error-absolute err2 email-error err-0">
-                            <i title="Электронная почта не подходит по требованиям" class="bx bx-error-circle error-icon"></i>
+                        <span data-info="Электронная почта не подходит по требованиям, примерная формуа - (onupra@gmail.com)" class="error-absolute err2 email-error err-0">
+                            <i title="Электронная почта не подходит по требованиям, примерная формуа - (onupra@gmail.com)" class="bx bx-error-circle error-icon"></i>
                             <!-- <p class="error-text">Электронная почта не подходит по требованиям</p> -->
                         </span>
                         <span data-info="Введите вашу почту!" class="error-absolute err3 email-error err-0">
@@ -98,7 +102,7 @@
                         <span>Введите ваш новый пароль</span>
                         <i class='bx bx-hide show-hide'></i>
                         <input type="password" class="input_regestration" id="password_new">
-                        <span data-info="Пароль не подходит по требованиям" class="err-0 error-absolute err2 email-error">
+                        <span data-info="Пароль не подходит по требованиям (Должны использоваться цифры(0-9), Латиница заглавные и прописные(A-Za-z))" class="err-0 error-absolute err2 email-error">
                             <i  class="bx bx-error-circle error-icon"></i>
                             <!-- <p class="error-text">Пароль не подходит по требованиям</p> -->
                         </span>
@@ -158,14 +162,18 @@ function checkUsers(){
         form_nickname.classList.remove("invalid");
         form_nickname.classList.remove("invalid2");
         form_nickname.classList.remove("invalid3");
-        const usersPattern = /^[a-zA-Z0-9!"#$%&')(*+,-./:;<=>?@^_`|]{3,20}$/;
+        form_nickname.classList.remove("successfully");
+        form_nickname.classList.remove("successfully1");
+        const usersPattern = /^[a-яА-Яa-zA-Z0-9!"#$%&')(*+,-./:;<=>?@^_`|]{3,20}$/;
         if (username.value === ''){
             form_nickname.classList.remove("successfully");
             form_nickname.classList.remove("invalid");
             form_nickname.classList.remove("invalid2");
+            form_nickname.classList.remove("successfully1");
             return form_nickname.classList.add("invalid3"); }
         if (!username.value.match(usersPattern)){
             form_nickname.classList.remove("successfully");
+            form_nickname.classList.remove("successfully1");
             form_nickname.classList.remove("invalid");
             form_nickname.classList.remove("invalid3");
             return form_nickname.classList.add("invalid2");
@@ -197,11 +205,19 @@ function checkUsers(){
                         const form_nickname = document.getElementById("form_nickname");
                         const username = document.getElementById("username");
                         if (response.successfully == false){
+                            form_nickname.classList.remove("invalid2");
+                            form_nickname.classList.remove("invalid3");
                             form_nickname.classList.remove("successfully");
+                            form_nickname.classList.remove("successfully1");
                             return form_nickname.classList.add("invalid");
                         }
                         else {
                             username.value = response.username;
+                            form_nickname.classList.remove("invalid");
+                            form_nickname.classList.remove("invalid2");
+                            form_nickname.classList.remove("invalid3");
+                            form_nickname.classList.remove("successfully1");
+                            return form_nickname.classList.add("successfully1");
                         }
                     },
                 //   error: function(response) {
@@ -258,12 +274,17 @@ username.addEventListener("keyup", () => {
                     const username = document.getElementById("username");
                     if (response.successfully == false){
                         form_nickname.classList.remove("successfully");
+                        form_nickname.classList.remove("successfully1");
                         form_nickname.classList.remove("invalid2");
                         form_nickname.classList.remove("invalid3");
                         form_nickname.classList.add("invalid");
                     }
                     else {
                         username.value = response.username;
+                        form_nickname.classList.remove("invalid");
+                        form_nickname.classList.remove("invalid2");
+                        form_nickname.classList.remove("invalid3");
+                        form_nickname.classList.remove("successfully1");
                         form_nickname.classList.add("successfully")
                     }
                 },

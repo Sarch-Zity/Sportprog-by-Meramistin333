@@ -98,6 +98,11 @@ body{
     opacity: 1;
     margin: 0 7px;
 }
+.text_logout{
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+}
 .sidebar.close .text{
     opacity: 0;
 }
@@ -356,20 +361,28 @@ body.dark .mode .sun-moon i.moon{
 }
 .header_burger-btn{
     position: relative;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border: none;
     cursor: pointer;
     background-color: #fff;
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 15%;
+    right: 20px;
+    border-radius: 6px;
+}
+.header_burger-btn:hover{
+    background-color: rgb(247, 242, 242);
 }
 .header_burger-btn span{
     position: absolute;
-    width: 30px;
-    height: 2px;
-    background-color: #333;
-    left: 5px;
+    width: 33px;
+    height: 3px;
+    background-color: rgb(124, 120, 120);
     border-radius: 6px;
+    transition: 0.15s;
 }
 .header_burger-btn span:nth-child(1){
     transform: translateY(-10px);
@@ -377,24 +390,39 @@ body.dark .mode .sun-moon i.moon{
 .header_burger-btn span:nth-child(3){
     transform: translateY(10px);
 }
+.sidebar.open .header_burger-btn span:nth-child(2){
+    opacity: 0;
+}
+.sidebar.open .header_burger-btn span:nth-child(1){
+    transform: translateY(0);
+    transform: rotateZ(45deg);
+}
+.sidebar.open .header_burger-btn span:nth-child(3){
+    transform: translateY(0);
+    transform: rotateZ(-45deg);
+}
 @media screen and (max-width: 800px) {
     
+    ::-webkit-scrollbar-thumb {
+        display: none;
+    }
+   ::-webkit-scrollbar {
+    display: none;
+    }
+
     .sidebar{
         display: flex;
         height: 90px;
         width: 100%;
         padding: 10px;
-        bottom: 0;
-        top: calc(100% - 90px);
+        top: 0;
+        justify-content: space-between;
     }
     .sidebar header .image{
         display: none;
     }
     .sidebar header{
         position: relative;
-    }
-    .sidebar header .image-text, .sidebar header .image img, .sidebar header .logo-text, .sidebar .text, header .image-text .profession, header .image-text .name{
-        display: none;
     }
     
     /* .sidebar header .image{
@@ -405,38 +433,53 @@ body.dark .mode .sun-moon i.moon{
     
     .menu-links{
         display: flex;
-        justify-content: space-between;
-        margin: 0 40px 0 20px;
+        flex-direction: column;
     }
     .sidebar .menu{
         margin-top: 0px;
         z-index: 200;
+        
     }
     .sidebar .menu-bar{
-        height: 65px;
+        height: calc(100vh - 90px);
         display: flex;
-        width: 100%;
+        width: 270px;
+        position: absolute;
+        background-color: rgb(255, 255, 255);
+        right: -270px;
+        top: 90px;
+        padding: 0px 20px 10px 20px;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.2s;
     }
-
-    .sidebar li a{
-        width: 50px;
-        padding: 10px;
-        display: flex;
-        justify-content: center;
-    }
-    .blocked
-    {
-        width: 50px;
-        padding: 10px;
-        display: flex;
-        justify-content: center;
+    .sidebar .menu-bar.open{
+        opacity: 1;
+        visibility: visible;
+        right: 0px;
     }
     .sidebar li a .icon{
         height: auto;
         width: auto;
     }
+    .sidebar li a{
+        width: 110%;
+    }
     .wrapper{
-        margin: 80px 0 0 0;
+        margin: 90px 0 0 0;
+    }
+    .wrapper.media{
+        display: block;
+    }
+    .wrapper_{
+        margin: 90px 0 0 0;
+    }
+    .wrapper_content_2{
+        width: 100%;
+    }
+    .wrapper_content_block_2{
+        margin: 15px 0 0 0;
+        width: 100%;
     }
     .image-input
     {
@@ -463,20 +506,30 @@ body.dark .mode .sun-moon i.moon{
     {
         color: rgba(255, 255, 255, 0);
     }
+    .blackout
+    {
+        position: absolute;
+        transition: 0.3s;
+    }
+    .blackout.open
+    {
+        height: 100vh;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.261);
+    }
     .text-prof
     {
         margin: 0;
+    }
+    .bottom-content
+    {
+        margin-bottom: 15px;
     }
     .icon-prof
     {
         min-width: 50px;
     }
-    .blocked
-    {
-        width: 50px;
-    }
-    body{
-        overflow-x:auto;
+    .header_burger-btn{
+        display: flex;
     }
   }
-  

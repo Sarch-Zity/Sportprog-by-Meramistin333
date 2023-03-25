@@ -130,7 +130,7 @@ function checkUsers(){
         usersField.classList.remove("invalid");
         usersField.classList.remove("invalid2");
         usersField.classList.remove("invalid3");
-        const usersPattern = /^[a-zA-Z0-9-_=+)('"!@#№;$%?&*|/,.]{3,16}$/;
+        const usersPattern = /^[a-яА-Яa-zA-Z0-9-_=+)('"!@#№;$%?&*|/,.]{3,16}$/;
         if (usersInput.value === ''){
             usersField.classList.remove("successfully");
             usersField.classList.remove("invalid");

@@ -42,7 +42,7 @@ def cheker():
                     del d0, max_score
                     # print(users)
                     for j in users:
-                        if j.rating == 0:
+                        if j.rating < 100:
                             # print(j.username, j.rating, d1[j], average_score, 200 * ((d1[j] / average_score - 1) / 3 + 1))
                             j.rating = 200 * ((d1[j] / average_score - 1) / 3 + 1)
                         else:

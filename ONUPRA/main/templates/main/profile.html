@@ -14,7 +14,7 @@
                         <img src="{{user.image.url}}" alt="">
                     </div>
                     {% if request.user.username == user.username %}
-                    <div class="avatar_upload open-popup">
+                    <div class="avatar_upload open-popup op2">
                         <span>Изменить</span>
                         <i class='bx bx-pencil'></i>
                     </div>
@@ -58,9 +58,9 @@
             </div>
     </div>
     {% if request.user.username == user.username %}
-    <div class="popup__bg"> 
-        <div class="popup">
-            <i class='bx bx-x close-popup'></i>
+    <div class="popup__bg pbg2"> 
+        <div class="popup p2">
+            <i class='bx bx-x close-popup cp2'></i>
             <div class="img_change">
                 <span>Изменение вашего аватара</span>
                 <div class="img_change_block">

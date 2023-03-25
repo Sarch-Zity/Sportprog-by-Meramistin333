@@ -186,7 +186,7 @@ function createNewPass(){
     if (true) 
 {
   const passPatterrn = 
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9]{8,128}$/;
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[а-яА-ЯA-Za-z0-9]{8,128}$/;
 
     passwordValueNew.classList.remove("invalid2");
     passwordValueNew.classList.remove("invalid3");

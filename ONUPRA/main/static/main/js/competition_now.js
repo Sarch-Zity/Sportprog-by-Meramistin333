@@ -140,6 +140,7 @@ document.addEventListener("click", function (e) {
         toggleMenu();
     }
 });
+var selectedOptionAttribyte;
 options.forEach(option =>{
     option.addEventListener("click", ()=>{
         let selectedOption = option.querySelector(".option-text").innerText;

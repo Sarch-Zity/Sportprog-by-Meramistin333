@@ -107,7 +107,7 @@ def run_command(file_name, tests_input, tests_output):
     else:
         # for i in delete_files:
             # os.remove(i)
-        return "Не удалось скомпилировать файл"
+        return [0, "Не удалось скомпилировать файл"]
 
 
 def Index(request):
@@ -151,25 +151,22 @@ def Test(request):
 def Account_REDIR(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    return redirect('account', request.user.slug)
+    return redirect('account', request.user.username)
 
 def Top(request):
     user = CustomUser.objects.filter(is_staff=False).filter(
         is_superuser=False).order_by('-rating')
     return render(request, 'main/top.html', {'users': user})
 
-def Profile(request, slug):
-    try:
-        user = CustomUser.objects.get(slug=slug)
-    except CustomUser.DoesNotExist as e:
-        return redirect('home')
+def Profile(request, username):
+    user = CustomUser.objects.get(username=username)
     # если решили обновить аватарку
     if request.method == 'POST' and request.user.is_authenticated:
         if 'reset image' in request.POST:
             request.user.image = 'default.png'
             request.user.save()
             # Редиректим
-            return redirect('account', request.user.slug)
+            return redirect('account', request.user.username)
         elif 'update image' in request.POST and request.FILES:
             # В форму добавляем инфу которую пользователь добавил
             form = CustomUserImageChangeFrom(
@@ -177,7 +174,7 @@ def Profile(request, slug):
             print(form.errors)
             if form.is_valid():
                 form.save()
-                return redirect('account', request.user.slug)
+                return redirect('account', request.user.username)
         elif 'new post' in request.POST:
             form = ArticleForm(request.POST)
             form2 = FileForm(request.POST, request.FILES)
@@ -193,16 +190,7 @@ def Profile(request, slug):
                     article = form.save(commit=False)
                     article.user = request.user
                     article.save()
-                return redirect('account', request.user.slug)
-        elif 'change username' in request.POST:
-            form = CustomUserUsernameChangeFrom(
-                request.POST, instance=request.user)
-            print(form.is_valid())
-            if form.is_valid():
-                user = form.save(commit=False)
-                user.slug = user.username
-                user.save()
-                return redirect('account', request.user.slug)
+                return redirect('account', request.user.username)
     content = {
         'user': user,
         'form': ArticleForm(),
@@ -220,8 +208,9 @@ def Settings(request):
         # Если отправлена форма проверки никнейма
         if "check_username" in request.POST:
             successfully = False
-            nickname = request.POST.get('username').lower().strip() 
-            if (not CustomUser.objects.filter(slug=nickname).exists()) and (not re.search('[а-яА-Я]', nickname)) and (not len(nickname) < 3) and (not nickname == ""):
+            nickname = request.POST.get('username')
+            form = CustomUserUsernameChangeFrom(request.POST, instance=request.user)
+            if (form.is_valid) and (not CustomUser.objects.filter(username=nickname).exists()):
                 successfully = True
             data = {
                 'username': request.POST.get('username').strip(),
@@ -231,12 +220,12 @@ def Settings(request):
         # Если отправлена форма редактирования пользователя
         if "username_edit" in request.POST:
             successfully = False
-            nickname = request.POST.get('username').lower().strip()
-            if (not CustomUser.objects.filter(slug=nickname).exists()) and (not re.search('[а-яА-Я]', nickname)) and (not len(nickname) < 3) and (not nickname == ""):
+            nickname = request.POST.get('username')
+            form = CustomUserUsernameChangeFrom(request.POST, instance=request.user)
+            if form.is_valid and (not CustomUser.objects.filter(username=nickname).exists()):
                 successfully = True
             if successfully:
-                request.user.username = request.POST.get('username').strip()
-                request.user.slug = request.user.username
+                request.user.username = request.POST.get('username')
                 request.user.save()
             data = {
                 'username': request.user.username,
@@ -768,14 +757,14 @@ def Competition_now(request, id, taskid):
 
 def Reg_page(request):
     if request.user.is_authenticated:
-        return redirect('account', request.user.slug)
+        return redirect('account', request.user.username)
     error_username = False
     error_email = False
     if request.method == 'POST':
         form = CustomUserCreationFrom(request.POST)
         email = request.POST.get('email')
-        nickname = request.POST.get('username').lower()
-        if CustomUser.objects.filter(slug=nickname).exists():
+        nickname = request.POST.get('username')
+        if CustomUser.objects.filter(username=nickname).exists():
             if CustomUser.objects.filter(email=email).exists():
                 error_email = True
             error_username = True
