@@ -122,6 +122,10 @@
     </div>
     <div class="blackout"></div>
     <script src="{% static 'main/js/base.js' %}"></script>
+    {% if request.user.is_authenticated %}
+    <script src="{% static 'main/js/logout.js' %}"></script>
+    {% else %}
+    {% endif %}
 {% block body %}{% endblock %}
 <!-- <script>
 let switchMode = document.getElementById("switchMode");
