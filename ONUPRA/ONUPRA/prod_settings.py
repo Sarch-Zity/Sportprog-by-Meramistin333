@@ -20,11 +20,11 @@ CSRF_TRUSTED_ORIGINS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'onupra',
-        'USER': 'dbuser',
-        'PASSWORD': 'gaysex32',
+        'NAME': 'db',
+        'USER': 'ben',
+        'PASSWORD': 'gs&?us~mU2&&7jw0AfCI',
         'HOST': 'localhost',
-        'PORT': '8000'
+        'PORT': '',
     }
 }
 
