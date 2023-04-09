@@ -112,6 +112,8 @@ def run_command(file_name, tests_input, tests_output):
 
 def Index(request):
     # locale.setlocale(locale.LC_TIME, 'ru_RU')
+    usr = CustomUser.objects.filter(is_superuser=False)
+    print(usr)
     comp = Competition.objects.filter(actual=True).order_by('start_time')
     if comp:
         comp = comp[0]
@@ -154,8 +156,8 @@ def Account_REDIR(request):
     return redirect('account', request.user.username)
 
 def Top(request):
-    user = CustomUser.objects.filter(is_staff=False).filter(
-        is_superuser=False).order_by('-rating')
+    user = CustomUser.objects.filter(is_staff=False).filter(is_superuser=False).order_by('-rating')
+    print(user[0].rating)
     return render(request, 'main/top.html', {'users': user})
 
 def Profile(request, username):
