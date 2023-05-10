@@ -735,5 +735,4 @@ def Authentication(request):
             login(request, form.get_user())
             remember_me = form.cleaned_data['remember_me']
             return redirect('you')
-    else:
-        return render(request, 'main/login.html')
+    return render(request, 'main/login.html')

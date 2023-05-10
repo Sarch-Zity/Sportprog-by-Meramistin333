@@ -36,11 +36,14 @@
                     {% endif %}
             </div>   
             </div>
+            {% if request.user.username == user.username %}
             <ul class="list_menu">
                 <a href="{% url 'edit' %}">
                 <li class="elem_spis"><i class='bx bxs-cog icon_spis'></i></li>
                 </a>
             </ul>
+            {% else %}
+            {% endif %}
         </div>
         <div class="block_content_profile">
             <div class="schedule_block">
