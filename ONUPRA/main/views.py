@@ -11,7 +11,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from .models import CustomUser, Competition, Task, Attempt, File, Article, ScorePoint
 from django.contrib.auth.hashers import check_password
-from .forms import CustomUserCreationFrom, CustomUserChangeFrom, PasswordChangeForm, CreateCompetitionForm, CustomUserImageChangeFrom, CustomUserUsernameChangeFrom, CreateTaskForm, ArticleForm, FileForm
+from .forms import CustomUserCreationFrom, PasswordChangeForm, CustomUserImageChangeFrom, CustomUserUsernameChangeFrom, ArticleForm, FileForm, CustomAuthenticationForm
 from django.contrib.auth import login, logout
 from django.views.generic import DetailView, UpdateView
 from django.db.models import Max
@@ -109,11 +109,10 @@ def run_command(file_name, tests_input, tests_output):
             # os.remove(i)
         return [0, "Не удалось скомпилировать файл"]
 
-
 def Index(request):
+    print(request.session.get_expiry_age())
     # locale.setlocale(locale.LC_TIME, 'ru_RU')
     usr = CustomUser.objects.filter(is_superuser=False)
-    print(usr)
     comp = Competition.objects.filter(actual=True).order_by('start_time')
     if comp:
         comp = comp[0]
@@ -133,23 +132,6 @@ def Index(request):
         return render(request, 'main/home.html', {'comp': comp, 'date': date, 'time': time})
     return render(request, 'main/home.html', {'comp': comp})
 
-def my_ajax_view(request):
-    if request.method == 'POST':
-        # handle the form submission here
-        a = request.POST.get("name")
-        # do something with the content
-        data = {
-        'message': f'{a}1111',
-        }
-        return JsonResponse(data)
-    data = {
-        'message': f'22',
-        }
-    return JsonResponse(data)
-
-def Test(request):
-    return render(request, 'main/test.html')
-
 def Account_REDIR(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -157,7 +139,6 @@ def Account_REDIR(request):
 
 def Top(request):
     user = CustomUser.objects.filter(is_staff=False).filter(is_superuser=False).order_by('-rating')
-    print(user[0].rating)
     return render(request, 'main/top.html', {'users': user})
 
 def Profile(request, username):
@@ -173,7 +154,6 @@ def Profile(request, username):
             # В форму добавляем инфу которую пользователь добавил
             form = CustomUserImageChangeFrom(
                 request.POST, request.FILES, instance=request.user)
-            print(form.errors)
             if form.is_valid():
                 form.save()
                 return redirect('account', request.user.username)
@@ -195,8 +175,6 @@ def Profile(request, username):
                 return redirect('account', request.user.username)
     content = {
         'user': user,
-        'form': ArticleForm(),
-        'form2': FileForm(),
         'articles': Article.objects.filter(user=user),
         'point': ScorePoint.objects.filter(link_user=user).order_by("date")
     }
@@ -236,13 +214,10 @@ def Settings(request):
             return JsonResponse(data)
         # Если отправлена форма редактирования почты
         if "email_edit" in request.POST:
-            print(request)
             email_successfully = False
             password_successfully = False
             email = request.POST.get('email').strip()
             password = request.POST.get('password').strip()
-            print(email, ((not CustomUser.objects.filter(email=email).exists()) and (not email.strip() == "") and ('@' in email) and ('.' in email)))
-            print(password, (check_password(password, request.user.password) and (not password.strip() == "")))
             if ((not CustomUser.objects.filter(email=email).exists()) and (not email.strip() == "") and ('@' in email) and ('.' in email)):
                 email_successfully = True
             if (check_password(password, request.user.password) and (not password.strip() == "")):
@@ -267,7 +242,6 @@ def Settings(request):
                 successfully = True
                 request.user.set_password(new_password)
                 request.user.save()
-            print(old_password, new_password, new_password2, check_password(old_password, request.user.password), successfully)
             data = {
                 'successfully': successfully,
                 }
@@ -275,7 +249,6 @@ def Settings(request):
         elif "delete" in request.POST:
             successfully = False
             delete_password = request.POST.get("delete_password")
-            print(delete_password, successfully, check_password(delete_password, request.user.password))
             if check_password(delete_password, request.user.password):
                 request.user.delete()
                 successfully = True
@@ -284,35 +257,6 @@ def Settings(request):
                 }
             return JsonResponse(data)
     return render(request, 'main/settings.html')
-
-def CreateCompetition(request):
-    if request.method == 'POST':
-        if 'task' in request.POST:
-            task_form = CreateTaskForm(request.POST)
-            print(request.POST)
-            if task_form.is_valid():
-                print("eeeee")
-                task_form.save()
-            else:
-                print(task_form.errors)
-                print("Nooooo")
-        if 'competition' in request.POST:
-            comp_form = CreateCompetitionForm(request.POST)
-            print(request.POST)
-            if comp_form.is_valid():
-                print("eeeee")
-                comp_form.save()
-            else:
-                print(comp_form.errors)
-                print("Nooooo")
-    comp_form = CreateCompetitionForm()
-    task_form = CreateTaskForm()
-    content = {
-        'comp_form': comp_form,
-        'task_form': task_form
-    }
-    return render(request, 'main/create_competition.html', content)
-
 
 def Competitions(request):
     # if not request.user.is_authenticated:
@@ -325,15 +269,12 @@ def Competitions(request):
     }
     return render(request, 'main/competition.html', content)
 
-
 def Сurrent_competition(request, id):
     return redirect('competition_task', id, 0)
-
 
 def Competition_now(request, id, taskid):
     comp = Competition.objects.get(id=id)
     task = Task.objects.filter(compet=comp).order_by('title')[taskid]
-    print(request.FILES)
     if not request.user.is_authenticated:
         return redirect('login')
     elif comp.start_time > localtime():
@@ -757,7 +698,7 @@ def Competition_now(request, id, taskid):
 # Переписать
 
 
-def Reg_page(request):
+def Registration(request):
     if request.user.is_authenticated:
         return redirect('account', request.user.username)
     error_username = False
@@ -772,17 +713,27 @@ def Reg_page(request):
             error_username = True
         elif CustomUser.objects.filter(email=email).exists():
             error_email = True
-        elif re.search('[а-яА-Я]', nickname):
-            pass
         # Если форма коректна, то она сохраняется
         elif form.is_valid():
             formsv = form.save()
             login(request, formsv)
             return redirect('you')
 
-    form = CustomUserCreationFrom()
     content = {
         'error_username': error_username,
         'error_email': error_email
     }
     return render(request, 'main/registration.html', content)
+
+def Authentication(request):
+    if request.user.is_authenticated:
+        return redirect('account', request.user.username)
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(data=request.POST)
+        # Если форма коректна, то она аутентифицирует тебя
+        if form.is_valid():
+            login(request, form.get_user())
+            remember_me = form.cleaned_data['remember_me']
+            return redirect('you')
+    else:
+        return render(request, 'main/login.html')

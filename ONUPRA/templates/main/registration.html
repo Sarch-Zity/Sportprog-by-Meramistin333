@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <head>
     <title>Регистрация</title>
-    <link rel="shortcut icon" type="image/png" href="{% static 'main/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'main/css/registration.css' %}">
     <link rel="stylesheet"
 href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -16,7 +15,7 @@ href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
                 {% csrf_token %}
                 <div class={% if error_username %}"container_input_form field users-field invalid"{% else %}"container_input_form field users-field"{% endif %}>
                     <span class="container_input_form_text">Введите ваш никнейм (от 3 до 16 символов)</span>
-                    <input type="text" class="input_regestration users"  maxlength="32" name="username">
+                    <input type="text" class="input_regestration users" maxlength="32" name="username">
                     <span class="error err email-error">
                         <i class="bx bx-error-circle error-icon"></i>
                         <p class="error-text">Никнейм занят</p>
