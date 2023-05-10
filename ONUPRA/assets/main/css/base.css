@@ -116,17 +116,24 @@ body{
 
 .sidebar header .image-text{
     display: flex;
+    width: 100%;
 }
 .sidebar header .logo-text{
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    width: 100%;
 }
 header .image-text .name {
     margin-top:0;
     font-size: 22px;
     font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 5px 0 0;
+    width: 100%;
 }
-
 header .image-text .profession{
     font-size: 18px;
     margin-top: -2px;
