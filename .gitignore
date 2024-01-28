@@ -1,11 +1,7 @@
 
-ONUPRA/data.sql
-ONUPRA/db2.sqlite3
-ONUPRA/ONUPRA/settings.py
 ONUPRA/main/migrations
 ONUPRA/main/__pycache__
 ONUPRA/static
 ngrok.exe
 start.txt
-ONUPRA/data2.sql
 DUMPFILE.sql
