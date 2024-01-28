@@ -22,10 +22,10 @@
                             <span class="cow-1-1">Тесты</span>
                             <div class="block_data">
                                 <span class="cow-2-2">входные данные</span>
-                                <span class="cow-2-1"><pre id="consolas-font">{{actual_task.input_exmaple}}</pre></span>
+                                <span class="cow-2-1"><pre id="consolas-font" class="block_data_style">{{actual_task.input_exmaple}}</pre></span>
 
                                 <span class="cow-2-2">выходные данные</span>
-                                <span class="cow-2-1"><pre id="consolas-font">{{actual_task.output_exmaple}}</pre></span>
+                                <span class="cow-2-1"><pre id="consolas-font" class="block_data_style">{{actual_task.output_exmaple}}</pre></span>
                             </div>
                         </div>
                         {% if actual_task.extra_text %}
@@ -38,7 +38,7 @@
                     {% if time_shower and actual %}
                     <div class="uploud_fail">
                         <span class="font-header">Отправка решения</span>
-                        <div style="display: flex;">
+                        <div class="adaptive_content_uploud_fail" style="display: flex;">
                             <div class="select-btn2">
                                 <ul>
                                     <!-- <li class="tab tab1 tab--inactive">Ввести код</li>
@@ -100,13 +100,13 @@
                             </form>
                             <form class="content content-2 content--active" method="post" enctype="multipart/form-data" id="file_form">
                                 {% csrf_token %}
-                                <div>
+                                <div class="relative_content">
                                     <div class="textarea_upload upload_input_container_setting">
-                                        <div class="upload_input_container">
+                                        <label class="upload_input_container">
                                             <i class='bx bxl-dropbox' ></i>
                                             <span class="upload_text_">Загрузите файл</span> 
                                             <input accept=".py, .cpp, .pas, .c, .cs, .kt, .rs, .php, .rb, .go, .js" title="" class="upload_text" type="file" id="upload" name="file" onChange='getoutput()'>
-                                        </div>
+                                        </label>
                                     </div>
                                 </div>
                                 <button type="submit" class="button-task2 button-task">Отправить решение</button>
@@ -215,6 +215,8 @@
         contentType: false,
         processData: false,
         success: function(response) {
+            const wrapper = document.querySelector(".wrapper_content_2_1");
+            wrapper.innerHTML += `<div class="content-block"><span><p class="time">${response.time}</p><p class="tasktime">${response.title}</p>-<p class="test">${response.error}</p></span></div>`;
             console.log(response.attempt); // do something with response data
         },
         error: function(response) {

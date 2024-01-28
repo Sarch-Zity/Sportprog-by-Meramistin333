@@ -81,7 +81,7 @@ def run_command(file_name, tests_input, tests_output):
         command = "d8 " + path + file_name
     else:
         compile_error = 1
-        return "Нет такого языка програмирования"
+        return [0, f"Нет такого языка програмирования"]
     # delete_files.append(path + file_name)
     if compile_error == 0:
         for i in range(len(tests_input)):
@@ -110,7 +110,6 @@ def run_command(file_name, tests_input, tests_output):
         return [0, "Не удалось скомпилировать файл"]
 
 def Index(request):
-    print(request.session.get_expiry_age())
     # locale.setlocale(locale.LC_TIME, 'ru_RU')
     usr = CustomUser.objects.filter(is_superuser=False)
     comp = Competition.objects.filter(actual=True).order_by('start_time')
@@ -126,8 +125,8 @@ def Index(request):
         # else:
         #     date = comp.start_time.strftime(u'%d.%m')
         #     time = comp.start_time.strftime(u'%H:%M')
-        date = comp.start_time.strftime(u'%d.%m')
-        time = comp.start_time.strftime(u'%H:%M')
+        date = comp.start_time.strftime('%d.%m')
+        time = comp.start_time.strftime('%H:%M')
         # return render(request, 'main/home.html', {'comp': comp, 'date': pytils.dt.ru_strftime(u'%d %B', inflected=True, date=comp.start_time)})
         return render(request, 'main/home.html', {'comp': comp, 'date': date, 'time': time})
     return render(request, 'main/home.html', {'comp': comp})
@@ -319,15 +318,9 @@ def Competition_now(request, id, taskid):
             atmpt.error = answer[1]
         atmpt.save()
         data = {
-        'id': atmpt.id,
-        'link_competition': atmpt.link_competition,
-        'link_task': atmpt.link_task,
-        'link_user': atmpt.link_user,
-        'document': atmpt.document.url,
-        'successfully': atmpt.successfully,
-        'points': atmpt.points,
+        'time': atmpt.time.strftime("%H:%M:%S"),
+        'title': atmpt.link_task.title,
         'error': atmpt.error,
-        'time': atmpt.time,
         }
         return JsonResponse(data)
     timeleft = comp.duration - \

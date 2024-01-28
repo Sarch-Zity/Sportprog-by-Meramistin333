@@ -134,6 +134,7 @@ header .image-text .name {
     padding: 0 5px 0 0;
     width: 100%;
 }
+
 header .image-text .profession{
     font-size: 18px;
     margin-top: -2px;
@@ -411,6 +412,59 @@ body.dark .mode .sun-moon i.moon{
     transform: translateY(0);
     transform: rotateZ(-45deg);
 }
+
+
+/* cookie */
+.cookie_fail_content
+{
+    position: fixed;
+    z-index: 200;
+
+    max-width: 380px;
+    border-radius: 6px;
+    margin-right: 10px;
+    padding: 15px;
+    display: flex;
+    background-color: #FFF;
+    flex-direction: column;
+    border: solid 1px rgb(238, 234, 234);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+}
+.cookie_true
+{
+    bottom: 10px;
+    left: 10px;
+}
+.cookie_false
+{
+    bottom: -10px;
+    opacity: 0;
+    visibility: hidden;
+}
+.cookie_fail_content span{
+    font-size: 20px;
+    color: #333;
+}
+.close_cockie{
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
+    justify-content: end;
+}
+.close_cockie_input{
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background-color: #91BFBC;
+    border-radius: 6px;
+    width: 30%;
+    padding: 6px;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 @media screen and (max-width: 800px) {
     
     ::-webkit-scrollbar-thumb {
@@ -582,4 +636,87 @@ body.dark .mode .sun-moon i.moon{
     .header_burger-btn{
         display: flex;
     }
+    /* profile */
+    .wrapper_content_profile_{
+        display: flex;
+        flex-direction: column;
+    }
+    .section_info_profile
+    {
+        display: flex;
+        flex-direction: column;
+    }
+    .block_content_profile
+    {
+        display: flex;
+        flex-direction: column;
+    }
+    .section_info_profile
+    {
+        top: 15px;
+        left:0;
+        align-items: flex-start;
+    }
+    .block_email {
+        top: 25px;
+        left: 0;
+    }
+    .content_profile
+    {
+        width: 100%;
+    }
+    .wrapper_content_profile
+    {
+        padding: 20px 20px 40px 20px;
+    }
+    .rang{
+        margin-top: 10px;
+    }
+    .block_info_profile
+    {
+        display: flex;
+        flex-direction: column;
+    }
+    .schedule_block
+    {
+        width: 100%;   
+    }
+    .friend
+    {
+        margin: 15px 0 0 0;
+        width: 100%;
+    }
+    /* competition */
+    .adaptive_content_uploud_fail
+    {
+        display: flex;
+        flex-direction: column;
+    }
+    .select-btn2
+    {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .select-menu
+    {
+        width: 100%;
+        position: relative;
+    }
+    .select-btn
+    {
+        width: 100%;
+    }
+    .options
+    {
+        width: 100%;
+    }
+    .button-task
+    {
+        width: 80%;
+    }
+    .wrapper_content_2_1
+    {
+        width: 100%;
+    }
   }
+
