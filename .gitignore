@@ -1,6 +1,7 @@
 
 ONUPRA/main/migrations
 ONUPRA/main/__pycache__
+ONUPRA/ONUPRA/__pycache__
 ONUPRA/static
 ngrok.exe
 start.txt
