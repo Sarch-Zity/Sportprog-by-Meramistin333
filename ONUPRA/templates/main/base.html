@@ -12,6 +12,7 @@
     <!-- ======== CSS ======== -->
     {% block style %}{% endblock %}
     <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
+    
     <link rel="stylesheet" href="{% static 'main/css/light-mode.css' %}" id="theme">
     
     <!-- ===== icons ===== -->
@@ -20,12 +21,21 @@
     <!-- ===== font ===== -->
     <link rel="stylesheet" href="{% static 'main/font/Futura/stylesheet.css' %}">
     <link rel="stylesheet" href="{% static 'main/font/Consolas/stylesheet.css' %}">
+    
+    <!-- ===== JS ===== -->
+    <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body id="body">
+    <!-- <div class="loading-overlay">
+        <div class="loading-text">Загрузка...</div>
+    </div> -->
+    
     <nav class="sidebar">
         <header>
             {% if request.user.is_authenticated %}
-            <a href="{% url 'you' %}">
+            <a class="nav-link-fetch" href="{% url 'you' %}">
                 <div class="image-text">
                     <span class="image">
                         <img src="{{ request.user.image.url }}" alt="">
@@ -53,14 +63,14 @@
             <div class="menu">
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="{% url 'home' %}">
+                        <a class="nav-link-fetch" href="{% url 'home' %}">
                             <i class='bx bx-home-alt icon' ></i>
                             <span class="text nav-text">Главная</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="{% url 'top' %}">
+                        <a class="nav-link-fetch" href="{% url 'top' %}">
                             <i class='bx bx-bar-chart-alt-2 icon' ></i>
                             <span class="text nav-text">Топ</span>
                         </a>
@@ -87,7 +97,7 @@
                     </li>
                     {% endif %}
                     <li class="nav-link">
-                        <a href="{% url 'competitions' %}">
+                        <a class="nav-link-fetch" href="{% url 'competitions' %}">
                             <i class='bx bx-math icon'></i> 
                             <span class="text nav-text">Соревнования</span>
                         </a>
@@ -121,6 +131,12 @@
         </form>
     </div>
     <div class="blackout"></div>
+    <div class="cookie_fail_content cookie_false">
+        <span>Этот сайт использует cookie-файлы. Находясь на этом сайте, вы разрешаете использование cookie-файлов</span>
+        <div class="close_cockie">
+            <div class="close_cockie_input">ок</div>
+        </div>
+    </div>
     <script src="{% static 'main/js/base.js' %}"></script>
     {% if request.user.is_authenticated %}
     <script src="{% static 'main/js/logout.js' %}"></script>

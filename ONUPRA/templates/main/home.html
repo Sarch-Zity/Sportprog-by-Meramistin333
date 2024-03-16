@@ -10,13 +10,16 @@
     {
         background: url("{% static 'main/svg/fd.svg' %}");
     }</style>
-<link rel="stylesheet" href="{% static 'main/css/home.css' %}">
 {% endblock %}
 {% block body %}
+
+<div class="content">
+    <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
 <div class="wrapper wrapper_home">
     <div class="wrapper_content_homee wrapper_content">
         <div class="wrapper_content_home">
             <span>Всем привет!</span>
+            <!-- <a href="{% url 'page' %}">404</a> -->
             <p>Мы рады сообщить, что наш сайт Onupra проводит соревнования по спортивному программированию для всех желающих. Если вы хотите проверить свои силы в решении задач на знание языков программирования, алгоритмов и структур данных, то присоединяйтесь к нам и примите участие в соревнованиях.
                 В рамках соревнований вы сможете соперничать с другими участниками и повысить свой уровень в программировании. Это отличная возможность попрактиковаться и узнать о новых технологиях.
                 Соревнования будут проходить на нашем сайте регулярно, поэтому вы сможете принимать участие в них несколько раз в месяц. Мы уверены, что опыт, который вы получите, будет для вас не менее ценным, чем любые призы.
@@ -185,5 +188,7 @@
             </div>
         </div>
 </div>
+</div>
+
 {% endblock %}
-{% block js %}<script src="{% static 'main/js/home.js' %}"></script>{% endblock %}
+{% block js %}{% endblock %}

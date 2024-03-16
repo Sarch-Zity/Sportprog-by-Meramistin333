@@ -575,4 +575,10 @@ body.dark .mode .sun-moon i.moon{
     .header_burger-btn{
         display: flex;
     }
+    .adaptive_content_uploud_fail
+    {
+        flex-direction: column;
+        width: 100000px;
+
+    }
   }

@@ -4,9 +4,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
 
-
 urlpatterns = [
-    path('2355admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', include('main.urls')),
 ] 
 if settings.DEBUG:

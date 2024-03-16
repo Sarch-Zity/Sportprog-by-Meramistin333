@@ -6,7 +6,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', views.Index, name='home'),
+    path('home/', views.Index, name='home'),
+    path('page/', views.Page, name='page'),
     path('test/', views.Test, name='test'),
     path('my_ajax_view/', views.my_ajax_view, name='my_ajax_view'),
     path('you/', views.Account_REDIR, name='you'),

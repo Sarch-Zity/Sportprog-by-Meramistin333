@@ -149,7 +149,8 @@ def my_ajax_view(request):
 
 def Test(request):
     return render(request, 'main/test.html')
-
+def Page(request):
+    return render(request, 'main/page.html')
 def Account_REDIR(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -757,30 +758,49 @@ def Competition_now(request, id, taskid):
 # Переписать
 
 
-def Reg_page(request):
+def Registration(request):
     if request.user.is_authenticated:
         return redirect('account', request.user.username)
     error_username = False
     error_email = False
     if request.method == 'POST':
         form = CustomUserCreationFrom(request.POST)
-        email = request.POST.get('email')
-        nickname = request.POST.get('username')
-        if CustomUser.objects.filter(username=nickname).exists():
-            if CustomUser.objects.filter(email=email).exists():
-                error_email = True
-            error_username = True
-        elif CustomUser.objects.filter(email=email).exists():
-            error_email = True
-        elif re.search('[а-яА-Я]', nickname):
-            pass
-        # Если форма коректна, то она сохраняется
-        elif form.is_valid():
-            formsv = form.save()
-            login(request, formsv)
-            return redirect('you')
+        if "start_registration" in request.POST:
+            email = request.POST.get('email')
+            tempcode = random.randint(0, 1000000)
+            cache.set(email, tempcode)
+            send_mail(
+            "Здравствуйте",
+            f"{tempcode}",
+            'onupra@inbox.ru',
+            [email],
+            fail_silently=True,
+            )
+        elif "end_registration" in request.POST:
+            email = request.POST.get('email')
+            tempcode = request.POST.get('tempcode')
+            a = cache.get(email)
+            print(f"email:{email}")
+            print(f"tempcode:{tempcode}")
+            print(f"a:{a}")
+            if str(a) == tempcode:
+                print("Everything is okay")
+                nickname = request.POST.get('username')
+                if CustomUser.objects.filter(username=nickname).exists():
+                    if CustomUser.objects.filter(email=email).exists():
+                        error_email = True
+                    error_username = True
+                elif CustomUser.objects.filter(email=email).exists():
+                    error_email = True
+                # Если форма коректна, то она сохраняется
+                elif form.is_valid():
+                    formsv = form.save()
+                    login(request, formsv)
+                    return redirect('you')
+            else:
+                print("Oops")
+                return HttpResponse(status=200)
 
-    form = CustomUserCreationFrom()
     content = {
         'error_username': error_username,
         'error_email': error_email

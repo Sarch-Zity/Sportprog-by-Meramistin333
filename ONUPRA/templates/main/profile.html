@@ -3,9 +3,12 @@
 {% load static %}
 {% block title %}{{user.username}}{% endblock %}
 {% block style %}
-<link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
+
 {% endblock %}
 {% block body %}
+<div class="content">
+    <link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
+
     <div class="wrapper_">
         <div class="wrapper_content_profile">
             <div class="wrapper_content_profile_">
@@ -18,6 +21,7 @@
                         <span>Изменить</span>
                         <i class='bx bx-pencil'></i>
                     </div>
+                    
                     {% else %}
                     {% endif %}
                 </div>
@@ -43,9 +47,48 @@
             </ul>
         </div>
         <div class="block_content_profile">
-            <div class="schedule_block">
-                <span>График изменения рейтинга пользователя</span>
-                <canvas id="myChart"></canvas>
+            <div class="content_profile">
+                <div class="schedule_block">
+                    <span>График изменения рейтинга пользователя</span>
+                    <canvas id="myChart"></canvas>
+                </div>
+                <div class="create_fast_content">
+                    <span>Создание постов</span>
+                    <form class="create_fast">
+                        <div class="content_text">
+                            <div class="content_textarea">
+                                <textarea maxlength="2007" class="fast_textarea" name="textarea" placeholder="Введите ваш текст" id=""></textarea>
+                                <div class="result"></div>
+                            </div>
+                            <input type="submit" class="input_fast">
+                            
+                            <div class="file-container">
+                            </div>
+                        </div>
+                        <!-- <div class="content_plus">
+                            <i class='bx bx-smile'></i>
+                            <div class="smile_content display_false"></div>
+                            <label for="file_clip">
+                                <input type="file" class="file_clip" id="file_clip" multiple>
+                                <i class='bx bx-paperclip' ></i>    
+                            </label>
+                        </div> -->
+                    </form>
+                </div>    
+                <div class="fast_container">
+                    <div class="fast">
+                        <span class="fast_time">22 марта 2022, 19:30</span>
+                        <pre>
+О чём этот пост? 
+В нём я расскажу свою историю о том, как я бросил курить.
+Не знаю, многие ли из вас слышали про методику под названием "Никоретте", или как её ещё называют "Сухое дыхание" (от англ. dry-breath).
+О ней я узнал от своего друга, который в своё время бросил курить по этой методике.
+Я тоже загорелся идеей бросить курить и начал искать информацию по этой теме.
+Но, увы, ничего толкового не нашёл.
+Только разные негативные отзывы о методике.
+Ну, думаю, ладно, попробую сам.</pre>
+                    </div>
+                </div>
             </div>
             <div class="friend">
                 <div class="friend_span">
@@ -67,7 +110,10 @@
                     <div class="block_regual">
                         <img src="{{user.image.url}}" alt="">
                     </div>
-                </div>
+                    <div id="image-container">
+                        <img id="image-preview" alt="Preview Image">
+                    </div>
+                </div>       
                 <div class="input_container">
                     <form method="post">
                         {% csrf_token %}
@@ -76,50 +122,113 @@
                     <form method="post" class="change_photo" enctype="multipart/form-data">
                         {% csrf_token %}
                         <label class="input_upload input_upload_" for="change_upload">Загрузить фото <i class='bx bx-upload bx-1'></i></label>
-                        <input type="file" accept="image" class="upload-photo upload-photo-file" id="change_upload" name="image">
+                        <input type="file" id="change_upload" class="upload-photo upload-photo-file" accept="image/*" onchange="loadImage(event)">
                         <label class="input_upload input_upload_save save_photo" for="const_upload">Сохранить фото<i class='bx bx-check bx-1'></i></label>
-                        <button type="submit" class="upload-photo" id="const_upload" name="update image"></button>
+                        <button type="submit" onclick="cropImage()" class="upload-photo" id="const_upload" name="update image"></button>
                     </form>
+                    
+                    
                 </div>
             </div>
         </div>
     </div>
     {% else %}
     {% endif %}
-{% endblock %}
-{% block js %}<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
-<script src="{% static 'main/js/profile.js' %}"></script>
-<script>const ctx = document.getElementById('myChart');
-
-    var chart = new Chart(ctx, {
-      type: 'line',
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+    <script>
     
-      data: {
-        labels: [{% for i in point %}'{{i.date}}',{% endfor %}],
-        datasets: [{
-            label: '',
-            data: [{% for i in point %}{{i.score}},{% endfor %}],
-            fill: false,
-            borderColor: '#91BFBC',
-            backgroundColor: '#91BFBC',
-            tension: 0.01,
-            pointBackgroundColor: '#91BFBC',
-            pointBorderColor: '#91BFBC',
-            order: 1,
-            spanGaps: false,
-            drawActiveElementsOnTop: false,
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'bottom',
-          },
-          title: {
-            display: true,
-            text: 'Chart.js Line Chart'
-          }
+    var cropper;
+    
+    function loadImage(event) {
+      var input = event.target;
+      var reader = new FileReader();
+    
+      reader.onload = function() {
+        var dataURL = reader.result;
+        var image = document.getElementById('image-preview');
+        image.src = dataURL;
+        if (cropper) {
+          cropper.destroy();
         }
-      },
-    });</script>{% endblock %}
+        cropper = new Cropper(image, {
+          aspectRatio: 1, // указываем соотношение сторон области обрезки (1:1)
+          viewMode: 1, // фиксированное положение области обрезки
+          crop: function(event) {
+            // Здесь вы можете писать код, который реагирует на изменение выбранной области обрезки
+          }
+        });
+      };
+    
+      reader.readAsDataURL(input.files[0]);
+    }
+    
+    function cropImage() {
+      var canvas = cropper.getCroppedCanvas();
+      var croppedImageDataURL = canvas.toDataURL('image/jpeg');
+      // Здесь вы можете отправить обрезанное изображение на сервер или выполнить другие операции с данными
+    }
+    
+      const txet = document.querySelector(".fast_textarea");
+      console.log(txet)
+    
+      const pickerOptions = { 
+        onEmojiSelect: console.log,
+        onClickOutside: console.log
+    }
+      const picker = new EmojiMart.Picker(pickerOptions);
+      const content_smile = document.querySelector(".smile_content");
+    
+      const smile_open = document.querySelector(".bx-smile");
+      smile_open.addEventListener("click", () => {
+        if(content_smile.classList.contains("display_false")){
+            content_smile.classList.remove("display_false");
+            content_smile.classList.add("display_true");    
+        }
+        else{
+            content_smile.classList.add("display_false");
+            content_smile.classList.remove("display_true");
+        }
+      })
+    
+      content_smile.appendChild(picker)
+    </script>
+    <script src="{% static 'main/js/profile.js' %}"></script>
+    <script>const ctx = document.getElementById('myChart');
+    
+        var chart = new Chart(ctx, {
+          type: 'line',
+        
+          data: {
+            labels: [{% for i in point %}'{{i.date}}',{% endfor %}],
+            datasets: [{
+                label: '',
+                data: [{% for i in point %}{{i.score}},{% endfor %}],
+                fill: false,
+                borderColor: '#91BFBC',
+                backgroundColor: '#91BFBC',
+                tension: 0.01,
+                pointBackgroundColor: '#91BFBC',
+                pointBorderColor: '#91BFBC',
+                order: 1,
+                spanGaps: false,
+                drawActiveElementsOnTop: false,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom',
+              },
+              title: {
+                display: true,
+                text: 'Chart.js Line Chart'
+              }
+            }
+          },
+        });</script>
+</div>
+{% endblock %}
+{% block js %}
+{% endblock %}

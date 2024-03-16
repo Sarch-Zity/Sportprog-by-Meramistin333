@@ -44,6 +44,10 @@
     margin-top: 10px;
     border-radius: 6px;
 }
+.flex-content-d
+{
+
+}
 .wrapper_content_2_1 span{
     font-size: 20px;
     color: #000;
@@ -239,9 +243,9 @@
     transition: 0.4s;
     position: absolute;
     top: 91%;
-    right: 1%;
+    right: 3%;
     border: none;
-    width: 350px; 
+    width: 35%; 
     background-color: #C6C6C6;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); 
     border-radius: 7px; 
@@ -284,6 +288,10 @@
     position: absolute;
     top: -1px;
     width: 100%;
+}
+.relative_content
+{
+    position: relative;
 }
 .content--active
 {
@@ -415,4 +423,93 @@
     background-color:#E7E7E7;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
+}
+.none{
+    position: absolute;
+    top: -1px;
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* ------------- Уведомления ------------- */
+.notification_send{
+    position: fixed;
+    left: 40%;
+    top: -50px;
+
+    padding: 13px 50px 13px 50px;
+    font-size: 20px;
+    color: #fff;
+    background-color: var(--sidebar-hover-link-color);
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    animation-name: slidein;
+    animation-duration: 2s;
+}
+.notification_task_container
+{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 300px;
+    display:block;
+}
+.notification_task{
+    position: relative;
+    width: 100%;
+    margin-top: 15px;
+    padding: 26px 26px 26px 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #333;
+    background-color: var(--section-color);
+    border-radius: 10px;
+    box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.25);
+
+    animation-name: slideHorizontal;
+    animation-duration: 0.5s;
+    transition: 1s;
+}
+
+.close-notification_task{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: rgb(61, 60, 60);
+    font-size: 22px;
+    cursor: pointer;
+}
+.close-notification_task
+.notification_task_text{}
+
+
+@keyframes slidein {
+    0% {
+      top: -50px;
+    }
+  
+    15% {
+      top: 20px;
+    }
+
+    85% {
+      top: 20px;
+    }
+
+    100% {
+      top: -50px;
+    }
+}
+
+@keyframes slideHorizontal {
+    0% {
+      right: -350px;
+    }
+
+    100% {
+      right: 0px;
+    }
 }

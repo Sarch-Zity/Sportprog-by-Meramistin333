@@ -3,9 +3,11 @@
 {% load static %}
 {% block title %}{{actual_task.title}}{% endblock %}
 {% block style %}
-<link rel="stylesheet" href="{% static 'main/css/competition_now.css' %}">
+
 {% endblock %}
 {% block body %}
+<div class="content">
+    <link rel="stylesheet" href="{% static 'main/css/competition_now.css' %}">
     <div class="wrapper media">
         <div class="wrapper_content">
             <div class="text-header">
@@ -22,10 +24,10 @@
                             <span class="cow-1-1">Тесты</span>
                             <div class="block_data">
                                 <span class="cow-2-2">входные данные</span>
-                                <span class="cow-2-1"><pre id="consolas-font">{{actual_task.input_exmaple}}</pre></span>
+                                <span class="cow-2-1"><pre id="consolas-font" class="block_data_style">{{actual_task.input_exmaple}}</pre></span>
 
                                 <span class="cow-2-2">выходные данные</span>
-                                <span class="cow-2-1"><pre id="consolas-font">{{actual_task.output_exmaple}}</pre></span>
+                                <span class="cow-2-1"><pre id="consolas-font" class="block_data_style">{{actual_task.output_exmaple}}</pre></span>
                             </div>
                         </div>
                         {% if actual_task.extra_text %}
@@ -38,18 +40,18 @@
                     {% if time_shower and actual %}
                     <div class="uploud_fail">
                         <span class="font-header">Отправка решения</span>
-                        <div style="display: flex;">
+                        <div class="adaptive_content_uploud_fail" style="display: flex;">
                             <div class="select-btn2">
                                 <ul>
-                                    <!-- <li class="tab tab1 tab--inactive">Ввести код</li>
-                                    <p style="margin:0 15px 0 15px">|</p> -->
+                                    <li class="tab tab1 tab--inactive">Ввести код</li>
+                                    <p style="margin:0 15px 0 15px">|</p>
                                     <li class="tab tab2 tab--active">Отправка файла</li>
                                 </ul>
                             </div>
                             <div class="select-menu">
                                 <div class="select-btn">
                                     <div><span span style="color: #706F6F; font-weight: 700;">Компилятор:</span>
-                                        <span class="sBtn-text blocked_text" style="font-weight: 700;">Список</span></div>
+                                        <span class="sBtn-text blocked_text1 blocked_text2" style="font-weight: 700;">Список</span></div>
                                     <i class="bx bx-chevron-down" style="font-weight: 700;"></i>
                                 </div>
                         
@@ -94,19 +96,20 @@
                             <form class="content content-1" method="post" enctype="multipart/form-data" id="textarea_form">
                                 {% csrf_token %}
                                 <div>
-                                    <textarea id="textarea" class="textarea_upload upload_input_container_setting"></textarea>
+                                    <textarea id="textarea" class="textarea_upload textarea_textupload upload_input_container_setting"></textarea>
+                                    <input type="file" class="none" id="textarea-input">
                                 </div>
                                 <button type="submit" class="button-task1 button-task">Отправить решение</button>
                             </form>
                             <form class="content content-2 content--active" method="post" enctype="multipart/form-data" id="file_form">
                                 {% csrf_token %}
-                                <div>
+                                <div class="relative_content">
                                     <div class="textarea_upload upload_input_container_setting">
-                                        <div class="upload_input_container">
+                                        <label class="upload_input_container">
                                             <i class='bx bxl-dropbox' ></i>
                                             <span class="upload_text_">Загрузите файл</span> 
                                             <input accept=".py, .cpp, .pas, .c, .cs, .kt, .rs, .php, .rb, .go, .js" title="" class="upload_text" type="file" id="upload" name="file" onChange='getoutput()'>
-                                        </div>
+                                        </label>
                                     </div>
                                 </div>
                                 <button type="submit" class="button-task2 button-task">Отправить решение</button>
@@ -145,19 +148,64 @@
             {% if attempt %}
             <div class="wrapper_content_2_1">
                 <span>Последние решения</span>
-                {% for i in attempt %}
-                <div class="content-block">
-                    <span><p class="time">{{ i.time|time:"H:i:s" }}</p><p class="tasktime">{{ i.link_task.title }}</p>-<p class="test">{{ i.error }}</p></span>
+                <div class="flex-content-d">
+                    {% for i in attempt %}
+                    <div class="content-block">
+                        <span><p class="time">{{ i.time|time:"H:i:s" }}</p><p class="tasktime">{{ i.link_task.title }}</p>-<p class="test">{{ i.error }}</p></span>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
             {% else %} 
             {% endif %}
+    <div class="notification_send">
+        <span class="notification_task_text">Ваше решение отправлено!</span>
+    </div>
+    <div class="notification_task_container" style="right: 20px;">
+        <div class="notification_task">
+            <i class='bx bx-x close-notification_task'></i>
+            <span class="notification_task_text">*Результат отправки задания*</span>
+        </div>
+        <div class="notification_task">
+            <i class='bx bx-x close-notification_task'></i>
+            <span class="notification_task_text">*Результат отправки задания*</span>
+        </div>
+        <div class="notification_task">
+            <i class='bx bx-x close-notification_task'></i>
+            <span class="notification_task_text">*Результат отправки задания*</span>
+        </div>
+    </div>
 {% endblock %}
 {% block js %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'main/js/competition_now.js' %}"></script>
 <script>
+    // система отправки текста файлом 
+    const downloadToFile = (content, filename, contentType) => {
+        // const a = document.createElement('a');
+        const file = new Blob([content], {type: contentType});
+        let inputForm = document.getElementById('textarea-input');
+        const file_upload = new File([blob],nameFile)
+        // a.href= URL.createObjectURL(file);
+        // a.download = filename;
+        // a.click();
+
+        // URL.revokeObjectURL(a.href);
+        const dT = new ClipboardEvent('').clipboardData || new DataTransfer();
+        dT.items.add(file_upload);
+        inputForm.files = dT.files;
+    };
+    document.querySelector('.button-task1').addEventListener('click', () => {
+            const textArea = document.querySelector('.textarea_textupload');
+
+            downloadToFile(textArea.value, `file.txt`, `text/plain`);
+        });
+
+
+    const wrapper = document.querySelector(".flex-content-d");
+    const dsa = ``;
+    wrapper.prepend(dsa);
+    dsa.innerHTML = `<div class="block-content"><span><p class="time">вфывфыв</p><p class="tasktime">фвыфывфывфы</p>-<p class="test">фвфвфывфы</p></span></div>`
     // $(document).ready(function() {
     // $('#textarea_form').submit(function(e) {
     //     e.preventDefault(); // prevent default form submission behavior
@@ -215,7 +263,14 @@
         contentType: false,
         processData: false,
         success: function(response) {
-            console.log(response.attempt); // do something with response data
+            const wrapper = document.querySelector(".flex-content-d");
+            wrapper.innerHTML += `<div class="block-content">
+                <span><p class="time">${response.time}</p><p class="tasktime">${response.link_task.title}</p>-<p class="test">${response.error}</p></span>
+                </div>`;
+            // let div = wrapper.createElement('div');
+            // div.className = "block-content";
+            // div.innerHTML = `<span><p class="time">${response.time}</p><p class="tasktime">${response.link_task.title}</p>-<p class="test">${response.error}</p></span>`
+            // console.log(response.attempt); // do something with response data
         },
         error: function(response) {
             console.log('Error:', response);
@@ -255,4 +310,5 @@
     // });
     });
 </script>
+</div>
 {% endblock %}

@@ -1,3 +1,5 @@
+
+
 const filetext = document.querySelector(".upload_text_");
 const fileinput = document.querySelector(".upload_text");
 const fileinputContainer = document.querySelector(".upload_input_container");
@@ -5,9 +7,10 @@ const button_task1 = document.querySelector(".button-task1");
 const button_task2 = document.querySelector(".button-task2");
 const stn_text = document.querySelector(".sBtn-text");
 const select_menu = document.querySelector(".select-menu");
+var flag_fileinput = false;
 function blocked_button_task1()
 {
-    if(stn_text.classList.contains("blocked_text")){
+    if(stn_text.classList.contains("blocked_text1")){
         button_task1.disabled = 'disabled';
     }
     else{
@@ -19,7 +22,7 @@ blocked_button_task1();
 
 function blocked_button_task2()
 {
-    if(stn_text.classList.contains("blocked_text")){
+    if(stn_text.classList.contains("blocked_text2")){
         button_task2.disabled = 'disabled';
     }
     else{
@@ -29,22 +32,32 @@ function blocked_button_task2()
 }
 blocked_button_task2();
         
-function getoutput()
-    {
-const fullPath = document.getElementById('upload').value;  
-const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-const filename = fullPath.substring(startIndex);
-const icon_file = document.querySelector('.bxl-dropbox');
+function getoutput() {
+    const fullPath = document.getElementById('upload').value;  
+    const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+    const filename = fullPath.substring(startIndex);
+    const icon_file = document.querySelector('.bxl-dropbox');
     if(filename != ""){
         filetext.innerHTML = filename;
         icon_file.classList.remove("bx-tada");
         icon_file.classList.add("bx-package");
+        flag_fileinput = true;
+        console.log(stn_text.innerText);
+        if (stn_text.innerText != "Список"){
+            stn_text.classList.remove("blocked_text2");
+            stn_text.classList.remove("blocked_text1");
+        }
+        blocked_button_task1();
+        blocked_button_task2();
         return true;
     }
     icon_file.classList.remove("bx-package");
-        icon_file.classList.add("bx-tada");
+    icon_file.classList.add("bx-tada");
     filetext.innerHTML = "Загрузите файл";
-        }
+    flag_fileinput = false;
+
+    
+}
 
 
 
@@ -150,7 +163,12 @@ options.forEach(option =>{
         fileinput.setAttribute("accept", selectedOptionAttribyte);
 
         const stn_text = document.querySelector(".sBtn-text");
-        stn_text.classList.remove("blocked_text");
+        if(flag_fileinput){
+            stn_text.classList.remove("blocked_text2");
+        }
+        if(flag_fileinput){
+            stn_text.classList.remove("blocked_text1");
+        }
         blocked_button_task1();
         blocked_button_task2();
         optionMenu.classList.remove("active");
@@ -185,4 +203,21 @@ for (let i = 0; i < tabs.length; i++) {
 		contents[i].classList.add("content--active");
  
 	});
+}
+
+
+const notification_task = document.querySelectorAll(".notification_task");
+const close_notification_task = document.querySelectorAll(".close-notification_task");
+
+for (let i = 0; i < close_notification_task.length; i++){
+    close_notification_task[i].addEventListener("click", (e) => {
+        for(let j = 20; j > -350; j--){
+            setTimeout(() => notification_task[i].style.right = `${j}px`, 30);
+        }
+        
+
+        const parent = notification_task[i].parentNode;
+        setTimeout(() => parent.removeChild(notification_task[i]), 1000);
+        
+    })
 }

@@ -196,6 +196,59 @@ function validation_check()
 validation_check();
 
 
+$(document).ready(function(){
+        $.ajaxSetup({
+            type: 'POST',
+            url: '',
+            
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+        });
+        console.log($('meta[name="csrf-token"]').attr('content'));
+        
+        $('#reg_form').submit(function(e) {
+            e.preventDefault();
+
+            $('.stage-1').css({'opacity': '0', 'visibility' : 'hidden', 'width': '0%', 'height' : '0px'});
+            
+
+            const username = $('#username').val();
+            const email = $('#email').val();
+            const password = $('#password').val();
+
+            // Настройки для поодтверждения кода 
+            $('.registration').css({'height' : ''})
+            $('.stage-3').css({'opacity': '1', 'visibility' : 'visible', 'width': '100%'});
+            $('#email_const').val(email);
+
+
+            $.ajax({
+                headers: {
+                    'X-CSRFToken': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    'username': username,
+                    'email': email,
+                    'password1': password,
+                },
+                success: function(response) {
+                    const email_const = $('#email_const').val();
+                    email_const = email;
+                    $('.stage-2').css({'opacity': '0', 'visibility' : 'hidden', 'width': '0%'});
+                    $('.stage-3').css({'opacity': '1', 'visibility' : 'visible', 'width': '100%'});
+                    if (response.code){
+                        
+                    }
+                },
+                error: function(response) {
+                    console.log('Error:', response);
+                }
+            });
+        });
+});
+
+
 // form.addEventListener("submit", (e) => {
 //     e.preventDefault();
 //     checkEmail();
