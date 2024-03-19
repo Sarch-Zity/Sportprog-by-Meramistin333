@@ -1,3 +1,4 @@
+
 *{
     margin: 0;
     padding: 0;
@@ -357,6 +358,24 @@ body.dark .mode .sun-moon i.moon{
     justify-content: center;
     cursor: pointer;
 }
+.buy-button
+{
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    color: #FFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.buy-button #buy-text{
+    color: #FFF;
+    font-size: 20px;
+}
+
 .base-popup span{
     font-size: 20px;
     color: #333;
@@ -614,14 +633,20 @@ body.dark .mode .sun-moon i.moon{
     }
     .wrapper_content_homee
     {
-        width: 100%;
+        width: 100% !important;
     }
     .wrapper_content_home
     {
-        margin-right:0;
+        margin-right: 0 !important;
     }
     .wrapper_content_info {
-        margin-bottom: 0px;
+        margin-bottom: 0px !important;
+    }
+    .wrapper_content_home_faq{
+        margin: 10px 0 0 0 !important;
+    }
+    .wrapper_content_social{
+        margin: 10px 0 0 0 !important;
     }
 }
 
@@ -675,6 +700,9 @@ body.dark .mode .sun-moon i.moon{
         margin: 15px 0 0 0;
         width: 100%;
     } 
+    .block_data{
+        min-width: 0;
+    }
 }
 /* Profile page */
 @media screen and (max-width: 800px) {
@@ -695,6 +723,8 @@ body.dark .mode .sun-moon i.moon{
     .content_profile
     {
         width: 100%;
+        display: flex;
+        flex-direction: column;
     }
     .friend
     {
@@ -739,14 +769,7 @@ body.dark .mode .sun-moon i.moon{
     }
     
     .wrapper{
-        margin: 90px 0 0 0;
-    }
-    
-    
-    
-    /*??????????????????????????????????????????????????????????*/
-    .wrapper_{
-        margin: 90px 0 0 0;
+        margin: 90px 0 0 0 !important;
     }
     
   }
@@ -796,3 +819,208 @@ body.dark .mode .sun-moon i.moon{
     justify-content: center;
     align-items: center;
   } */
+
+  /* popup premium buy*/
+  .popup__bg-prem {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    opacity: 0; 
+    pointer-events: none; 
+    transition: 0.5s all;
+    z-index: 22220;
+}
+.popup_prem-base{
+    display: flex;
+    flex-direction: column;
+    width: 260px;
+}
+.level_buy-2, .level_buy-3{
+    margin-left: 8%;
+}
+.popup_buy_premium{
+    cursor: pointer;
+}
+
+
+.color-blue{
+    background-color: #91BFBC;
+}
+.color-silver{
+    background-color: #C0C0C0;
+}
+.color-gold{
+    background-color: #e6a70d;
+}
+.popup_prem-base .conteiner_buy span{
+    font-size: 20px;
+    color: #333;
+
+}
+.popup__bg-prem.active { 
+    opacity: 1; 
+    pointer-events: all; 
+    transition: 0.5s all;
+}
+.close-popup-buy {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    cursor: pointer;
+    font-size: 54px;
+    color: #fff;
+}
+.popup-buy {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); 
+    transition: 0.5s all;
+    width: 100%;
+    margin: 0 20px 0 20px;
+
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.popup-buy .popup_prem-base .header_buy{
+    position: relative;
+    width: 100%;
+    
+    height: 120px;
+    border-radius: 10% 10% 0 0;
+    color: #fff;
+    font-size: 24px;
+    padding: 20px 80px 20px 20px; 
+    
+
+    display: flex;
+    align-items: flex-end;
+}
+.popup-buy .popup_prem-base .conteiner_buy{
+    background-color: #fff;
+    border-radius: 0 0 10% 10%;
+    font-size: 24px;
+    padding: 15px 20px 20px 20px;
+    color: #333;
+    height: 230px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.popup-buy.active { 
+    transform: translate(-50%, -50%) scale(1); 
+    transition: 0.4s all;
+}
+#plus-ul{
+    width: 100%;
+    font-size: 22px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+.buy-plus{
+    font-size: 20px;
+    list-style: none;
+}
+/* Конец важной части */
+/* Далее код для стилизации формы */
+
+
+
+
+/* ------------- Уведомления ------------- */
+.notification_send{
+    position: fixed;
+    left: 40%;
+    top: -50px;
+
+    padding: 13px 50px 13px 50px;
+    font-size: 20px;
+    color: #fff;
+    background-color: var(--sidebar-hover-link-color);
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    
+}
+.notification_send.succefuly{
+    animation-name: slidein;
+    animation-duration: 2s;
+}
+.notification_task_container
+{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 300px;
+    display:block;
+}
+.notification_task{
+    position: relative;
+    width: 100%;
+    margin-top: 15px;
+    padding: 26px 26px 26px 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #333;
+    background-color: var(--section-color);
+    border-radius: 10px;
+    box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.25);
+
+    animation-name: slideHorizontal;
+    animation-duration: 0.5s;
+    transition: 1s;
+}
+
+.close-notification_task{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: rgb(61, 60, 60);
+    font-size: 22px;
+    cursor: pointer;
+}
+.close-notification_task
+.notification_task_text{}
+.icon-buy_button{
+    margin-left: 7px;
+    padding-top: 2px;
+    font-size: 26px;
+}
+
+@keyframes slidein {
+    0% {
+      top: -50px;
+    }
+  
+    15% {
+      top: 20px;
+    }
+
+    85% {
+      top: 20px;
+    }
+
+    100% {
+      top: -50px;
+    }
+}
+
+@keyframes slideHorizontal {
+    0% {
+      right: -350px;
+    }
+
+    100% {
+      right: 0px;
+    }
+}

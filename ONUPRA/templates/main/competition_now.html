@@ -93,7 +93,7 @@
                             </div>
                         </div>
                         <div class="container_content">
-                            <form class="content content-1" method="post" enctype="multipart/form-data" id="textarea_form">
+                            <form class="content_hidden content-1" method="post" enctype="multipart/form-data" id="textarea_form">
                                 {% csrf_token %}
                                 <div>
                                     <textarea id="textarea" class="textarea_upload textarea_textupload upload_input_container_setting"></textarea>
@@ -101,14 +101,14 @@
                                 </div>
                                 <button type="submit" class="button-task1 button-task">Отправить решение</button>
                             </form>
-                            <form class="content content-2 content--active" method="post" enctype="multipart/form-data" id="file_form">
+                            <form class="content_hidden content-2 content--active" method="post" enctype="multipart/form-data" id="file_form">
                                 {% csrf_token %}
                                 <div class="relative_content">
                                     <div class="textarea_upload upload_input_container_setting">
                                         <label class="upload_input_container">
                                             <i class='bx bxl-dropbox' ></i>
                                             <span class="upload_text_">Загрузите файл</span> 
-                                            <input accept=".py, .cpp, .pas, .c, .cs, .kt, .rs, .php, .rb, .go, .js" title="" class="upload_text" type="file" id="upload" name="file" onChange='getoutput()'>
+                                            <input accept=".py, .cpp, .pas, .c, .cs, .kt, .rs, .php, .rb, .go, .js" class="upload_text" type="file" id="upload" name="file">
                                         </label>
                                     </div>
                                 </div>
@@ -158,157 +158,5 @@
             </div>
             {% else %} 
             {% endif %}
-    <div class="notification_send">
-        <span class="notification_task_text">Ваше решение отправлено!</span>
-    </div>
-    <div class="notification_task_container" style="right: 20px;">
-        <div class="notification_task">
-            <i class='bx bx-x close-notification_task'></i>
-            <span class="notification_task_text">*Результат отправки задания*</span>
-        </div>
-        <div class="notification_task">
-            <i class='bx bx-x close-notification_task'></i>
-            <span class="notification_task_text">*Результат отправки задания*</span>
-        </div>
-        <div class="notification_task">
-            <i class='bx bx-x close-notification_task'></i>
-            <span class="notification_task_text">*Результат отправки задания*</span>
-        </div>
-    </div>
-{% endblock %}
-{% block js %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'main/js/competition_now.js' %}"></script>
-<script>
-    // система отправки текста файлом 
-    const downloadToFile = (content, filename, contentType) => {
-        // const a = document.createElement('a');
-        const file = new Blob([content], {type: contentType});
-        let inputForm = document.getElementById('textarea-input');
-        const file_upload = new File([blob],nameFile)
-        // a.href= URL.createObjectURL(file);
-        // a.download = filename;
-        // a.click();
-
-        // URL.revokeObjectURL(a.href);
-        const dT = new ClipboardEvent('').clipboardData || new DataTransfer();
-        dT.items.add(file_upload);
-        inputForm.files = dT.files;
-    };
-    document.querySelector('.button-task1').addEventListener('click', () => {
-            const textArea = document.querySelector('.textarea_textupload');
-
-            downloadToFile(textArea.value, `file.txt`, `text/plain`);
-        });
-
-
-    const wrapper = document.querySelector(".flex-content-d");
-    const dsa = ``;
-    wrapper.prepend(dsa);
-    dsa.innerHTML = `<div class="block-content"><span><p class="time">вфывфыв</p><p class="tasktime">фвыфывфывфы</p>-<p class="test">фвфвфывфы</p></span></div>`
-    // $(document).ready(function() {
-    // $('#textarea_form').submit(function(e) {
-    //     e.preventDefault(); // prevent default form submission behavior
-
-    //     const textarea = document.getElementById("textarea");
-    //     const blob = new Blob([textarea.value], {type: selectedOptionAttribyte});
-    //     // create FormData object
-    //     const formData = new FormData();
-    //     // append file to form data object
-    //     formData.append('file', blob);
-
-    //     // create AJAX request
-    //     $.ajax({
-    //     type: 'POST',
-    //     url: '',
-    //     headers: {
-    //         'X-CSRFToken': "{{ csrf_token }}"
-    //     },
-    //     data: blob,
-    //     dataType: 'json',
-    //     contentType: false,
-    //     processData: false,
-    //     success: function(response) {
-    //         console.log(response.attempt); // do something with response data
-    //     },
-    //     error: function(response) {
-    //         console.log('Error:', response);
-    //     }
-    //     });
-    // });
-    // });
-
-    // add event listener for form submit
-    $('#file_form').submit(function(e) {
-        e.preventDefault(); // prevent default form submission behavior
-
-        // get file input element
-        const fileInput = $('#upload')[0];
-
-        // create FormData object
-        const formData = new FormData();
-
-        // append file to form data object
-        formData.append('file', fileInput.files[0]);
-
-        // create AJAX request
-        $.ajax({
-        type: 'POST',
-        url: '',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-        },
-        data: formData,
-        dataType: 'json',
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            const wrapper = document.querySelector(".flex-content-d");
-            wrapper.innerHTML += `<div class="block-content">
-                <span><p class="time">${response.time}</p><p class="tasktime">${response.link_task.title}</p>-<p class="test">${response.error}</p></span>
-                </div>`;
-            // let div = wrapper.createElement('div');
-            // div.className = "block-content";
-            // div.innerHTML = `<span><p class="time">${response.time}</p><p class="tasktime">${response.link_task.title}</p>-<p class="test">${response.error}</p></span>`
-            // console.log(response.attempt); // do something with response data
-        },
-        error: function(response) {
-            console.log('Error:', response);
-        }
-    });
-
-    // $('#textarea_form').submit(function(e) {
-    //     e.preventDefault(); // prevent default form submission behavior
-
-    //     // get file input element
-    //     const fileInput = $('#upload')[0];
-
-    //     // create FormData object
-    //     const formData = new FormData();
-
-    //     // append file to form data object
-    //     formData.append('file', fileInput.files[0]);
-
-    //     // create AJAX request
-    //     $.ajax({
-    //     type: 'POST',
-    //     url: '',
-    //     headers: {
-    //         'X-CSRFToken': '{{ csrf_token }}'
-    //     },
-    //     data: formData,
-    //     dataType: 'json',
-    //     contentType: false,
-    //     processData: false,
-    //     success: function(response) {
-    //         console.log(response.attempt); // do something with response data
-    //     },
-    //     error: function(response) {
-    //         console.log('Error:', response);
-    //     }
-    //     });
-    // });
-    });
-</script>
 </div>
 {% endblock %}

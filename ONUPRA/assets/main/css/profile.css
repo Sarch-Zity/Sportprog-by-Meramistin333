@@ -14,7 +14,8 @@
     margin-top: 10px;
 }
 .content_profile{
-    width: 75%;
+    width: 100%;
+    display: flex;
 }
 .create_fast_content
 {

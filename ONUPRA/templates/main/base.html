@@ -7,13 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="authenticated" content="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+
     <title>{% block title %}{% endblock %}</title>
 
     <!-- ======== CSS ======== -->
     {% block style %}{% endblock %}
-    <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
     
     <link rel="stylesheet" href="{% static 'main/css/light-mode.css' %}" id="theme">
+    <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
     
     <!-- ===== icons ===== -->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
@@ -26,6 +29,8 @@
     <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
 </head>
 <body id="body">
     <!-- <div class="loading-overlay">
@@ -75,6 +80,12 @@
                             <span class="text nav-text">Топ</span>
                         </a>
                     </li>
+                    <li class="nav-link">
+                        <a class="nav-link-fetch" href="{% url 'competitions' %}">
+                            <i class='bx bx-math icon'></i> 
+                            <span class="text nav-text">Соревнования</span>
+                        </a>
+                    </li>
                     {% if request.user.is_authenticated %}
                     <!-- <li class="nav-link">
                         <a href="#">
@@ -83,26 +94,19 @@
                         </a>
                     </li> -->
                     <li class="nav-link">
-                        <div class="blocked">
-                            <i class='bx bxs-dizzy icon'></i>
-                            <span class="text">Друзья</span>
-                        </div>
+                        <a class="popup_buy_premium">
+                            <i class='bx bx-ruble icon'></i>
+                            <span class="text">Премиум</span>
+                        </a>
                     </li>
                     {% else %}
                     <li class="nav-link">
                         <div class="blocked">
-                            <i class='bx bxs-dizzy icon'></i>
-                            <span class="text">Друзья</span>
+                            <i class='bx bx-ruble icon'></i>
+                            <span class="text">Премиум</span>
                         </div>
                     </li>
                     {% endif %}
-                    <li class="nav-link">
-                        <a class="nav-link-fetch" href="{% url 'competitions' %}">
-                            <i class='bx bx-math icon'></i> 
-                            <span class="text nav-text">Соревнования</span>
-                        </a>
-                    </li>
-
                 </ul>
             </div>
             {% if request.user.is_authenticated %}
@@ -130,12 +134,82 @@
             </a>
         </form>
     </div>
+    <div class="popup__bg-prem"> 
+        <i class='bx bx-x close-popup-buy'></i>
+        <div class="popup-buy base-popup_prem">
+            
+            <form class="popup_prem-base level_buy-1" name="level_buy-1">
+                <div class="header_buy color-blue">
+                    Премиальный доступ
+                </div>
+                <div class="conteiner_buy">
+                    <span id="plus-ul">Вы получаете:</span>
+                    <ul class="buy-plus">
+                        <li>- Доступ к дополнительным заданиям</li>
+                    </ul>
+                    <a class="buy-button color-blue">
+                        <span id="buy-text">Купить</span>
+                        <i class='bx bx-dollar-circle icon-buy_button'></i>
+                    </a>
+                </div>
+            </form>
+            <form class="popup_prem-base level_buy-2" name="level_buy-2">
+                <div class="header_buy color-silver">
+                    Серебряный доступ
+                </div>
+                <div class="conteiner_buy">
+                    <span id="plus-ul">Вы получаете:</span>
+                    <ul class="buy-plus">
+                        <li>- Премиальный доступ</li>
+                        <li>- Доступ к дополнительной теории</li>
+                    </ul>
+                    <a class="buy-button color-silver">
+                        <span id="buy-text">Купить</span>
+                        <i class='bx bx-dollar-circle icon-buy_button'></i>
+                    </a>
+                </div>
+            </form>
+            <form class="popup_prem-base level_buy-3" name="level_buy-3">
+                <div class="header_buy color-gold">
+                    Золотой доступ
+                </div>
+                <div class="conteiner_buy">
+                    <span id="plus-ul">Вы получаете:</span>
+                    <ul class="buy-plus">
+                        <li>- Серебряный доступ</li>
+                        <li>- Доступ к анализу ваших решений</li>
+                    </ul>
+                    <a class="buy-button color-gold">
+                        <span id="buy-text">Купить</span>
+                        <i class='bx bx-dollar-circle icon-buy_button'></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="blackout"></div>
     <div class="cookie_fail_content cookie_false">
         <span>Этот сайт использует cookie-файлы. Находясь на этом сайте, вы разрешаете использование cookie-файлов</span>
         <div class="close_cockie">
             <div class="close_cockie_input">ок</div>
         </div>
+    </div>
+    <div class="notification_send">
+        <span class="notification_task_text">Ваше решение отправлено!</span>
+    </div>
+    <div class="notification_task_container" style="right: 20px;">
+        <!-- <div class="notification_task">
+            <i class='bx bx-x close-notification_task'></i>
+            <span class="notification_task_text">*Результат отправки задания*</span>
+        </div>
+        <div class="notification_task">
+            <i class='bx bx-x close-notification_task'></i>
+            <span class="notification_task_text">*Результат отправки задания*</span>
+        </div>
+        <div class="notification_task">
+            <i class='bx bx-x close-notification_task'></i>
+            <span class="notification_task_text">*Результат отправки задания*</span>
+        </div> -->
     </div>
     <script src="{% static 'main/js/base.js' %}"></script>
     {% if request.user.is_authenticated %}
@@ -157,5 +231,7 @@ let switchMode = document.getElementById("switchMode");
     }
     </script> -->
 {% block js %}{% endblock %}
+
+<link rel="stylesheet" href="{% static 'main/css/base.css' %}">
 </body>
 </html>

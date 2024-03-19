@@ -5,21 +5,40 @@ from datetime import date
 # import locale
 # import pytils
 from django.http import JsonResponse
-from django.utils.timezone import localtime, now, timedelta, localdate,  get_default_timezone_name, datetime
+from django.utils.timezone import localtime, now, timedelta, localdate, get_default_timezone_name, datetime
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from .models import CustomUser, Competition, Task, Attempt, File, Article, ScorePoint
 from django.contrib.auth.hashers import check_password
-from .forms import CustomUserCreationFrom, CustomUserChangeFrom, PasswordChangeForm, CreateCompetitionForm, CustomUserImageChangeFrom, CustomUserUsernameChangeFrom, CreateTaskForm, ArticleForm, FileForm
+from .forms import CustomUserCreationFrom, PasswordChangeForm, CustomUserImageChangeFrom, CustomUserUsernameChangeFrom, ArticleForm, FileForm, CustomAuthenticationForm
 from django.contrib.auth import login, logout
 from django.views.generic import DetailView, UpdateView
 from django.db.models import Max
+from django.core.mail import send_mail
+from django.core.cache import cache
+import random
 
 import subprocess
 
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+def testfunc(request):
+    from time import sleep
+    cache.set("my_key", "hello, world!", 5)
+    print(cache)
+    sleep(5)
+    print(cache.get("my_key"))
+
+    # send_mail(
+    # "Тема сообщения. Чурка лох",
+    # "ЖОПААААААААААААААААААААААААААА",
+    # 'onupra@inbox.ru',
+    # ["artemzity@gmail.com"],
+    # fail_silently=True,
+    # )
+    return HttpResponse(status=200)
 
 def create_output_file(command):
     global compile_error, delete_files
@@ -81,7 +100,7 @@ def run_command(file_name, tests_input, tests_output):
         command = "d8 " + path + file_name
     else:
         compile_error = 1
-        return "Нет такого языка програмирования"
+        return [0, f"Нет такого языка програмирования"]
     # delete_files.append(path + file_name)
     if compile_error == 0:
         for i in range(len(tests_input)):
@@ -109,11 +128,9 @@ def run_command(file_name, tests_input, tests_output):
             # os.remove(i)
         return [0, "Не удалось скомпилировать файл"]
 
-
 def Index(request):
     # locale.setlocale(locale.LC_TIME, 'ru_RU')
     usr = CustomUser.objects.filter(is_superuser=False)
-    print(usr)
     comp = Competition.objects.filter(actual=True).order_by('start_time')
     if comp:
         comp = comp[0]
@@ -127,30 +144,12 @@ def Index(request):
         # else:
         #     date = comp.start_time.strftime(u'%d.%m')
         #     time = comp.start_time.strftime(u'%H:%M')
-        date = comp.start_time.strftime(u'%d.%m')
-        time = comp.start_time.strftime(u'%H:%M')
+        date = comp.start_time.strftime('%d.%m')
+        time = comp.start_time.strftime('%H:%M')
         # return render(request, 'main/home.html', {'comp': comp, 'date': pytils.dt.ru_strftime(u'%d %B', inflected=True, date=comp.start_time)})
         return render(request, 'main/home.html', {'comp': comp, 'date': date, 'time': time})
     return render(request, 'main/home.html', {'comp': comp})
 
-def my_ajax_view(request):
-    if request.method == 'POST':
-        # handle the form submission here
-        a = request.POST.get("name")
-        # do something with the content
-        data = {
-        'message': f'{a}1111',
-        }
-        return JsonResponse(data)
-    data = {
-        'message': f'22',
-        }
-    return JsonResponse(data)
-
-def Test(request):
-    return render(request, 'main/test.html')
-def Page(request):
-    return render(request, 'main/page.html')
 def Account_REDIR(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -158,7 +157,6 @@ def Account_REDIR(request):
 
 def Top(request):
     user = CustomUser.objects.filter(is_staff=False).filter(is_superuser=False).order_by('-rating')
-    print(user[0].rating)
     return render(request, 'main/top.html', {'users': user})
 
 def Profile(request, username):
@@ -174,7 +172,6 @@ def Profile(request, username):
             # В форму добавляем инфу которую пользователь добавил
             form = CustomUserImageChangeFrom(
                 request.POST, request.FILES, instance=request.user)
-            print(form.errors)
             if form.is_valid():
                 form.save()
                 return redirect('account', request.user.username)
@@ -196,8 +193,6 @@ def Profile(request, username):
                 return redirect('account', request.user.username)
     content = {
         'user': user,
-        'form': ArticleForm(),
-        'form2': FileForm(),
         'articles': Article.objects.filter(user=user),
         'point': ScorePoint.objects.filter(link_user=user).order_by("date")
     }
@@ -237,13 +232,10 @@ def Settings(request):
             return JsonResponse(data)
         # Если отправлена форма редактирования почты
         if "email_edit" in request.POST:
-            print(request)
             email_successfully = False
             password_successfully = False
             email = request.POST.get('email').strip()
             password = request.POST.get('password').strip()
-            print(email, ((not CustomUser.objects.filter(email=email).exists()) and (not email.strip() == "") and ('@' in email) and ('.' in email)))
-            print(password, (check_password(password, request.user.password) and (not password.strip() == "")))
             if ((not CustomUser.objects.filter(email=email).exists()) and (not email.strip() == "") and ('@' in email) and ('.' in email)):
                 email_successfully = True
             if (check_password(password, request.user.password) and (not password.strip() == "")):
@@ -268,7 +260,6 @@ def Settings(request):
                 successfully = True
                 request.user.set_password(new_password)
                 request.user.save()
-            print(old_password, new_password, new_password2, check_password(old_password, request.user.password), successfully)
             data = {
                 'successfully': successfully,
                 }
@@ -276,7 +267,6 @@ def Settings(request):
         elif "delete" in request.POST:
             successfully = False
             delete_password = request.POST.get("delete_password")
-            print(delete_password, successfully, check_password(delete_password, request.user.password))
             if check_password(delete_password, request.user.password):
                 request.user.delete()
                 successfully = True
@@ -285,35 +275,6 @@ def Settings(request):
                 }
             return JsonResponse(data)
     return render(request, 'main/settings.html')
-
-def CreateCompetition(request):
-    if request.method == 'POST':
-        if 'task' in request.POST:
-            task_form = CreateTaskForm(request.POST)
-            print(request.POST)
-            if task_form.is_valid():
-                print("eeeee")
-                task_form.save()
-            else:
-                print(task_form.errors)
-                print("Nooooo")
-        if 'competition' in request.POST:
-            comp_form = CreateCompetitionForm(request.POST)
-            print(request.POST)
-            if comp_form.is_valid():
-                print("eeeee")
-                comp_form.save()
-            else:
-                print(comp_form.errors)
-                print("Nooooo")
-    comp_form = CreateCompetitionForm()
-    task_form = CreateTaskForm()
-    content = {
-        'comp_form': comp_form,
-        'task_form': task_form
-    }
-    return render(request, 'main/create_competition.html', content)
-
 
 def Competitions(request):
     # if not request.user.is_authenticated:
@@ -326,15 +287,12 @@ def Competitions(request):
     }
     return render(request, 'main/competition.html', content)
 
-
 def Сurrent_competition(request, id):
     return redirect('competition_task', id, 0)
-
 
 def Competition_now(request, id, taskid):
     comp = Competition.objects.get(id=id)
     task = Task.objects.filter(compet=comp).order_by('title')[taskid]
-    print(request.FILES)
     if not request.user.is_authenticated:
         return redirect('login')
     elif comp.start_time > localtime():
@@ -379,15 +337,9 @@ def Competition_now(request, id, taskid):
             atmpt.error = answer[1]
         atmpt.save()
         data = {
-        'id': atmpt.id,
-        'link_competition': atmpt.link_competition,
-        'link_task': atmpt.link_task,
-        'link_user': atmpt.link_user,
-        'document': atmpt.document.url,
-        'successfully': atmpt.successfully,
-        'points': atmpt.points,
+        'time': atmpt.time.strftime("%H:%M:%S"),
+        'title': atmpt.link_task.title,
         'error': atmpt.error,
-        'time': atmpt.time,
         }
         return JsonResponse(data)
     timeleft = comp.duration - \
@@ -764,8 +716,10 @@ def Registration(request):
     error_username = False
     error_email = False
     if request.method == 'POST':
+        print(000)
         form = CustomUserCreationFrom(request.POST)
         if "start_registration" in request.POST:
+            print(000)
             email = request.POST.get('email')
             tempcode = random.randint(0, 1000000)
             cache.set(email, tempcode)
@@ -776,6 +730,11 @@ def Registration(request):
             [email],
             fail_silently=True,
             )
+            
+            data = {
+                'successfully': True,
+                }
+            return JsonResponse(data)
         elif "end_registration" in request.POST:
             email = request.POST.get('email')
             tempcode = request.POST.get('tempcode')
@@ -800,9 +759,30 @@ def Registration(request):
             else:
                 print("Oops")
                 return HttpResponse(status=200)
+            
 
     content = {
         'error_username': error_username,
         'error_email': error_email
     }
     return render(request, 'main/registration.html', content)
+
+def Authentication(request):
+    if request.user.is_authenticated:
+        return redirect('account', request.user.username)
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(data=request.POST)
+        # Если форма коректна, то она аутентифицирует тебя
+        if form.is_valid():
+            # Траблы имеются
+            # send_mail(
+            #     "Здравствуйте!",
+            #     f"Произошел вход в аккаунт на сайте onupra.ru с почты {form.get_user().email}",
+            #     'onupra@inbox.ru',
+            #     [form.get_user().email],
+            #     fail_silently=True,
+            # )
+            login(request, form.get_user())
+            remember_me = form.cleaned_data['remember_me']
+            return redirect('you')
+    return render(request, 'main/login.html')

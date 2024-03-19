@@ -35,7 +35,7 @@ class Competition(models.Model):
     creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
     start_time = models.DateTimeField('Дата старта')
     duration = models.PositiveIntegerField('Длительность соревнования') # минимум 30
-    title = models.CharField('Название', unique=True, max_length=30)
+    title = models.CharField('Название', unique=True, max_length=50)
     actual = models.BooleanField('Не закончен', default=True)
     verified = models.BooleanField('Проверено администратором', default=False)
     rating = models.BooleanField('Рейтинговое ли соревнование', default=False)
@@ -45,7 +45,7 @@ class Competition(models.Model):
 
 class Task(models.Model):
     compet = models.ForeignKey(Competition, on_delete=models.CASCADE)
-    title = models.CharField('Название задания', max_length=30)
+    title = models.CharField('Название задания', max_length=50)
     condition = models.TextField('Описание задания')
     required_input = models.TextField('Входные данные')
     required_output = models.TextField('Выходные данные')
@@ -74,7 +74,7 @@ class Attempt(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     points = models.PositiveIntegerField('Количество полученых очков', default=0)
     successfully = models.BooleanField('Успешное решение', default=False)
-    error = models.CharField('Ошибка', max_length=30, default='-')
+    error = models.CharField('Ошибка', max_length=50, default='-')
     document = models.FileField(upload_to='comp_files/')
     hidden = models.BooleanField('Скрытая попытка', default=False)
 
