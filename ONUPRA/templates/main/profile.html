@@ -56,7 +56,28 @@
                     <i class='bx bx-heart'></i>
                 </div>
                 <div class="block_friend">
-                    <span>Пока что в разработке</span>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="text" class="input_regestration" maxlength="128" name="title">
+                        <button type="submit" class="button_submit" name="create party">Создать</button>
+                    </form>
+                </div>
+                <div class="block_friend">
+                    {% for i in partys %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" class="input_regestration" maxlength="128" name="id" value="{{ i.id }}">
+                        {{ i }}
+                        {% with i.members.all as x %}
+                        {% for y in x %}
+                        <div>
+                        {{ y }}
+                        </div>
+                        {% endfor %}
+                        {% endwith %}
+                        <button type="submit" class="button_submit" name="leave party">Выйти</button>
+                    </form>
+                    {% endfor %}
                 </div>
             </div>
     </div>

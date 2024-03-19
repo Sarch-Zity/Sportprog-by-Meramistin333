@@ -72,8 +72,51 @@ href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
                     </span>
                 </div>
                 <div class="submit_input">
-                   <button type="submit" class="button_submit" id="button_form">Зарегестрироваться</button>
+                   <button type="submit" class="button_submit" name="start_registration">Зарегестрироваться</button>
                 </div>
+            </form>
+            <form method="post">
+                {% csrf_token %}
+                <span class="container_input_form_text">Введите ваш никнейм (от 3 до 16 символов)</span>
+                    <input type="text" class="input_regestration users" maxlength="32" name="username">
+                <div class={% if error_email %}"container_input_form field email-field invalid"{% else %}"container_input_form field email-field"{% endif %}>
+                    <span class="container_input_form_text">Введите ваш почтовый адрес</span>
+                    <input type="text" class="input_regestration email" maxlength="254" name="email">
+                </div>
+                <div class="container_input_form field confirm-password">
+                    <span class="container_input_form_text">Ввести Код</span>
+                    <i class='bx bx-hide show-hide'></i>
+                    <input type="number" class="input_regestration" name="tempcode">
+                </div>
+                <div class="container_input_form field create-password">
+                    <span class="container_input_form_text">Придумайте пароль (от 8 до 24 символов)</span>
+                    <i class='bx bx-hide show-hide'></i>
+                    <input type="password" class="input_regestration password" maxlength="128" name="password1">
+                    <span class="error err2 password-error">
+                        <i class="bx bx-error-circle error-icon"></i>
+                        <p class="error-text">Пароль не подходит по требованиям (Пароль должен включать в себя a-z, A-Z, 0-9)</p>
+                    </span>
+                    <span class="error err3 password-error">
+                        <i class="bx bx-error-circle error-icon"></i>
+                        <p class="error-text">Обязательно придумайте пароль!</p>
+                    </span>
+                </div>
+                <div class="container_input_form field confirm-password">
+                    <span class="container_input_form_text">Повторите пароль</span>
+                    <i class='bx bx-hide show-hide'></i>
+                    <input type="password" class="input_regestration cPassword" maxlength="128" name="password2">
+                    <span class="error err2 cPassword-error">
+                        <i class="bx bx-error-circle error-icon"></i>
+                        <p class="error-text">Пароли не совпадают!</p>
+                    </span>
+                    <span class="error err3 cPassword-error">
+                        <i class="bx bx-error-circle error-icon"></i>
+                        <p class="error-text">Повторите свой пароль</p>
+                    </span>
+                </div>
+                <div class="submit_input">
+                    <button type="submit" class="button_submit" name="end_registration">Код</button>
+                 </div>
             </form>
             <span class="exit">Есть аккаунт? <a href="{% url 'login' %}">Войти!</a></span>
         </div>

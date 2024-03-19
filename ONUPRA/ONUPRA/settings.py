@@ -27,9 +27,9 @@ SECRET_KEY = 'django-insecure-48cu=1(5ln)ydmpn-%%e)0@*u+wel*tmfhdn59uss&6^_1$gj7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['a38e-188-234-162-188.ngrok-free.app', '127.0.0.1']
+ALLOWED_HOSTS = ['8b4f-109-194-38-72.ngrok-free.app', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = [
-    'https://a38e-188-234-162-188.ngrok-free.app', 'https://127.0.0.1:8000']
+    'https://8b4f-109-194-38-72.ngrok-free.app', 'https://127.0.0.1:8000']
 
 # Application definition
 
@@ -146,6 +146,13 @@ CACHES = {
     }
 }
 
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://127.0.0.1:6379/1',
+#     }
+# }
+
 CELERY_TIMEZONE = "Asia/Krasnoyarsk"
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
@@ -174,3 +181,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_FAILURE_VIEW = 'ONUPRA.urls.csrf_failure'
 
 SESSION_COOKIE_AGE = 31536000
+
+EMAIL_HOST = "smtp.mail.ru"
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+EMAIL_HOST_USER = 'onupra@inbox.ru'
+EMAIL_HOST_PASSWORD = '6F5KeMwhajqrh10dg5jS'
+DEFAULT_FROM_EMAIL = 'onupra@inbox.ru'

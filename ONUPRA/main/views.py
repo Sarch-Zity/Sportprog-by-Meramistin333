@@ -5,21 +5,40 @@ from datetime import date
 # import locale
 # import pytils
 from django.http import JsonResponse
-from django.utils.timezone import localtime, now, timedelta, localdate,  get_default_timezone_name, datetime
+from django.utils.timezone import localtime, now, timedelta, localdate, get_default_timezone_name, datetime
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
-from .models import CustomUser, Competition, Task, Attempt, File, Article, ScorePoint
+from .models import CustomUser, Competition, Task, Attempt, File, Article, ScorePoint, Party
 from django.contrib.auth.hashers import check_password
 from .forms import CustomUserCreationFrom, PasswordChangeForm, CustomUserImageChangeFrom, CustomUserUsernameChangeFrom, ArticleForm, FileForm, CustomAuthenticationForm
 from django.contrib.auth import login, logout
 from django.views.generic import DetailView, UpdateView
 from django.db.models import Max
+from django.core.mail import send_mail
+from django.core.cache import cache
+import random
 
 import subprocess
 
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+def testfunc(request):
+    from time import sleep
+    cache.set("my_key", "hello, world!", 5)
+    print(cache)
+    sleep(5)
+    print(cache.get("my_key"))
+
+    # send_mail(
+    # "Тема сообщения. Чурка лох",
+    # "ЖОПААААААААААААААААААААААААААА",
+    # 'onupra@inbox.ru',
+    # ["artemzity@gmail.com"],
+    # fail_silently=True,
+    # )
+    return HttpResponse(status=200)
 
 def create_output_file(command):
     global compile_error, delete_files
@@ -172,10 +191,20 @@ def Profile(request, username):
                     article.user = request.user
                     article.save()
                 return redirect('account', request.user.username)
+        elif "create party" in request.POST:
+            NewParty = Party(title = request.POST.get("title"), leader = request.user)
+            NewParty.save()
+            NewParty.members.add(request.user)
+        elif "leave party" in request.POST:
+            PartyLeave = Party.objects.get(id=request.POST.get("id"))
+            PartyLeave.members.remove(request.user)
+            if PartyLeave.leader == request.user:
+                PartyLeave.delete()
     content = {
         'user': user,
         'articles': Article.objects.filter(user=user),
-        'point': ScorePoint.objects.filter(link_user=user).order_by("date")
+        'point': ScorePoint.objects.filter(link_user=user).order_by("date"),
+        "partys": Party.objects.filter(members=user)
     }
     return render(request, 'main/profile.html', content)
 
@@ -698,19 +727,42 @@ def Registration(request):
     error_email = False
     if request.method == 'POST':
         form = CustomUserCreationFrom(request.POST)
-        email = request.POST.get('email')
-        nickname = request.POST.get('username')
-        if CustomUser.objects.filter(username=nickname).exists():
-            if CustomUser.objects.filter(email=email).exists():
-                error_email = True
-            error_username = True
-        elif CustomUser.objects.filter(email=email).exists():
-            error_email = True
-        # Если форма коректна, то она сохраняется
-        elif form.is_valid():
-            formsv = form.save()
-            login(request, formsv)
-            return redirect('you')
+        if "start_registration" in request.POST:
+            email = request.POST.get('email')
+            tempcode = random.randint(0, 1000000)
+            cache.set(email, tempcode)
+            send_mail(
+            "Здравствуйте",
+            f"{tempcode}",
+            'onupra@inbox.ru',
+            [email],
+            fail_silently=True,
+            )
+        elif "end_registration" in request.POST:
+            email = request.POST.get('email')
+            tempcode = request.POST.get('tempcode')
+            a = cache.get(email)
+            print(f"email:{email}")
+            print(f"tempcode:{tempcode}")
+            print(f"a:{a}")
+            if str(a) == tempcode:
+                cache.delete("email")
+                print("Everything is okay")
+                nickname = request.POST.get('username')
+                if CustomUser.objects.filter(username=nickname).exists():
+                    if CustomUser.objects.filter(email=email).exists():
+                        error_email = True
+                    error_username = True
+                elif CustomUser.objects.filter(email=email).exists():
+                    error_email = True
+                # Если форма коректна, то она сохраняется
+                elif form.is_valid():
+                    formsv = form.save()
+                    login(request, formsv)
+                    return redirect('you')
+            else:
+                print("Oops")
+                return HttpResponse(status=200)
 
     content = {
         'error_username': error_username,
@@ -725,7 +777,31 @@ def Authentication(request):
         form = CustomAuthenticationForm(data=request.POST)
         # Если форма коректна, то она аутентифицирует тебя
         if form.is_valid():
+            # Траблы имеются
+            # send_mail(
+            #     "Здравствуйте!",
+            #     f"Произошел вход в аккаунт на сайте onupra.ru с почты {form.get_user().email}",
+            #     'onupra@inbox.ru',
+            #     [form.get_user().email],
+            #     fail_silently=True,
+            # )
             login(request, form.get_user())
             remember_me = form.cleaned_data['remember_me']
             return redirect('you')
     return render(request, 'main/login.html')
+
+def PartyRequest(request, id):
+    PartyReq = Party.objects.get(id=id)
+    if request.method == 'POST':
+        if "join" in request.POST:
+            PartyReq.members.add(request.user)
+        elif "leave" in request.POST:
+            PartyReq.members.remove(request.user)
+            if PartyReq.leader == request.user:
+                PartyReq.delete()
+        # elif "create" in request.POST:
+        #     NewParty = Party(title = request.POST.get("title"), leader = request.user)
+        #     NewParty.save()
+        #     NewParty.members.add(request.user)
+        #     return render(request, 'main/party.html', {"id":NewParty.id})
+    return render(request, 'main/party.html')

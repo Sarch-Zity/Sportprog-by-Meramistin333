@@ -97,3 +97,11 @@ class File(models.Model):
     def __str__(self):
         return str(self.creation_date) + ' and ' + str(self.article)
 
+class Party(models.Model):
+    creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
+    title = models.CharField('Название', max_length=50)
+    leader = models.ForeignKey("CustomUser", on_delete=models.DO_NOTHING, related_name="+", default="None")
+    members = models.ManyToManyField("CustomUser", default="None")
+
+    def __str__(self):
+        return self.title
