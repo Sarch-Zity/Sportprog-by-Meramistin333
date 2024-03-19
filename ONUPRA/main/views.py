@@ -9,7 +9,7 @@ from django.utils.timezone import localtime, now, timedelta, localdate, get_defa
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
-from .models import CustomUser, Competition, Task, Attempt, File, Article, ScorePoint
+from .models import CustomUser, Competition, Task, Attempt, File, Article, ScorePoint, Party
 from django.contrib.auth.hashers import check_password
 from .forms import CustomUserCreationFrom, PasswordChangeForm, CustomUserImageChangeFrom, CustomUserUsernameChangeFrom, ArticleForm, FileForm, CustomAuthenticationForm
 from django.contrib.auth import login, logout
@@ -191,10 +191,20 @@ def Profile(request, username):
                     article.user = request.user
                     article.save()
                 return redirect('account', request.user.username)
+        elif "create party" in request.POST:
+            NewParty = Party(title = request.POST.get("title"), leader = request.user)
+            NewParty.save()
+            NewParty.members.add(request.user)
+        elif "leave party" in request.POST:
+            PartyLeave = Party.objects.get(id=request.POST.get("id"))
+            PartyLeave.members.remove(request.user)
+            if PartyLeave.leader == request.user:
+                PartyLeave.delete()
     content = {
         'user': user,
         'articles': Article.objects.filter(user=user),
-        'point': ScorePoint.objects.filter(link_user=user).order_by("date")
+        'point': ScorePoint.objects.filter(link_user=user).order_by("date"),
+        "partys": Party.objects.filter(members=user)
     }
     return render(request, 'main/profile.html', content)
 
@@ -736,6 +746,7 @@ def Registration(request):
             print(f"tempcode:{tempcode}")
             print(f"a:{a}")
             if str(a) == tempcode:
+                cache.delete("email")
                 print("Everything is okay")
                 nickname = request.POST.get('username')
                 if CustomUser.objects.filter(username=nickname).exists():
@@ -778,3 +789,19 @@ def Authentication(request):
             remember_me = form.cleaned_data['remember_me']
             return redirect('you')
     return render(request, 'main/login.html')
+
+def PartyRequest(request, id):
+    PartyReq = Party.objects.get(id=id)
+    if request.method == 'POST':
+        if "join" in request.POST:
+            PartyReq.members.add(request.user)
+        elif "leave" in request.POST:
+            PartyReq.members.remove(request.user)
+            if PartyReq.leader == request.user:
+                PartyReq.delete()
+        # elif "create" in request.POST:
+        #     NewParty = Party(title = request.POST.get("title"), leader = request.user)
+        #     NewParty.save()
+        #     NewParty.members.add(request.user)
+        #     return render(request, 'main/party.html', {"id":NewParty.id})
+    return render(request, 'main/party.html')

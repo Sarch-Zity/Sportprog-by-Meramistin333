@@ -17,6 +17,7 @@ urlpatterns = [
     path('competition/', views.Competitions, name='competitions'),
     path('competition/<int:id>/', views.Сurrent_competition, name='сompetition'),
     path('competition/<int:id>/<int:taskid>/', views.Competition_now, name='competition_task'),
+    path('party/<int:id>/', views.PartyRequest, name='party'),
     path('user/<str:username>/', views.Profile, name='account'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
