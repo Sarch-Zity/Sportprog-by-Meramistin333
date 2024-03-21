@@ -1,9 +1,10 @@
+
 ONUPRA/.env
 ONUPRA/db.sqlite3
 ONUPRA/Dockerfile
 ONUPRA/main/migrations
-ONUPRA/main/pycache
-ONUPRA/ONUPRA/pycache
+ONUPRA/main/__pycache__
+ONUPRA/ONUPRA/__pycache__
 ONUPRA/static
 ngrok.exe
 start.txt

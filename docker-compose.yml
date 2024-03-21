@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  codemind:
+    container_name: codemind
+    build:
+      context: ./ONUPRA
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_volume:/codemind/static/
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/static
+    ports:
+      - "25565:80"
+    depends_on:
+      - codemind
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  
+  celery:
+    container_name: celery
+    build:
+      context: ./ONUPRA
+    command: celery -A ONUPRA worker --loglevel=info
+    volumes:
+      - ./ONUPRA:/codemind
+    depends_on:
+      - redis
+      - codemind 
+
+  celery-beat:
+    container_name: celery-beat
+    build:
+      context: ./ONUPRA
+    command: celery -A ONUPRA beat --loglevel=info
+    volumes:
+      - ./ONUPRA:/codemind
+    depends_on:
+      - celery
+      - redis
+      - codemind
+
+volumes:
+  static_volume:

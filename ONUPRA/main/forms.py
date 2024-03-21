@@ -1,4 +1,4 @@
-from .models import CustomUser, Competition, Task, Article, File
+from .models import CustomUser, Competition, Task
 from django.forms import ModelForm, TextInput, Textarea, EmailInput, PasswordInput, CharField, EmailField, ImageField, ClearableFileInput, NumberInput, FileInput, FileField, BooleanField, CheckboxInput
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 
@@ -39,14 +39,14 @@ class PasswordChangeForm(ModelForm):
         model = CustomUser
         fields = ['old_password', 'new_password', 'new_password_repeat']
 
-class ArticleForm(ModelForm):
-    text = CharField(label = 'Текст статьи', widget = Textarea())
-    class Meta:
-        model = Article
-        fields = ['text']
+# class ArticleForm(ModelForm):
+#     text = CharField(label = 'Текст статьи', widget = Textarea())
+#     class Meta:
+#         model = Article
+#         fields = ['text']
 
-class FileForm(ModelForm):
-    files = FileField(label = 'Изображение', widget = FileInput(attrs = {'multiple': 'multiple'}))
-    class Meta:
-        model = File
-        fields = ['files']
+# class FileForm(ModelForm):
+#     files = FileField(label = 'Изображение', widget = FileInput(attrs = {'multiple': 'multiple'}))
+#     class Meta:
+#         model = File
+#         fields = ['files']
