@@ -4,55 +4,90 @@ from django.utils.timezone import now
 
 app = Celery('ONUPRA')
 
-@app.task(name='foo')
-def foo():
-    print('Hello world!')
-
 @app.task(name='checker')
-def cheker():
-    comp = Competition.objects.filter(actual = True).order_by('start_time')
-    if comp:
-        for i in range(len(comp)):
-            timeLeft = comp[i].duration - int((now() - comp[i].start_time).total_seconds() // 60)
-            if timeLeft <= 0:
-                comp[i].actual = False
-                comp[i].save()
-                if comp[i].rating:
-                    users = []
-                    d1 = {}
-                    max_score = 0
-                    tasks = Task.objects.filter(compet = comp[i])
-                    for j in tasks:
-                        d0 = {}
-                        max_score += j.score
-                        for k in Attempt.objects.filter(link_competition = comp[i]).filter(link_task = j).filter(hidden = False):
-                            if not (k.link_user in users):
-                                users.append(k.link_user)
-                            if not (k.link_user in d0):
-                                d0[k.link_user] = k.points
-                            else:
-                                if d0[k.link_user] < k.points:
-                                    d0[k.link_user] = k.points
-                        for k in d0:
-                            if not (k in d1):
-                                d1[k] = d0[k]
-                            else:
-                                d1[k] += d0[k]
-                    average_score = max_score / len(users)
-                    del d0, max_score
-                    # print(users)
-                    for j in users:
-                        if j.rating < 100:
-                            # print(j.username, j.rating, d1[j], average_score, 200 * ((d1[j] / average_score - 1) / 3 + 1))
-                            j.rating = 200 * ((d1[j] / average_score - 1) / 3 + 1)
-                        else:
-                            # print(j.username, j.rating, d1[j], average_score, j.rating * ((d1[j] / average_score - 1) / 3 + 1))
-                            j.rating = j.rating * ((d1[j] / average_score - 1) / 3 + 1)
-                        j.save()
-                        point = ScorePoint(score = j.rating, link_user = j)
-                        point.save()
+def checker(TrueId):
+    competition = Competition.objects.get(id = TrueId)
+    competition.actual = False
+    competition.save()
+    if competition.rating:
+        users = []
+        d1 = {}
+        max_score = 0
+        tasks = Task.objects.filter(compet = competition)
+        for j in tasks:
+            d0 = {}
+            max_score += j.score
+            for k in Attempt.objects.filter(link_competition = competition).filter(link_task = j).filter(hidden = False):
+                if not (k.link_user in users):
+                    users.append(k.link_user)
+                if not (k.link_user in d0):
+                    d0[k.link_user] = k.points
+                else:
+                    if d0[k.link_user] < k.points:
+                        d0[k.link_user] = k.points
+            for k in d0:
+                if not (k in d1):
+                    d1[k] = d0[k]
+                else:
+                    d1[k] += d0[k]
+        average_score = max_score / len(users)
+        del d0, max_score
+        # print(users)
+        for j in users:
+            if j.rating < 100:
+                # print(j.username, j.rating, d1[j], average_score, 200 * ((d1[j] / average_score - 1) / 3 + 1))
+                j.rating = 200 * ((d1[j] / average_score - 1) / 3 + 1)
             else:
-                break
+                # print(j.username, j.rating, d1[j], average_score, j.rating * ((d1[j] / average_score - 1) / 3 + 1))
+                j.rating = j.rating * ((d1[j] / average_score - 1) / 3 + 1)
+            j.save()
+            point = ScorePoint(score = j.rating, link_user = j)
+            point.save()
+
+# def checker():
+#     comp = Competition.objects.filter(actual = True).order_by('start_time')
+#     if comp:
+#         for i in range(len(comp)):
+#             timeLeft = comp[i].duration - int((now() - comp[i].start_time).total_seconds() // 60)
+#             if timeLeft <= 0:
+#                 comp[i].actual = False
+#                 comp[i].save()
+#                 if comp[i].rating:
+#                     users = []
+#                     d1 = {}
+#                     max_score = 0
+#                     tasks = Task.objects.filter(compet = comp[i])
+#                     for j in tasks:
+#                         d0 = {}
+#                         max_score += j.score
+#                         for k in Attempt.objects.filter(link_competition = comp[i]).filter(link_task = j).filter(hidden = False):
+#                             if not (k.link_user in users):
+#                                 users.append(k.link_user)
+#                             if not (k.link_user in d0):
+#                                 d0[k.link_user] = k.points
+#                             else:
+#                                 if d0[k.link_user] < k.points:
+#                                     d0[k.link_user] = k.points
+#                         for k in d0:
+#                             if not (k in d1):
+#                                 d1[k] = d0[k]
+#                             else:
+#                                 d1[k] += d0[k]
+#                     average_score = max_score / len(users)
+#                     del d0, max_score
+#                     # print(users)
+#                     for j in users:
+#                         if j.rating < 100:
+#                             # print(j.username, j.rating, d1[j], average_score, 200 * ((d1[j] / average_score - 1) / 3 + 1))
+#                             j.rating = 200 * ((d1[j] / average_score - 1) / 3 + 1)
+#                         else:
+#                             # print(j.username, j.rating, d1[j], average_score, j.rating * ((d1[j] / average_score - 1) / 3 + 1))
+#                             j.rating = j.rating * ((d1[j] / average_score - 1) / 3 + 1)
+#                         j.save()
+#                         point = ScorePoint(score = j.rating, link_user = j)
+#                         point.save()
+#             else:
+#                 break
 
 # @app.task(name='checker')
 # def cheker():

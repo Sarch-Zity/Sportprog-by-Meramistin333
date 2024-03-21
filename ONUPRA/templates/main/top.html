@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="{% static 'main/css/top.css' %}">
 {% endblock %}
 {% block body %}
+<div class="content">
+    <link rel="stylesheet" href="{% static 'main/css/top.css' %}">
     <div class="wrapper">
         <div class="wrapper_content">
             <div class="container_home_text">
@@ -15,7 +17,7 @@
                     <span class="icon_">
                         <i class='bx bx-search'></i>
                     </span>
-                    <i class='bx bx-x'></i>
+                    <i class='bx bx-x x_close'></i>
                 </div>
             </div>
 
@@ -51,5 +53,7 @@
                 <div class="paginator" onclick="pagination(event)"></div>
         </div>
     </div>
+</div>
+
 {% endblock %}
 {% block js %}<script src="{% static 'main/js/top.js' %}"></script>{% endblock %}

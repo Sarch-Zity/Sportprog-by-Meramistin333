@@ -3,9 +3,11 @@
 {% load static %}
 {% block title %}{{actual_task.title}}{% endblock %}
 {% block style %}
-<link rel="stylesheet" href="{% static 'main/css/competition_now.css' %}">
+
 {% endblock %}
 {% block body %}
+<div class="content">
+    <link rel="stylesheet" href="{% static 'main/css/competition_now.css' %}">
     <div class="wrapper media">
         <div class="wrapper_content">
             <div class="text-header">
@@ -41,15 +43,15 @@
                         <div class="adaptive_content_uploud_fail" style="display: flex;">
                             <div class="select-btn2">
                                 <ul>
-                                    <!-- <li class="tab tab1 tab--inactive">Ввести код</li>
-                                    <p style="margin:0 15px 0 15px">|</p> -->
+                                    <li class="tab tab1 tab--inactive">Ввести код</li>
+                                    <p style="margin:0 15px 0 15px">|</p>
                                     <li class="tab tab2 tab--active">Отправка файла</li>
                                 </ul>
                             </div>
                             <div class="select-menu">
                                 <div class="select-btn">
                                     <div><span span style="color: #706F6F; font-weight: 700;">Компилятор:</span>
-                                        <span class="sBtn-text blocked_text" style="font-weight: 700;">Список</span></div>
+                                        <span class="sBtn-text blocked_text1 blocked_text2" style="font-weight: 700;">Список</span></div>
                                     <i class="bx bx-chevron-down" style="font-weight: 700;"></i>
                                 </div>
                         
@@ -91,21 +93,22 @@
                             </div>
                         </div>
                         <div class="container_content">
-                            <form class="content content-1" method="post" enctype="multipart/form-data" id="textarea_form">
+                            <form class="content_hidden content-1" method="post" enctype="multipart/form-data" id="textarea_form">
                                 {% csrf_token %}
                                 <div>
-                                    <textarea id="textarea" class="textarea_upload upload_input_container_setting"></textarea>
+                                    <textarea id="textarea" class="textarea_upload textarea_textupload upload_input_container_setting"></textarea>
+                                    <input type="file" class="none" id="textarea-input">
                                 </div>
                                 <button type="submit" class="button-task1 button-task">Отправить решение</button>
                             </form>
-                            <form class="content content-2 content--active" method="post" enctype="multipart/form-data" id="file_form">
+                            <form class="content_hidden content-2 content--active" method="post" enctype="multipart/form-data" id="file_form">
                                 {% csrf_token %}
                                 <div class="relative_content">
                                     <div class="textarea_upload upload_input_container_setting">
                                         <label class="upload_input_container">
                                             <i class='bx bxl-dropbox' ></i>
                                             <span class="upload_text_">Загрузите файл</span> 
-                                            <input accept=".py, .cpp, .pas, .c, .cs, .kt, .rs, .php, .rb, .go, .js" title="" class="upload_text" type="file" id="upload" name="file" onChange='getoutput()'>
+                                            <input accept=".py, .cpp, .pas, .c, .cs, .kt, .rs, .php, .rb, .go, .js" class="upload_text" type="file" id="upload" name="file">
                                         </label>
                                     </div>
                                 </div>
@@ -145,116 +148,15 @@
             {% if attempt %}
             <div class="wrapper_content_2_1">
                 <span>Последние решения</span>
-                {% for i in attempt %}
-                <div class="content-block">
-                    <span><p class="time">{{ i.time|time:"H:i:s" }}</p><p class="tasktime">{{ i.link_task.title }}</p>-<p class="test">{{ i.error }}</p></span>
+                <div class="flex-content-d">
+                    {% for i in attempt %}
+                    <div class="content-block">
+                        <span><p class="time">{{ i.time|time:"H:i:s" }}</p><p class="tasktime">{{ i.link_task.title }}</p>-<p class="test">{{ i.error }}</p></span>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
             {% else %} 
             {% endif %}
-{% endblock %}
-{% block js %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'main/js/competition_now.js' %}"></script>
-<script>
-    // $(document).ready(function() {
-    // $('#textarea_form').submit(function(e) {
-    //     e.preventDefault(); // prevent default form submission behavior
-
-    //     const textarea = document.getElementById("textarea");
-    //     const blob = new Blob([textarea.value], {type: selectedOptionAttribyte});
-    //     // create FormData object
-    //     const formData = new FormData();
-    //     // append file to form data object
-    //     formData.append('file', blob);
-
-    //     // create AJAX request
-    //     $.ajax({
-    //     type: 'POST',
-    //     url: '',
-    //     headers: {
-    //         'X-CSRFToken': "{{ csrf_token }}"
-    //     },
-    //     data: blob,
-    //     dataType: 'json',
-    //     contentType: false,
-    //     processData: false,
-    //     success: function(response) {
-    //         console.log(response.attempt); // do something with response data
-    //     },
-    //     error: function(response) {
-    //         console.log('Error:', response);
-    //     }
-    //     });
-    // });
-    // });
-
-    // add event listener for form submit
-    $('#file_form').submit(function(e) {
-        e.preventDefault(); // prevent default form submission behavior
-
-        // get file input element
-        const fileInput = $('#upload')[0];
-
-        // create FormData object
-        const formData = new FormData();
-
-        // append file to form data object
-        formData.append('file', fileInput.files[0]);
-
-        // create AJAX request
-        $.ajax({
-        type: 'POST',
-        url: '',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-        },
-        data: formData,
-        dataType: 'json',
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            const wrapper = document.querySelector(".wrapper_content_2_1");
-            wrapper.innerHTML += `<div class="content-block"><span><p class="time">${response.time}</p><p class="tasktime">${response.title}</p>-<p class="test">${response.error}</p></span></div>`;
-            console.log(response.attempt); // do something with response data
-        },
-        error: function(response) {
-            console.log('Error:', response);
-        }
-    });
-
-    // $('#textarea_form').submit(function(e) {
-    //     e.preventDefault(); // prevent default form submission behavior
-
-    //     // get file input element
-    //     const fileInput = $('#upload')[0];
-
-    //     // create FormData object
-    //     const formData = new FormData();
-
-    //     // append file to form data object
-    //     formData.append('file', fileInput.files[0]);
-
-    //     // create AJAX request
-    //     $.ajax({
-    //     type: 'POST',
-    //     url: '',
-    //     headers: {
-    //         'X-CSRFToken': '{{ csrf_token }}'
-    //     },
-    //     data: formData,
-    //     dataType: 'json',
-    //     contentType: false,
-    //     processData: false,
-    //     success: function(response) {
-    //         console.log(response.attempt); // do something with response data
-    //     },
-    //     error: function(response) {
-    //         console.log('Error:', response);
-    //     }
-    //     });
-    // });
-    });
-</script>
+</div>
 {% endblock %}

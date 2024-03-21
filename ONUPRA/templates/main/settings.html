@@ -164,7 +164,7 @@ function checkUsers(){
         form_nickname.classList.remove("invalid3");
         form_nickname.classList.remove("successfully");
         form_nickname.classList.remove("successfully1");
-        const usersPattern = /^[ёЁa-яА-Яa-zA-Z0-9!"#$%&')(*+,-./:;<=>?@^_`|]{3,20}$/;
+        const usersPattern = /^[a-яА-Яa-zA-Z0-9!"#$%&')(*+,-./:;<=>?@^_`|]{3,20}$/;
         if (username.value === ''){
             form_nickname.classList.remove("successfully");
             form_nickname.classList.remove("invalid");

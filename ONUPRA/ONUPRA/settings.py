@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 import mimetypes
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,14 +26,14 @@ mimetypes.add_type("text/javascript", ".js", True)
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-48cu=1(5ln)ydmpn-%%e)0@*u+wel*tmfhdn59uss&6^_1$gj7'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['a38e-188-234-162-188.ngrok-free.app', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '79.136.249.12']
 CSRF_TRUSTED_ORIGINS = [
-    'https://a38e-188-234-162-188.ngrok-free.app', 'https://127.0.0.1:8000']
+    'https://localhost', 'https://79.136.249.12']
 
 # Application definition
 
@@ -84,11 +88,7 @@ WSGI_APPLICATION = 'ONUPRA.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
-        # 'USER': 'ben',
-        # 'PASSWORD': 'gs&?us~mU2&&7jw0AfCI',
-        # 'HOST': 'localhost',
-        # 'PORT': '3306',
+        'NAME': 'db.sqlite3'
     }
 }
 
@@ -133,8 +133,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-CELERY_RESULT_BACKEND = 'django-db'
-
 # celery setting.
 CELERY_CACHE_BACKEND = 'default'
 
@@ -146,9 +144,16 @@ CACHES = {
     }
 }
 
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://127.0.0.1:6379/1',
+#     }
+# }
+
 CELERY_TIMEZONE = "Asia/Krasnoyarsk"
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # Static files (CSS, JavaScript, Images)
@@ -174,3 +179,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_FAILURE_VIEW = 'ONUPRA.urls.csrf_failure'
 
 SESSION_COOKIE_AGE = 31536000
+
+EMAIL_HOST = "smtp.mail.ru"
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+EMAIL_HOST_USER = 'onupra@inbox.ru'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'onupra@inbox.ru'

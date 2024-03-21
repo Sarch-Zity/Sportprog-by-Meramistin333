@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Команды{% endblock %}
+{% block style %}
+{% endblock %}
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+       <button type="submit" class="button_submit" name="join">Войти</button>
+</form>
+<form method="post">
+    {% csrf_token %}
+       <button type="submit" class="button_submit" name="leave">Выйти</button>
+</form>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" class="input_regestration" maxlength="128" name="title">
+    <button type="submit" class="button_submit" name="create">Выйти</button>
+</form>
+{% endblock %}
+{% block js %}<script src="{% static 'main/js/home.js' %}"></script>{% endblock %}

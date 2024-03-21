@@ -42,6 +42,25 @@ svg
     z-index: 4;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
+    height: auto;
+    transition: height 0.5s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    animation-name: oppacty;
+    animation-duration: 1s;
+}
+.code_confirmation
+{
+    border-radius: 20px;
+    width: 460px;
+    background-color: #fefefe50;
+    padding: 20px;
+    z-index: 4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -540,3 +559,169 @@ svg
 {
     margin-bottom: 20px;
 }
+/* 404 */
+.page_404_content{
+    border-radius: 20px;
+    width: 430px;
+    background-color: #fefefe50;
+    padding: 20px;
+    z-index: 4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    animation-name: oppacty;
+    animation-duration: 1s;
+}
+.page_404_span_warning
+{
+    font-size: 50px;
+    font-weight: 600;
+    color: #333;
+}
+.page_404_span
+{
+    font-size: 20px;
+    margin-top: 5px;
+    color: #333;
+    text-align: center;
+}
+.page_error
+{
+    font-size: 20px;
+    color: #333;
+}
+.page_404_url
+{
+    padding: 10px 10px 10px 10px;
+    color: #333;
+    text-decoration: none;
+    background-color: #fdfdfd8a;
+    margin-top: 20px;
+    border-radius: 6px;
+    width: 60%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.3s;
+}
+.page_404_url:hover{
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.333);
+    background-color: #fdfdfda2;
+}
+
+
+
+
+
+.slaider_content .stage_settings{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.stage-1{
+    opacity: 1;
+    visibility: visible;
+    width: 100%;
+    height: auto;
+}
+.stage-2{
+    opacity: 0;
+    visibility: hidden;
+    width: 0%;
+    height: auto;
+}
+.stage-3{
+    opacity: 0;
+    visibility: hidden;
+    width: 0%;
+    height: 0px;
+}
+.none{
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: -999px;
+}
+/* @keyframes animation_folding_reg_1{
+    to {
+        height: ;
+    }
+} */
+
+/* Для Chrome и Safari */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Для Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Для IE и Edge */
+input[type="number"]::-ms-clear {
+  display: none;
+}
+
+.loading {
+    font-weight: bold;
+    display:inline-block;
+    font-family: monospace;
+    font-size: 30px;
+    clip-path: inset(0 1.05ch 0 0);
+    color: #333;
+    animation: l 1s steps(3) infinite;
+}
+  
+@keyframes l {
+    to {
+        clip-path: inset(0 -0.35ch 0 0)
+    }
+}
+.pencil_edit
+{
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    color: rgb(113, 112, 112);
+    font-size: 17px;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0 }
+    100% { opacity: 1 }
+}
+
+.signin-mail__wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+    margin-top: 3%;
+  }
+  .signin-mail__wrap input {
+    width: 100%;
+    flex: 0 0 13%;
+    text-align: center;
+    min-height: 40px;
+    font-size: 1.0em;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.333);
+    outline: none;
+    border: 0;
+    border-radius: 13px;
+    background-color: #fdfdfd8a;
+  }
+  .signin-mail__wrap input:not(:first-child) {
+    margin-left: 3%;
+  }
