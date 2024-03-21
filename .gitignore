@@ -10,3 +10,4 @@ ngrok.exe
 start.txt
 DUMPFILE.sql
 DockerfileUnutu
+docker-compose.yml
