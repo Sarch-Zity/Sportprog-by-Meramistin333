@@ -29,11 +29,12 @@ mimetypes.add_type("text/javascript", ".js", True)
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
+SECURE_PROXY_SSL_HEADER = ("X-Forwarded-For", "https")
 ALLOWED_HOSTS = ['localhost', '79.136.249.12']
 CSRF_TRUSTED_ORIGINS = [
-    'https://localhost', 'https://79.136.249.12']
+    'https://localhost', 'http://79.136.249.12:25565', 'https://79.136.249.12']
 
 # Application definition
 

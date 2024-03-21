@@ -17,6 +17,7 @@ from django.views.generic import DetailView, UpdateView
 from django.db.models import Max
 from django.core.mail import send_mail
 from django.core.cache import cache
+from django.contrib.auth import logout
 import random
 
 import subprocess
@@ -163,6 +164,7 @@ def Profile(request, username):
     user = CustomUser.objects.get(username=username)
     # если решили обновить аватарку
     if request.method == 'POST' and request.user.is_authenticated:
+        print(request.POST)
         if 'reset image' in request.POST:
             request.user.image = 'default.png'
             request.user.save()
@@ -729,7 +731,7 @@ def Registration(request):
         form = CustomUserCreationFrom(request.POST)
         if "start_registration" in request.POST:
             email = request.POST.get('email')
-            tempcode = random.randint(0, 1000000)
+            tempcode = random.randint(100000, 999999)
             cache.set(email, tempcode)
             send_mail(
             "Здравствуйте",
@@ -738,13 +740,11 @@ def Registration(request):
             [email],
             fail_silently=True,
             )
+            return JsonResponse({'successfully': True})
         elif "end_registration" in request.POST:
             email = request.POST.get('email')
             tempcode = request.POST.get('tempcode')
             a = cache.get(email)
-            print(f"email:{email}")
-            print(f"tempcode:{tempcode}")
-            print(f"a:{a}")
             if str(a) == tempcode:
                 cache.delete("email")
                 print("Everything is okay")
@@ -761,8 +761,7 @@ def Registration(request):
                     login(request, formsv)
                     return redirect('you')
             else:
-                print("Oops")
-                return HttpResponse(status=200)
+                return redirect('signup')
 
     content = {
         'error_username': error_username,
@@ -789,6 +788,10 @@ def Authentication(request):
             remember_me = form.cleaned_data['remember_me']
             return redirect('you')
     return render(request, 'main/login.html')
+
+def Logout(request):
+    logout(request)
+    return redirect('home')
 
 def PartyRequest(request, id):
     PartyReq = Party.objects.get(id=id)

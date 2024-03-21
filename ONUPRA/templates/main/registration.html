@@ -89,22 +89,26 @@ href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
                         {% csrf_token %}
                         <input type="text" class="input_regestration users none "  maxlength="32" name="username" id="username_const">
                         <input type="password" class="input_regestration password none" maxlength="128" name="password1" id="password_const">
+                        <input type="password" class="input_regestration password none" maxlength="128" name="password2" id="password_const1">
+                        <input type="email" class="input_regestration email none" maxlength="254" name="email" id="email_const">
                         <div class={% if error_email %}"container_input_form field email-field invalid"{% else %}"container_input_form field email-field"{% endif %}>
                             <span class="container_input_form_text">Введите ваш почтовый адрес</span>
                             <i class='bx bx-pencil pencil_edit'></i>
-                            <input type="text" class="input_regestration email" maxlength="254" name="email" id="email_const" disabled="disabled" value="---">
+                            <input type="email" class="input_regestration email" maxlength="254" name="email" id="email_const1" disabled="disabled">
                         </div>
                         <div class="container_input_form field confirm-password">
                             <span class="container_input_form_text">Ввести Код</span>
                             <!-- <input type="number" class="input_regestration" name="tempcode" maxlength="6" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"> -->
-                            <div class="signin-mail__wrap">
-                                <input class="mail-input" autocomplete="off" type="tel" pattern="[\d]*" maxlength="1" name="pincode-1" placeholder=" ">
+                                <input class="input_regestration" type="number" maxlength="6" name="tempcode" placeholder=" ">
+                                <!-- <input class="mail-input" autocomplete="off" type="tel" pattern="[\d]*" maxlength="1" name="pincode-1" placeholder=" ">
                                 <input class="mail-input" autocomplete="off" type="tel" pattern="[\d]*" maxlength="1" name="pincode-2" placeholder=" ">
                                 <input class="mail-input" autocomplete="off" type="tel" pattern="[\d]*" maxlength="1" name="pincode-3" placeholder=" ">
                                 <input class="mail-input" autocomplete="off" type="tel" pattern="[\d]*" maxlength="1" name="pincode-4" placeholder=" ">
                                 <input class="mail-input" autocomplete="off" type="tel" pattern="[\d]*" maxlength="1" name="pincode-5" placeholder=" ">
-                                <input class="mail-input" autocomplete="off" type="tel" pattern="[\d]*" maxlength="1" name="pincode-6" placeholder=" ">
-                            </div>
+                                <input class="mail-input" autocomplete="off" type="tel" pattern="[\d]*" maxlength="1" name="pincode-6" placeholder=" "> -->
+                                <div class="submit_input">
+                                    <button class="button_submit" name="end_registration" id="button_form">Продолжить</button>
+                                </div>
                         </div>
                     </form>
                 </div>
