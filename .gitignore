@@ -1,8 +1,11 @@
-
+ONUPRA/.env
+ONUPRA/db.sqlite3
+ONUPRA/Dockerfile
 ONUPRA/main/migrations
-ONUPRA/main/__pycache__
-ONUPRA/ONUPRA/__pycache__
+ONUPRA/main/pycache
+ONUPRA/ONUPRA/pycache
 ONUPRA/static
 ngrok.exe
 start.txt
 DUMPFILE.sql
+DockerfileUnutu

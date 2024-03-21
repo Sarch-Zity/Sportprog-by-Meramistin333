@@ -70,22 +70,22 @@ function pagination(event) {
 }
 let inputBox = document.querySelector(".search_container"),
             searchIcon = document.querySelector(".icon_"),
-            closeIcon = document.querySelector(".bx-x");
+            closeIcon = document.querySelector(".x_close");
+console.log(closeIcon)
+searchIcon.addEventListener("click", () => inputBox.classList.add("open"));
+closeIcon.addEventListener("click", () => {
+    inputBox.classList.remove("open");
+    document.querySelector('#elastik').value = ""
+    let elastikItems = document.querySelectorAll('.elastik tr');
+    elastikItems.forEach(function (elem) {
+            let elem_itemms = elem.querySelector('.position__user')
+            elem.style.display = "none";
 
-        searchIcon.addEventListener("click", () => inputBox.classList.add("open"));
-        closeIcon.addEventListener("click", () => {
-            inputBox.classList.remove("open");
-            document.querySelector('#elastik').value = ""
-            let elastikItems = document.querySelectorAll('.elastik tr');
-            elastikItems.forEach(function (elem) {
-                    let elem_itemms = elem.querySelector('.position__user')
-                    elem.style.display = "none";
-
-                    elem_itemms.innerHTML = elem_itemms.innerText;
-                });
-                otobrachenie();
-                create_button();
+            elem_itemms.innerHTML = elem_itemms.innerText;
         });
+        otobrachenie();
+        create_button();
+});
 
         document.querySelector('#elastik').oninput = function () {
             let val = this.value.trim();

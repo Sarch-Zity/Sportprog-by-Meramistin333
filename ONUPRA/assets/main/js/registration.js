@@ -196,6 +196,386 @@ function validation_check()
 validation_check();
 
 
+$(document).ready(function(){
+
+
+
+
+        $.ajaxSetup({
+            type: 'POST',
+            url: '',
+            dataType: 'json',
+            
+            headers: {
+                'X-CSRFToken': $('meta[name="csrf-token"]').attr('content')
+            },
+        });
+        console.log($('meta[name="csrf-token"]').attr('content'));
+
+        $('.pencil_edit').click(function(e) {
+            $('.stage-3').css({'opacity': '0', 'visibility' : 'hidden', 'width': '0%', 'height' : '0px'});
+            $('.stage-2').css({'opacity': '1', 'visibility' : 'visible', 'width': '100%', 'height' : 'auto'});
+             
+            $.ajax({
+                data: {
+                    'edit_reg': true,
+                },
+                success: function(response) {
+                        $('.stage-2').css({'opacity': '0', 'visibility' : 'hidden', 'width': '0%', 'height' : '0px'});
+                        $('.stage-1').css({'opacity': '1', 'visibility' : 'visible', 'width': '100%', 'height' : 'auto'});
+                    },
+            });
+        });
+        
+        $('#reg_form').submit(function(e) {
+            e.preventDefault();
+
+            $('.stage-1').css({'opacity': '0', 'visibility' : 'hidden', 'width': '0%', 'height' : '0px'});
+            $('.stage-2').css({'opacity': '1', 'visibility' : 'visible', 'width': '100%', 'height' : 'auto'});
+            
+
+            const username = $('#username').val();
+            const email = $('#email').val();
+            const password = $('#password').val();
+
+            // Настройки для поодтверждения кода 
+            
+                $.ajax({
+                   
+                    data: {
+                        'username': username,
+                        'email': email,
+                        'password1': password,
+                        'start_registration': true,
+                    },
+                    
+                    success: function(response) {
+                            $('.stage-2').css({'opacity': '0', 'visibility' : 'hidden', 'width': '0%', 'height' : '0px'});
+                            $('.stage-3').css({'opacity': '1', 'visibility' : 'visible', 'width': '100%', 'height' : 'auto'});
+                            $('#email_const').val(email);
+                            $('#username_const').val(username);
+                            $('#password_const').val(password);
+                            var _pincode = []
+                                _req = null;
+                            var $form = $('#check_code');
+                            var $group = $form.find('.signin-mail__wrap');
+                            var $inputs = $group.find(':input');
+
+                            var $first = $form.find('[name=pincode-1]')
+                                , $second = $form.find('[name=pincode-2]')
+                                , $third = $form.find('[name=pincode-3]')
+                                , $fourth = $form.find('[name=pincode-4]')
+                                , $fifth = $form.find('[name=pincode-5]')
+                                , $sixth = $form.find('[name=pincode-6]');
+                            $inputs
+                                .on('keyup', function(event) {
+                                    var code = event.keyCode || event.which;
+                                
+                                    if (code === 9 && ! event.shiftKey) {
+
+                                    event.preventDefault();
+
+                                    $('.button--primary').focus();
+                                    }
+                                })
+                                .inputmask({
+                                    mask: '9',
+                                    placeholder: '',
+                                    showMaskOnHover: false,
+                                    showMaskOnFocus: false,
+                                    clearIncomplete: true,
+                                    onincomplete: function() {
+                                    },
+                                    oncleared: function() {
+                                    var index = $inputs.index(this)
+                                        , prev = index - 1
+                                        , next = index + 1;
+                                    
+                                    if (prev >= 0) {
+                                        $inputs.eq(prev).val('');
+                                        $inputs.eq(prev).focus();
+                                        _pincode.splice(-1, 1)
+                                    } else {
+                                        return false;
+                                    }
+                                    },
+                                    onKeyValidation: function(key, result) {
+                                    var index = $inputs.index(this)
+                                        , prev = index - 1
+                                        , next = index + 1;
+                                    
+                                    if (prev < 6) {
+                                        $inputs.eq(next).focus();
+                                    }
+
+                                    },
+                                    onBeforePaste: function (data, opts) {
+                                    $.each(data.split(''), function(index, value) {
+                                        $inputs.eq(index).val(value);
+                                        _pincode.push($inputs.eq(index).val(value));
+                                    });
+                                    console.log(_pincode);
+                                    $('[name=pincode-6]').focus();
+
+                                    if (_pincode.length !== 6) {
+                                        _pincode = [];
+                                        
+                                        $inputs
+                                        .each(function() {
+                                            $(this).val('');
+                                        });
+
+                                        $('[name=pincode-1]').focus();
+                                    } else {
+                                        $inputs
+                                        .each(function() {
+                                            $(this).prop('disabled', true);
+                                        });
+                            
+                                        $.ajax({
+                                        data: {
+                                            'username': username,
+                                            'email': email,
+                                            'password1': password,
+                                            'end_registration': true,
+                                            'code': _pincode.join(''),
+                                        }
+                                        }) }
+                                    },
+                                });
+                                
+
+                                $('[name=pincode-1]')
+                                .on('focus', function(event) {
+                                })
+                                .inputmask({
+                                    oncomplete: function() {
+                                    _pincode.push($(this).val());
+                                    $('[name=pincode-2]').focus();
+                                    }
+                                });
+                                
+                                $('[name=pincode-2]')
+                                .on('focus', function(event) {
+                                    if ( ! ($first.val().trim() !== '')) {
+                                    event.preventDefault();
+                                    
+                                    _pincode = [];
+                                    
+                                    $inputs
+                                        .each(function() {
+                                        $(this).val('');
+                                    });
+                                    
+                                    $first.focus();
+                                    }
+                                })
+                                .inputmask({
+                                    oncomplete: function() {
+                                    _pincode.push($(this).val());
+                                    
+                                    $('[name=pincode-3]').focus();
+                                    }
+                                });
+                                // third field
+                                $('[name=pincode-3]')
+                                .on('focus', function(event) {
+                                    if ( ! ($first.val().trim() !== '' &&
+                                        $second.val().trim() !== '')) {
+                                    // prevent default
+                                    event.preventDefault();
+                                    
+                                    // reset pincode
+                                    _pincode = [];
+                                    
+                                    // handle each field
+                                    $inputs
+                                        .each(function() {
+                                        // clear each field
+                                        $(this).val('');
+                                    });
+                                    
+                                    // focus to first field
+                                    $first.focus();
+                                    }
+                                })
+                                .inputmask({
+                                    oncomplete: function() {
+                                    // add third character
+                                    _pincode.push($(this).val());
+                                    
+                                    // focus to fourth field
+                                    $('[name=pincode-4]').focus();
+                                    
+                                    }
+                                });
+
+                                // fourth field
+                                $('[name=pincode-4]')
+                                .on('focus', function(event) {
+                                    if ( ! ($first.val().trim() !== '' &&
+                                        $second.val().trim() !== '' &&
+                                        $third.val().trim() !== '')) {
+                                    // prevent default
+                                    event.preventDefault();
+                                    
+                                    // reset pincode
+                                    _pincode = [];
+                                    
+                                    // handle each field
+                                    $inputs
+                                        .each(function() {
+                                        // clear each field
+                                        $(this).val('');
+                                    });
+                                    
+                                    // focus to first field
+                                    $first.focus();
+                                    }
+                                })
+                                .inputmask({
+                                    oncomplete: function() {
+                                    // add fo fourth character
+                                    _pincode.push($(this).val());
+                                    
+                                    // focus to fifth field
+                                    $('[name=pincode-5]').focus();
+                                    }
+                                });
+
+                                // fifth field
+                                $('[name=pincode-5]')
+                                .on('focus', function(event) {
+                                    if ( ! ($first.val().trim() !== '' &&
+                                        $second.val().trim() !== '' &&
+                                        $third.val().trim() !== '' &&
+                                        $fourth.val().trim() !== '')) {
+                                    // prevent default
+                                    event.preventDefault();
+                                    
+                                    // reset pincode
+                                    _pincode = [];
+                                    
+                                    // handle each field
+                                    $inputs
+                                        .each(function() {
+                                        // clear each field
+                                        $(this).val('');
+                                    });
+                                    
+                                    // focus to first field
+                                    $first.focus();
+                                    }
+                                })
+                                .inputmask({
+                                    oncomplete: function() {
+                                    // add fifth character
+                                    _pincode.push($(this).val());
+                                    
+                                    // focus to sixth field
+                                    $('[name=pincode-6]').focus();
+                                
+                                    }
+                                });
+
+                                // sixth field
+                                $('[name=pincode-6]')
+                                .on('focus', function(event) {
+                                    if ( ! ($first.val().trim() !== '' &&
+                                        $second.val().trim() !== '' &&
+                                        $third.val().trim() !== '' &&
+                                        $fourth.val().trim() !== '' &&
+                                        $fifth.val().trim() !== '')) {
+                                    // prevent default
+                                    event.preventDefault();
+                                    
+                                    // reset pincode
+                                    _pincode = [];
+                                    
+                                    // handle each field
+                                    $inputs
+                                        .each(function() {
+                                        // clear each field
+                                        $(this).val('');
+                                    });
+                                    
+                                    // focus to first field
+                                    $first.focus();
+                                    }
+
+                                })
+                                .inputmask({
+                                    oncomplete: function() {
+                                      // add sixth character
+                                      _pincode.push($(this).val());
+                                      
+                                      // pin length not equal to six characters
+                                      if (_pincode.length !== 6) {
+                                        // reset pin
+                                        _pincode = [];
+                                        
+                                        // handle each field
+                                        $inputs
+                                          .each(function() {
+                                            // clear each field
+                                            $(this).val('');
+                                          });
+                                        
+                                        // focus to first field
+                                        $('[name=pincode-1]').focus();
+                                      } else {
+                                        // handle each field
+                                        $inputs.each(function() {
+                                          // disable field
+                                          $(this).prop('disabled', true);
+                                        });
+                              
+                                        // send request
+                                        $.ajax({
+                                          data: {
+                                            'username': username,
+                                            'email': email,
+                                            'password1': password,
+                                            'end_registration': true,
+                                            'code': _pincode.join(''),
+                                          }
+                                        }) }
+                                    }});
+                    },
+                    error: function(response) {
+                        console.log('Error:', response);
+                    }
+                });
+        });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // form.addEventListener("submit", (e) => {
 //     e.preventDefault();
 //     checkEmail();

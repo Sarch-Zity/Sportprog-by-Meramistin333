@@ -44,6 +44,10 @@
     margin-top: 10px;
     border-radius: 6px;
 }
+.flex-content-d
+{
+
+}
 .wrapper_content_2_1 span{
     font-size: 20px;
     color: #000;
@@ -239,9 +243,9 @@
     transition: 0.4s;
     position: absolute;
     top: 91%;
-    right: 1%;
+    right: 3%;
     border: none;
-    width: 350px; 
+    width: 35%; 
     background-color: #C6C6C6;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); 
     border-radius: 7px; 
@@ -276,7 +280,7 @@
     color: #131314;
 }
 
-.content
+.content_hidden
 {
     opacity: 0;
     visibility: hidden;
@@ -284,6 +288,10 @@
     position: absolute;
     top: -1px;
     width: 100%;
+}
+.relative_content
+{
+    position: relative;
 }
 .content--active
 {
@@ -416,3 +424,10 @@
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
 }
+.none{
+    position: absolute;
+    top: -1px;
+    visibility: hidden;
+    opacity: 0;
+}
+

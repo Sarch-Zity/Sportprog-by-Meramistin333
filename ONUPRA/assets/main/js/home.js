@@ -1,12 +1,13 @@
-const accordionContent = document.querySelectorAll(".block");
+const blockV = document.querySelectorAll(".block");
+console.log(blockV);
 
-        accordionContent.forEach((item, index) => {
+blockV.forEach((item, index) => {
             let header = item.querySelector("header");
             header.addEventListener("click", () =>{
                 item.classList.toggle("open");
         
                 let description = item.querySelector(".text-1");
-                if(item.classList.contains("open")){
+                if(C.classList.contains("open")){
                     description.style.height = `${description.scrollHeight + 15}px`; //scrollHeight property returns the height of an element including padding , but excluding borders, scrollbar or margin
                     item.querySelector("i").classList.replace("bx-rotate-270", "bx-rotate-90");
                 }else{
@@ -18,7 +19,7 @@ const accordionContent = document.querySelectorAll(".block");
         })
         
         function removeOpen(index1){
-            accordionContent.forEach((item2, index2) => {
+            blockV.forEach((item2, index2) => {
                 if(index1 != index2){
                     item2.classList.remove("open");
         
