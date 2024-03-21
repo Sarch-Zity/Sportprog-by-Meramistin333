@@ -6,12 +6,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('test/', views.testfunc, name='test'),
-    path('', views.Index, name='home'),
+    # path('test/', views.testfunc, name='test'),
+    path('home/', views.Index, name='home'),
     path('you/', views.Account_REDIR, name='you'),
     path('signup/', views.Registration, name='signup'),
     path('login/', views.Authentication, name='login'),
-    path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
+    path('logout/', views.Logout, name='logout'),
     path('settings/', views.Settings, name='edit'),
     path('top/', views.Top, name='top'),
     path('competition/', views.Competitions, name='competitions'),
