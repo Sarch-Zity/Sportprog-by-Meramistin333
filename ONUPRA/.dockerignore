@@ -1,0 +1,6 @@
+
+/main/migrations
+/main/__pycache__
+/ONUPRA/__pycache__
+/static
+db.sqlite3

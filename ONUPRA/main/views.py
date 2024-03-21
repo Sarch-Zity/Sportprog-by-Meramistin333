@@ -9,9 +9,9 @@ from django.utils.timezone import localtime, now, timedelta, localdate, get_defa
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
-from .models import CustomUser, Competition, Task, Attempt, File, Article, ScorePoint, Party
+from .models import CustomUser, Competition, Task, Attempt, ScorePoint, Party
 from django.contrib.auth.hashers import check_password
-from .forms import CustomUserCreationFrom, PasswordChangeForm, CustomUserImageChangeFrom, CustomUserUsernameChangeFrom, ArticleForm, FileForm, CustomAuthenticationForm
+from .forms import CustomUserCreationFrom, PasswordChangeForm, CustomUserImageChangeFrom, CustomUserUsernameChangeFrom, CustomAuthenticationForm
 from django.contrib.auth import login, logout
 from django.views.generic import DetailView, UpdateView
 from django.db.models import Max
@@ -175,22 +175,22 @@ def Profile(request, username):
             if form.is_valid():
                 form.save()
                 return redirect('account', request.user.username)
-        elif 'new post' in request.POST:
-            form = ArticleForm(request.POST)
-            form2 = FileForm(request.POST, request.FILES)
-            if form.is_valid():
-                if form2.is_valid():
-                    article = form.save(commit=False)
-                    article.user = request.user
-                    article.save()
-                    form2.save(commit=False)
-                    for i in request.FILES.getlist('files'):
-                        File.objects.create(files=i, article=article)
-                else:
-                    article = form.save(commit=False)
-                    article.user = request.user
-                    article.save()
-                return redirect('account', request.user.username)
+        # elif 'new post' in request.POST:
+        #     form = ArticleForm(request.POST)
+        #     form2 = FileForm(request.POST, request.FILES)
+        #     if form.is_valid():
+        #         if form2.is_valid():
+        #             article = form.save(commit=False)
+        #             article.user = request.user
+        #             article.save()
+        #             form2.save(commit=False)
+        #             for i in request.FILES.getlist('files'):
+        #                 File.objects.create(files=i, article=article)
+        #         else:
+        #             article = form.save(commit=False)
+        #             article.user = request.user
+        #             article.save()
+        #         return redirect('account', request.user.username)
         elif "create party" in request.POST:
             NewParty = Party(title = request.POST.get("title"), leader = request.user)
             NewParty.save()
@@ -202,7 +202,7 @@ def Profile(request, username):
                 PartyLeave.delete()
     content = {
         'user': user,
-        'articles': Article.objects.filter(user=user),
+        # 'articles': Article.objects.filter(user=user),
         'point': ScorePoint.objects.filter(link_user=user).order_by("date"),
         "partys": Party.objects.filter(members=user)
     }

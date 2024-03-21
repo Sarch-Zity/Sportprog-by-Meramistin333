@@ -81,21 +81,21 @@ class Attempt(models.Model):
     def __str__(self):
         return str(self.points)
 
-class Article(models.Model):
-    text = models.CharField('О чем вы хотите рассказать?', max_length=500, blank=True, null=True)
-    creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+# class Article(models.Model):
+#     text = models.CharField('О чем вы хотите рассказать?', max_length=500, blank=True, null=True)
+#     creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
+#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     
-    def __str__(self):
-        return str(self.user) + ' at ' + str(self.creation_date) + ' ' + str(self.text)[0:9]
+#     def __str__(self):
+#         return str(self.user) + ' at ' + str(self.creation_date) + ' ' + str(self.text)[0:9]
 
-class File(models.Model):
-    creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
-    article = models.ForeignKey(Article, related_name='files', on_delete=models.CASCADE)
-    files = models.FileField(upload_to='article_files/', null=True)
+# class File(models.Model):
+#     creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
+#     article = models.ForeignKey(Article, related_name='files', on_delete=models.CASCADE)
+#     files = models.FileField(upload_to='article_files/', null=True)
     
-    def __str__(self):
-        return str(self.creation_date) + ' and ' + str(self.article)
+#     def __str__(self):
+#         return str(self.creation_date) + ' and ' + str(self.article)
 
 class Party(models.Model):
     creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
