@@ -32,8 +32,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = False
 
 SECURE_PROXY_SSL_HEADER = ("X-Forwarded-For", "https")
-ALLOWED_HOSTS = ['codemind.ru']
-CSRF_TRUSTED_ORIGINS = ['https://codemind.ru', 'http://codemind.ru']
+ALLOWED_HOSTS = ['localhost', 'codemind.ru']
+CSRF_TRUSTED_ORIGINS = ['https://codemind.ru', 'http://codemind.ru', 'http://localhost']
 
 # Application definition
 
@@ -154,7 +154,6 @@ CACHES = {
 CELERY_TIMEZONE = "Asia/Krasnoyarsk"
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/

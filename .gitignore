@@ -14,3 +14,6 @@ docker-compose.yml
 nginx.conf
 /ONUPRA/main/__pycache__
 /ONUPRA/ONUPRA/__pycache__
+ONUPRA/celerybeat-schedule.dir
+ONUPRA/celerybeat-schedule.dat
+ONUPRA/celerybeat-schedule.bak
