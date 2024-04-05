@@ -32,9 +32,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = False
 
 SECURE_PROXY_SSL_HEADER = ("X-Forwarded-For", "https")
-ALLOWED_HOSTS = ['81.200.146.18', 'codemind.ru']
-CSRF_TRUSTED_ORIGINS = [
-    'https://81.200.146.18', 'http://81.200.146.18', 'https://codemind.ru', 'http://codemind.ru']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS')
 
 # Application definition
 
