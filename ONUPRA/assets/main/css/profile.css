@@ -99,7 +99,7 @@ body{
 }
 .schedule_block span, .create_fast_content span{
     font-size: 20px;
-    color: #333;
+    color: #2A2A2A;
 }
 .input_fast
 {
@@ -118,7 +118,7 @@ body{
 .wrapper_content_profile
 {
     padding: 20px;
-    background: linear-gradient(#C3D3D2 50%, #ffffff 50%);
+    background: linear-gradient(#2A2A2A 50%, #ffffff 50%);
     display: flex;
     width: 100%;
     overflow: hidden;
@@ -183,7 +183,7 @@ body{
 }
 .block_email span{
     font-size: 23px;
-    color: #333;
+    color: #2A2A2A;
 }
 .input_block
 {
@@ -194,7 +194,8 @@ body{
     display: flex;
     font-size: 32px;
     text-align: center;
-    background-color: #C3D3D2;
+    background-color: #2A2A2A;
+    color: #fff;
     border-radius: 7px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     margin-right: 10px;
@@ -206,7 +207,7 @@ body{
 .bx-envelope
 {
     font-size: 23px;
-    color: #333;
+    color: #2A2A2A;
 }
 .wrapper_content_profile_
 {
@@ -215,12 +216,12 @@ body{
 }
 .rang
 {
-    background: rgba(196, 199, 227, 0.6);
+    background: #4651E5;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 7px;
     padding: 3px 14px 3px 14px;
     margin-right: 10px;
-    color: #333;
+    color: #fff;
 }
 .input_block input:focus
 {
@@ -338,7 +339,7 @@ body{
     font-size: 25px;
     margin-right: 5px;
     cursor: pointer;
-    color: #333;
+    color: #2A2A2A;
     margin-bottom: 7px;
 }
 .bx-paperclip
@@ -347,7 +348,7 @@ body{
     font-size: 25px;
     margin-right: 5px;
     cursor: pointer;
-    color: #333;
+    color: #2A2A2A;
     transform: rotate(340deg);
 }
 .bx-photo-album
@@ -355,7 +356,7 @@ body{
     margin-top: 7px;
     font-size: 25px;
     cursor: pointer;
-    color: #333;
+    color: #2A2A2A;
 }
 .submit_post{
     width: 100px;
@@ -377,7 +378,7 @@ body{
 .icon_list
 {
     padding: 13px;
-    background-color: #C3D3D2;
+    background-color: #2A2A2A;
     border-radius: 7px;
     margin-right: 5px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -391,8 +392,9 @@ body{
 .input_block_div
 {
     font-size: 34px;
-    background-color: #C3D3D2;
+    background-color: #2A2A2A;
     border-radius: 7px;
+    color: #fff;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     margin-right: 10px;
     border: 0;
@@ -455,7 +457,7 @@ body{
 .text_fast
 {
     font-size: 20px;
-    color: #333;
+    color: #2A2A2A;
     margin-top: 5px;
     padding: 0px 15px 15px 17px;
 }
@@ -483,7 +485,7 @@ body{
     margin-top: 10px;
     border-radius: 6px;
     padding: 10px 15px 10px 15px;
-    background-color: #C3D3D2;
+    background-color: #2A2A2A;
     height: 38px;
     font-size: 18px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -555,12 +557,12 @@ body{
     right: 10px;
     cursor: pointer;
     font-size: 20px;
-    color: #333;
+    color: #2A2A2A;
 }
 .img_change span
 {
     font-size: 23px;
-    color: #333;
+    color: #2A2A2A;
 }
 .img_change_block
 {
@@ -614,8 +616,8 @@ body{
     width: 300px;
     height: 50px;
     font-size: 17px;
-    border: 2px solid #91BFBC;
-    background-color: #91BFBC;
+    border: 2px solid #4651E5;
+    background-color: #4651E5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -645,7 +647,7 @@ body{
     overflow: hidden;
     position: relative;
     border-radius: 8px;
-    box-shadow: 0px 4px 4px #91bfbca8;
+    box-shadow: 0px 4px 4px #4651E5a8;
 }
 .save_photo
 {
@@ -671,7 +673,7 @@ body{
     padding: 16px;
     width: 100%;
     position: relative;
-    background-color: #C3D3D2;
+    background-color: #2A2A2A;
     color: #fff;
     font-size: 20px;
     border-radius: 7px 7px 0px 0px;
@@ -699,8 +701,8 @@ body{
     width: 100%;
     height: 30px;
     font-size: 15px;
-    border: 2px solid #C3D3D2;
-    background-color: #C3D3D2;
+    border: 2px solid #2A2A2A;
+    background-color: #2A2A2A;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -727,7 +729,7 @@ body{
     justify-content: center;
     flex-direction: column;
     font-size: 18px;
-    color: #333;
+    color: #2A2A2A;
 }
 .block_friend
 {
@@ -780,8 +782,8 @@ body{
     height: 30px;
     font-size: 14px;
     padding: 7px;
-    border: 2px solid #C3D3D2;
-    background-color: #C3D3D2;
+    border: 2px solid #2A2A2A;
+    background-color: #2A2A2A;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -848,7 +850,7 @@ body{
 .result{
     position: absolute;
     display: none;
-    color: #333;
+    color: #2A2A2A;
     margin-top: 3px;
 }
 
@@ -877,7 +879,7 @@ body{
 .fast pre
 {
     margin-top: 10px;
-    color: #333;
+    color: #2A2A2A;
     font-size: 20px;
 }
 #image-container{

@@ -12,3 +12,5 @@ DUMPFILE.sql
 DockerfileUnutu
 docker-compose.yml
 nginx.conf
+/ONUPRA/main/__pycache__
+/ONUPRA/ONUPRA/__pycache__

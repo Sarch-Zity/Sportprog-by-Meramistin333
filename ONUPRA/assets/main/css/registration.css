@@ -6,6 +6,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: 'Jost';
+    color: #2A2A2A;
 }
 body{
     height: 100vh;
@@ -13,6 +14,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #4651E5;
 }
 .bx-arrow-back
 {
@@ -22,11 +24,11 @@ body{
     font-size: 28px;
     z-index: 3;
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
     cursor: pointer;
-    color: #333;
+    color: #2A2A2A;
 }
 svg
 {
@@ -35,9 +37,9 @@ svg
 }
 .registration
 {
-    border-radius: 20px;
+    border-radius: 10px;
     width: 460px;
-    background-color: #fefefe50;
+    background-color: #fff;
     padding: 20px;
     z-index: 4;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -100,14 +102,15 @@ svg
 }
 .input_regestration
 {
-    background-color: #fdfdfd8a;
+    background-color: rgb(253, 253, 253);
     border-radius: 10px;
     width: 420px;
     padding: 7px;
+    color: #2A2A2A;
     margin-top: 8px;
     font-size: 14px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border: 0;
+    border: 2px solid #2A2A2A;
 }
 .form_nickname
 {
@@ -139,14 +142,12 @@ svg
     border: 0;
 }
 .input_regestration:focus, .input_regestration_user:focus{
-    border: none;
-    outline: none;
+
 }
 .header_span
 {
     font-size: 24px;
     margin-bottom: 5px;
-    color: #333;
 }
 .container_input_form
 {
@@ -165,7 +166,7 @@ svg
 .button_submit
 {
     cursor: pointer;
-    border: 0;
+    border: 2px solid #2A2A2A;
     border-radius: 10px;
     padding: 10px;
     font-size: 17px;
@@ -265,7 +266,7 @@ svg
 .exit a
 {
     text-decoration: none;
-    color: #5f7776;
+    color: #4651E5;
 }
 
 .button_submit_input
@@ -273,7 +274,7 @@ svg
     cursor: pointer;
     border-radius: 10px;
     padding: 10px;
-    border: 1px solid rgba(217, 49, 37, 0);
+    border: 2px solid #2A2A2A;
     font-size: 17px;
     margin-top: 18px;
     width: 300px;
@@ -309,7 +310,7 @@ svg
     position: absolute;
     top: 40px;
     right: 10px;
-    color: rgb(113, 112, 112);
+    color: #2A2A2A;
     font-size: 17px;
     cursor: pointer;
 }
@@ -369,14 +370,14 @@ svg
     border: 0;
     font-size: 14px;
     cursor: pointer;
-    background-color: #91BFBC;
-    box-shadow: 0px 4px 4px #91bfbc9b;
+    background-color: #4651E5;
+    box-shadow: 0px 4px 4px #4651E59b;
     transition: 0.3s;
     color: #fff;
 }
 .delete_account:hover
 {
-    box-shadow: 4px 6px 8px #91bfbc9b;
+    box-shadow: 4px 6px 8px #4651E59b;
 }
 .line
 {
@@ -445,7 +446,7 @@ svg
     right: 10px;
     cursor: pointer;
     font-size: 20px;
-    color: #333;
+    color: #2A2A2A;
 }
 
 .popup button {
@@ -458,9 +459,9 @@ svg
     margin-top: 20px;
     border-radius: 8px;
     font-size: 14px;
-    border: 2px solid #91BFBC;
-    background-color: #91BFBC;
-    box-shadow: 0px 4px 4px #91bfbc9b;
+    border: 2px solid #4651E5;
+    background-color: #4651E5;
+    box-shadow: 0px 4px 4px #4651e54b;
     cursor: pointer;
     transition: 0.5s all;
 }
@@ -580,24 +581,24 @@ svg
 {
     font-size: 50px;
     font-weight: 600;
-    color: #333;
+    color: #2A2A2A;
 }
 .page_404_span
 {
     font-size: 20px;
     margin-top: 5px;
-    color: #333;
+    color: #2A2A2A;
     text-align: center;
 }
 .page_error
 {
     font-size: 20px;
-    color: #333;
+    color: #2A2A2A;
 }
 .page_404_url
 {
     padding: 10px 10px 10px 10px;
-    color: #333;
+    color: #2A2A2A;
     text-decoration: none;
     background-color: #fdfdfd8a;
     margin-top: 20px;
@@ -679,7 +680,7 @@ input[type="number"]::-ms-clear {
     font-family: monospace;
     font-size: 30px;
     clip-path: inset(0 1.05ch 0 0);
-    color: #333;
+    color: #2A2A2A;
     animation: l 1s steps(3) infinite;
 }
   

@@ -9,7 +9,7 @@
 a 
 {
     text-decoration: none;
-    color: #333;
+    color: #2A2A2A;
 }
 #consolas-font
 {
@@ -29,11 +29,11 @@ pre {
 }
 :root{
     /* ===== MAIN COLORS WHITE ===== */
-    --background-color: #91BFBC;
+    --background-color: #4651E5;
     --section-color: #FFF;
-    --text-basic-color: #333;
-    --text-auxiliary-color: #868686;
-    --sidebar-hover-link-color: #91BFBC;
+    --text-basic-color: #2A2A2A;
+    --text-auxiliary-color: #2A2A2A;
+    --sidebar-hover-link-color: #4651E5;
     --text-hover-link-color: #FFF;
     --blocked-color: #d7d8d8;
     --shadow-box-color: rgba(0, 0, 0, 0.25);
@@ -42,20 +42,20 @@ pre {
     --competitev-style-color: ; 
     --post-color: #ECECEC;
     /* registration */
-    --body-login-color: #fefefe50;
-    --input-login-color: #fdfdfd8a;
-    --login-text-color: #5f7776; 
+    --body-login-color: #2A2A2A;
+    --input-login-color: #2A2A2A;
+    --login-text-color: #2A2A2A; 
     --setings-module-color: rgba(255, 255, 255, 0.419);
     
 
 
     /* ===== Colors ===== */
-    --body-color: #91BFBC;
+    --body-color: #4651E5;
     --sidebar-color: #FFF;
     --primary-color: #e21b1b;
     --primary-color-light: #F6F5FF;
     --toggle-color: #DDD;
-    --text-color: #707070;
+    --text-color: #2A2A2A;
 
     /* ====== Transition ====== */
     --tran-03: all 0.2s ease;
@@ -69,13 +69,13 @@ html{
 body{
     min-height: 100vh;
     max-width: 100vw;
-    background-color: var(--body-color);
+    background-color: #4651E5;
     transition: var(--tran-05);
     overflow-x: hidden;
 }
 
 ::selection{
-    background: #91BFBC;
+    background: #4651E5;
     color: #fff;
 }
 .sidebar{
@@ -126,7 +126,7 @@ body{
 .text_logout{
     font-size: 20px;
     font-weight: 500;
-    color: #333;
+    color: #fff;
 }
 .sidebar.close .text{
     opacity: 0;
@@ -190,7 +190,7 @@ header .image-text .profession{
 }
 
 .sidebar li a:hover{
-    background: #91BFBC;
+    background: #4651E5;
 }
 
 .sidebar li a:hover .icon,
@@ -217,7 +217,7 @@ header .image-text .profession{
 }
 .sidebar .menu-bar .mode{
     border-radius: 6px;
-    background: #91BFBC;
+    background: #4651E5;
     position: relative;
     transition: var(--tran-05);
 }
@@ -242,7 +242,7 @@ body.dark .mode .sun-moon i.moon{
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     min-height: 100vh;
     font-weight: 400;
-    color: #3a3b3c;
+    color: #2A2A2A;
 }
 .image-input
 {
@@ -267,14 +267,14 @@ body.dark .mode .sun-moon i.moon{
     width: 100%;
     border-radius: 6px;
     text-decoration: none;
-    background: #91BFBC;
+    background: #4651E5;
     color: #fff;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     transition: 0.3s;
 }
 .nav-link-profile a:hover{
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
-    background: #9cc6c3;
+    background: #6c74e6;
 }
 .bx-user
 {
@@ -350,7 +350,7 @@ body.dark .mode .sun-moon i.moon{
     padding: 15px;
     margin-top: 15px;
     font-size: 15px;
-    background-color: #91BFBC;
+    background-color: #4651E5;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 7px;
     display: flex;
@@ -378,7 +378,7 @@ body.dark .mode .sun-moon i.moon{
 
 .base-popup span{
     font-size: 20px;
-    color: #333;
+    color: #2A2A2A;
 }
 .popup__bg.active { 
     opacity: 1; 
@@ -408,7 +408,7 @@ body.dark .mode .sun-moon i.moon{
     right: 10px;
     cursor: pointer;
     font-size: 20px;
-    color: #333;
+    color: #2A2A2A;
 }
 .header_burger-btn{
     position: relative;
@@ -483,7 +483,7 @@ body.dark .mode .sun-moon i.moon{
 }
 .cookie_fail_content span{
     font-size: 20px;
-    color: #333;
+    color: #2A2A2A;
 }
 .close_cockie{
     width: 100%;
@@ -493,7 +493,7 @@ body.dark .mode .sun-moon i.moon{
 }
 .close_cockie_input{
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    background-color: #91BFBC;
+    background-color: #4651E5;
     border-radius: 6px;
     width: 30%;
     padding: 6px;
@@ -847,7 +847,7 @@ body.dark .mode .sun-moon i.moon{
 
 
 .color-blue{
-    background-color: #91BFBC;
+    background-color: #4651E5;
 }
 .color-silver{
     background-color: #C0C0C0;
@@ -857,7 +857,7 @@ body.dark .mode .sun-moon i.moon{
 }
 .popup_prem-base .conteiner_buy span{
     font-size: 20px;
-    color: #333;
+    color: #2A2A2A;
 
 }
 .popup__bg-prem.active { 
@@ -906,7 +906,7 @@ body.dark .mode .sun-moon i.moon{
     border-radius: 0 0 10% 10%;
     font-size: 24px;
     padding: 15px 20px 20px 20px;
-    color: #333;
+    color: #2A2A2A;
     height: 230px;
 
     display: flex;
@@ -971,7 +971,7 @@ body.dark .mode .sun-moon i.moon{
     justify-content: center;
     align-items: center;
     font-size: 18px;
-    color: #333;
+    color: #2A2A2A;
     background-color: var(--section-color);
     border-radius: 10px;
     box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.25);
