@@ -32,9 +32,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = False
 
 SECURE_PROXY_SSL_HEADER = ("X-Forwarded-For", "https")
-ALLOWED_HOSTS = ['localhost', '79.136.249.12']
+ALLOWED_HOSTS = ['81.200.146.18', 'codemind.ru']
 CSRF_TRUSTED_ORIGINS = [
-    'https://localhost', 'http://79.136.249.12:25565', 'https://79.136.249.12']
+    'https://81.200.146.18', 'http://81.200.146.18', 'https://codemind.ru', 'http://codemind.ru']
 
 # Application definition
 

@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  codemind:
+    container_name: codemind
+    build:
+      context: ./ONUPRA
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_volume:/codemind/static/
+      - media_volume:/codemind/media/
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/static
+      - media_volume:/media
+    ports:
+      - "80:80"
+    depends_on:
+      - codemind
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  
+  celery:
+    container_name: celery
+    build:
+      context: ./ONUPRA
+    command: celery -A ONUPRA worker -l INFO
+    volumes:
+      - ./ONUPRA:/codemind
+    depends_on:
+      - redis
+      - codemind 
+
+  celery-beat:
+    container_name: celery-beat
+    build:
+      context: ./ONUPRA
+    command: celery -A ONUPRA beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - ./ONUPRA:/codemind
+    depends_on:
+      - redis
+      - codemind
+
+volumes:
+  static_volume:
+  media_volume:

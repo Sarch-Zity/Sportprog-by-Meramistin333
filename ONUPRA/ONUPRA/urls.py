@@ -21,7 +21,6 @@ def csrf_failure(request, reason=""):
 urlpatterns = [
     path('2355admin/', admin.site.urls),
     path('', include('main.urls')),
-    re_path(r'^favicon\.ico$', RedirectView.as_view(url='/static/ONUPRA/icons/favicon2.ico', permanent=True))
 ] 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,}),]
