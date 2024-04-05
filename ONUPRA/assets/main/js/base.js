@@ -14,6 +14,7 @@ header_burger.addEventListener("click", () => {
     }
 });
 var patern = /competition\/[\d]+/
+var home_pettern = /^\/$/
 
 const cookie_content = document.querySelector(".cookie_fail_content"),
 cookie_input = document.querySelector(".close_cockie_input");
@@ -59,6 +60,7 @@ $(document).ready(function(){
     },
   });
 });
+
 document.addEventListener('DOMContentLoaded', () => {
     const contentDiv = document.querySelector('.content');
     const navLinks = document.querySelectorAll('.nav-link-fetch');
@@ -74,7 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
     const loadScripts = (url) => {
     let head = window.document.getElementsByTagName('head')[0]
-      if (url.includes('home')) { 
+      console.log(url)
+      if (url.match(home_pettern)) { 
         const accordionContent = document.querySelectorAll(".block");
 
         accordionContent.forEach((item, index) => {
@@ -572,11 +575,9 @@ closeIcon.addEventListener("click", () => {
       });
       }
       else if(url.includes('you') || url.includes('user')){
-        if(url.includes('user')){
-            $('.block_avatar').css('height', '250px');
-        }
+        console.log(document.getElementById('username_name').textContent)
         
-        if(url.includes('you')){
+        if(url.includes('you') || (url.includes(document.getElementById('username_name').textContent)) ){
             const upload_photo = document.querySelector(".input_upload_"),
         save_photo = document.querySelector(".input_upload_save"),
         input_upload_photo = document.querySelector(".upload-photo-file")
@@ -586,7 +587,9 @@ closeIcon.addEventListener("click", () => {
         if( this.value ){
             save_photo.classList.remove("save_photo");
         } else { 
+            
         }
+        
         });
 
         let popupBg2 = document.querySelector('.pbg2');
@@ -615,7 +618,7 @@ closeIcon.addEventListener("click", () => {
         
         var cropper;
 
-        $('#change_upload').on('change', (event) => {
+        $('#h').on('change', (event) => {
         var input = event.target;
         var reader = new FileReader();
         
@@ -625,6 +628,7 @@ closeIcon.addEventListener("click", () => {
             image.src = dataURL;
             if (cropper) {
             cropper.destroy();
+            console.log(1)
             }
             cropper = new Cropper(image, {
             aspectRatio: 1, // указываем соотношение сторон области обрезки (1:1)
@@ -642,18 +646,70 @@ closeIcon.addEventListener("click", () => {
         
         
         
-        $('#const_upload').on('click', (event) => {
+        $('#o').submit(function(e) {
+            e.preventDefault();
+
             var canvas = cropper.getCroppedCanvas();
             var croppedImageDataURL = canvas.toDataURL('image/jpeg');
+            var image = document.getElementById('img_settings');
+            console.log(image)
+            image.src = croppedImageDataURL;
             
-            // Здесь вы можете отправить обрезанное изображение на сервер или выполнить другие операции с данными
-            $.ajax({
-                data: {
-                    'image': croppedImageDataURL,
-                },
-                
-            })
+            
+            
+            document.getElementById('image_src').src = croppedImageDataURL;
+
+
+
+            async function setFile(input, name, url) {
+                try {
+                    var blob = await (await fetch(url)).blob();
+                    var dt  = new DataTransfer();
+                    dt.items.add(new File([blob], name, {type: blob.type}));
+                    input.files = dt.files;
+                    console.log('Файл успешно вставлен:');
+                    console.log(input.files);
+                    const formData = new FormData(); 
+                    formData.append('file', input_element.files[0]);
+                    // Здесь вы можете отправить обрезанное изображение на сервер или выполнить другие операции с данными
+                    console.log(input_element.files[0])
+                    return formData
+                }
+                catch(err) {
+                    console.log('Ошибка при вставке файла:');
+                    console.dir(err);
+                }
+            }
+
+            // Входные параметры:
+            var input_element = document.getElementById('image_src');
+            var file_name = 'image.jpg';
+            var file_link = croppedImageDataURL;
+
+            // Вызовем функцию для вставки файла:
+            
+
+            
+                $.ajax({
+                    
+
+                    data: setFile(input_element, file_name, file_link),
+                    contentType: false,
+                    processData: false,
+                    
+                    success: function(e){
+                        console.log(2)
+                    },
+                    error: function(e){
+                        console.log(3)
+                    },
+                    
+                })
+            
         });
+        }
+        else {
+            $('.block_avatar').css('height', '250px');
         }
 
         const ctx = document.getElementById('myChart');
@@ -717,7 +773,10 @@ closeIcon.addEventListener("click", () => {
           document.title = doc.title;
 
           contentDiv.classList.remove('fade-out');
-          history.pushState({}, '', url);
+          if(url.includes('you')){
+            history.pushState({}, '', `/user/${document.getElementById('username_name').textContent}/`);
+          }
+          else{history.pushState({}, '', url);}
 
         })
         .then(() => {

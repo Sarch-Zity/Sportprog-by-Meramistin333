@@ -16,8 +16,8 @@
         <div class="wrapper_content_profile">
             <div class="wrapper_content_profile_">
                 <div class="block_avatar">
-                    <div class="img_settings">
-                        <img src="{{user.image.url}}" alt="">
+                    <div class="img_settings" >
+                        <img id="img_settings" src="{{user.image.url}}" alt="">
                     </div>
                     {% if request.user.username == user.username %}
                     <div class="avatar_upload open-popup op2">
@@ -105,6 +105,7 @@
                         <input type="text" class="input_create" maxlength="128" name="title">
                         <label class="input_upload create_command_button" for="create_button">Создать</label>
                         <button type="submit" id="create_button" class="upload-photo button_submit" name="create party"></button>
+                        
                     </form>
                     <div class="line_f"></div>
                     {% for i in partys %}
@@ -148,10 +149,10 @@
                         {% csrf_token %}
                         <button type="submit" class="input_delete" name="reset image"><i class='bx bx-basket'></i></button>
                     </form>
-                    <form method="post" class="change_photo" enctype="multipart/form-data">
+                    <form method="post" class="change_photo" id="change_const_upload" enctype="multipart/form-data">
                         {% csrf_token %}
                         <label class="input_upload input_upload_" for="change_upload">Загрузить фото <i class='bx bx-upload bx-1'></i></label>
-                        <input type="file" id="change_upload" class="upload-photo upload-photo-file" accept="image/*">
+                        <input type="file" id="change_upload" class="upload-photo upload-photo-file" name="image" accept="image">
                         <label class="input_upload input_upload_save save_photo" for="const_upload">Сохранить фото<i class='bx bx-check bx-1'></i></label>
                         <button type="submit" class="upload-photo" id="const_upload" name="update image"></button>
                     </form>
